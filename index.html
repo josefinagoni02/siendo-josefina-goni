@@ -823,6 +823,9 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 .px-tex button { width: 2.3rem; height: 2.3rem; padding: 0; border-radius: 6px; overflow: hidden; border: 2px solid rgba(255,255,255,.35); cursor: pointer; background: #000; transition: border-color .3s ease, transform .3s ease; }
 .px-tex button img { width: 100%; height: 100%; object-fit: cover; display: block; image-rendering: pixelated; }
 .px-tex button[aria-pressed="true"] { border-color: #fff; transform: translateY(-2px); }
+.px-tex { align-items: center; }
+.px-tex .arr { width: 2rem; height: 2rem; border-radius: 50%; border: 1px solid rgba(255,255,255,.5); background: rgba(255,255,255,.16); color: #fff; font: 600 1.15rem/1 var(--font-body); }
+.px-tex .arr:hover { background: rgba(255,255,255,.3); }
 
 .px-board-wrap { width: min(960px, 100%); }
 .px-sheet { background: #fbfcfe; color: #14284a; border-radius: 14px; padding: clamp(1.1rem, 3vw, 2.2rem); box-shadow: 0 30px 80px rgba(5,15,40,.45); }
@@ -2415,21 +2418,43 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   view.addEventListener('pointermove', e => { pos(e); if (!full) rT = lensR(); });
   view.addEventListener('pointerdown', e => { pos(e); if (full) toggleFull(); rT = lensR(); });
   view.addEventListener('pointerleave', () => { if (!full) rT = 0; });
+  let sx = null;
+  view.addEventListener('pointerdown', e => { sx = e.pointerType === 'mouse' ? null : e.clientX; });
+  view.addEventListener('pointerup', e => { if (sx !== null && g.tex.length > 1 && Math.abs(e.clientX - sx) > 50) setTex(ti + (e.clientX < sx ? 1 : -1), true); sx = null; });
+  document.addEventListener('keydown', e => { if (!open || g.tex.length < 2 || vPane.classList.contains('off')) return; if (e.key === 'ArrowRight') setTex(ti + 1, true); if (e.key === 'ArrowLeft') setTex(ti - 1, true); });
   view.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse' && !full) rT = 0; });
   function label() { $('pxFull').textContent = full ? (g.under ? 'Volver al dither' : 'Volver') : (g.under ? 'Ver foto entera' : 'Ver capa de abajo'); }
   function toggleFull() { full = !full; if (full) { if (!x) { x = view.clientWidth / 2; y = view.clientHeight / 2; } rT = Math.hypot(view.clientWidth, view.clientHeight); } else rT = 0; label(); }
   $('pxFull').addEventListener('click', toggleFull);
 
+  // la foto original queda siempre debajo; arriba se desliza la textura elegida
+  let ti = 0, sliding = false;
   function setTex(i, animate) {
-    tex.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', k === i));
-    const apply = () => { base.src = g.tex[i][0]; real.src = g.under || g.tex[i === 0 ? 3 % g.tex.length : 0][0]; base.style.opacity = 1; };
-    if (animate) { base.style.opacity = 0; setTimeout(apply, 240); } else apply();
+    const n = g.tex.length; i = (i + n) % n;
+    const dir = i > ti || (ti === n - 1 && i === 0 && n > 2) ? 1 : -1;
+    ti = i; real.src = g.under; view.style.background = '#000 url(' + g.under + ') center / cover';
+    tex.querySelectorAll('.tx').forEach((b, k) => b.setAttribute('aria-pressed', k === i));
+    if (!animate || reduce) { base.style.transition = 'none'; base.style.transform = ''; base.style.opacity = 1; base.src = g.tex[i][0]; return; }
+    if (sliding) return; sliding = true;
+    base.style.transition = 'transform .32s cubic-bezier(.5,0,.75,0), opacity .32s ease';
+    base.style.transform = 'translateX(' + (-dir * 18) + '%)'; base.style.opacity = 0;
+    setTimeout(() => {
+      base.src = g.tex[i][0];
+      base.style.transition = 'none'; base.style.transform = 'translateX(' + (dir * 18) + '%)'; base.offsetWidth;
+      base.style.transition = 'transform .5s cubic-bezier(.2,.7,.1,1), opacity .5s ease';
+      base.style.transform = ''; base.style.opacity = 1;
+      setTimeout(() => { sliding = false; }, 500);
+    }, 320);
   }
   function load(key, t) {
     g = G[key]; full = false; r = rT = 0; x = 0; label();
     $('pxCap').textContent = g.name; tex.innerHTML = ''; tex.hidden = g.tex.length < 2;
-    g.tex.forEach((tx, k) => { const b = document.createElement('button'); b.type = 'button'; b.title = tx[1]; b.setAttribute('aria-label', 'Textura ' + tx[1]); b.innerHTML = '<img src="' + tx[0] + '" alt="">'; b.onclick = () => setTex(k, true); tex.appendChild(b); });
-    $('pxMore').hidden = key !== 'nubes'; $('pxBackBoard').hidden = key === 'nubes';
+    const arrow = (d, txt) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'arr'; b.textContent = txt; b.setAttribute('aria-label', d < 0 ? 'Textura anterior' : 'Textura siguiente'); b.onclick = () => setTex(ti + d, true); return b; };
+    if (g.tex.length > 1) tex.appendChild(arrow(-1, '‹'));
+    g.tex.forEach((tx, k) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'tx'; b.title = tx[1]; b.setAttribute('aria-label', 'Textura ' + tx[1]); b.innerHTML = '<img src="' + tx[0] + '" alt="">'; b.onclick = () => setTex(k, true); tex.appendChild(b); });
+    if (g.tex.length > 1) tex.appendChild(arrow(1, '›'));
+    $('pxMore').hidden = key !== 'nubes'; $('pxBackBoard').hidden = key === 'nubes'; $('pxFull').hidden = key !== 'nubes';
+    ti = t || 0;
     const w = Math.min(innerWidth * .92, 900, innerHeight * .68 * g.aspect);
     vPane.style.width = w + 'px'; view.style.aspectRatio = g.aspect;
     setTex(t || 0, false);

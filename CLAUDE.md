@@ -88,7 +88,7 @@ Cada push a `main` se publica solo.
 
 **Pixel de nubes (el pixel escondido).** Cuadrado con `nubes-dither` fijo al borde derecho, asomando a la mitad (abajo en celular). Aparece recién cuando las cards terminaron de desenfocarse y se esconde al salir del cielo. Casi quieto (2 px de vaivén); en hover sale un poco, toma sombra y muestra "mis nubes".
    - Al tocarlo se agranda desde su lugar. Lupa que muestra la foto real (`nubes`) y botón "Ver foto entera".
-   - Botón "Jugando con más texturas dither →" abre el board en la misma ventana: collage editorial (sin cinta ni marcos), título "Texturas", 8 fotos numeradas 01–08 con epígrafe. Sin las nubes. Tocar fuera de la foto o del collage cierra. Al tocar una se ve de cerca con miniaturas de sus texturas; la lupa muestra la foto real (`iris` / `cala`) y está el botón "Ver foto entera", igual que en las nubes.
+   - Botón "Jugando con más texturas dither →" abre el board en la misma ventana: collage editorial (sin cinta ni marcos), título "Texturas", 8 fotos numeradas 01–08 con epígrafe. Sin las nubes. Tocar fuera de la foto o del collage cierra. Al tocar una se ve de cerca: la foto real (`iris` / `cala`) queda siempre de base debajo de la lupa, y arriba las texturas se deslizan con las miniaturas, las flechas ‹ ›, el teclado o deslizando el dedo. En las flores no va "Ver foto entera" (solo en las nubes).
    - Mockups: https://claude.ai/artifact/FgFcYE7ztdMnUSxx7y1mZY
 
 **Cierre**, en este orden:
