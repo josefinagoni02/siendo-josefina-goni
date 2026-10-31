@@ -88,7 +88,7 @@ Cada push a `main` se publica solo.
 
 **Pixel de nubes (el pixel escondido).** Cuadrado con `nubes-dither` fijo al borde derecho, asomando a la mitad (abajo en celular). Aparece recién cuando las cards terminaron de desenfocarse y se esconde al salir del cielo. Casi quieto (2 px de vaivén); en hover sale un poco, toma sombra y muestra "mis nubes".
    - Al tocarlo se agranda desde su lugar. Lupa que muestra la foto real (`nubes`) y botón "Ver foto entera".
-   - Botón "Jugando con más texturas dither →" abre el board en la misma ventana: collage editorial (sin cinta ni marcos), título "Texturas", 8 fotos numeradas 01–08 con epígrafe. Sin las nubes. Al tocar una se ve de cerca con miniaturas de sus texturas; la lupa muestra otra textura (cuando haya fotos originales de las flores, van debajo como en las nubes).
+   - Botón "Jugando con más texturas dither →" abre el board en la misma ventana: collage editorial (sin cinta ni marcos), título "Texturas", 8 fotos numeradas 01–08 con epígrafe. Sin las nubes. Tocar fuera de la foto o del collage cierra. Al tocar una se ve de cerca con miniaturas de sus texturas; la lupa muestra otra textura (cuando haya fotos originales de las flores, van debajo como en las nubes).
    - Mockups: https://claude.ai/artifact/FgFcYE7ztdMnUSxx7y1mZY
 
 **Cierre**, en este orden:
@@ -101,7 +101,7 @@ Cada push a `main` se publica solo.
    - Gracias a todos los que me acompañan (corazón tipo emoji que late)
 4. Contacto: postal que se da vuelta.
    - Frente: "¿Hablamos?" con 34°36′ S · 58°23′ O · Buenos Aires.
-   - Dorso: "Escribime y charlamos." Mail josefinagoni02@gmail.com · Número +54 9 11 5348-3183 · Instagram @josefinagoni__, cada uno con botón Copiar. Al copiar aparece el sello "¡Enviado al cielo!".
+   - Dorso: "Escribime y charlamos." y debajo, más chico, "Si es con cafecito, mejor ;)". Mail josefinagoni02@gmail.com · Número +54 9 11 5348-3183 · Instagram @josefinagoni__, cada uno con botón Copiar. Al copiar aparece el sello "¡Enviado al cielo!".
 
 ## Referencias (artifacts en claude.ai)
 
