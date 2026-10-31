@@ -410,6 +410,69 @@ h1 .ch { display: inline-block; animation: arrive 1.3s cubic-bezier(.2,.7,.1,1) 
 .chart b { font-family: var(--font-display); font-weight: 400; font-size: 1.45rem; line-height: 1.05; }
 @media (max-width: 420px) { .chart { grid-template-columns: 1fr; } }
 
+/* Acuariana: tabla dispersa (de noche) */
+.panel[data-kind="signo"] { max-width: 56rem; }
+.ac-head { display: flex; flex-direction: column; gap: 0.4rem; }
+.ac-head .d-title { font-variant-numeric: tabular-nums; white-space: nowrap; font-size: clamp(2rem, 8vw, 2.6rem); }
+.ac-sub { margin: 0; font-size: 1rem; color: rgba(238,240,255,0.78); }
+.ac-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2.6rem 1.5rem; padding: 1.4rem 0 1.6rem; }
+.ac-t { --c: #f6e7b8; position: relative; top: var(--y, 0px); display: block; width: var(--w, 160px); height: var(--h, 160px); flex: none; box-sizing: border-box; border-radius: 14px; border: 1px solid rgba(255,255,255,0.14); background: rgba(5,8,22,0.6); overflow: hidden; padding: 0; color: #eef1fa; cursor: pointer; text-align: left; font: inherit; transition: border-color .35s, box-shadow .35s; }
+.ac-t:hover, .ac-t:focus-visible { border-color: var(--c); box-shadow: 0 12px 30px rgba(0,0,0,0.35), 0 0 0 1px var(--c); }
+.ac-t:focus-visible { outline: 2px solid #f6e7b8; outline-offset: 3px; }
+.ac-tx { position: absolute; inset: 0; opacity: 0.6; pointer-events: none; transition: opacity .35s; }
+.ac-t:hover .ac-tx { opacity: 1; }
+.ac-no { position: absolute; top: 12px; left: 14px; font-size: 12px; font-weight: 600; color: var(--c); }
+.ac-code { position: absolute; left: 14px; top: 40px; font-family: var(--font-display); font-size: 58px; line-height: 1; }
+.ac-nm { position: absolute; left: 14px; bottom: 30px; font-size: 14px; font-weight: 600; }
+.ac-sb { position: absolute; left: 14px; bottom: 12px; font-size: 12px; color: #b9c2de; }
+.ac-sg { position: absolute; top: 8px; right: 12px; font-size: 24px; line-height: 1; color: var(--c); }
+.ac-t.cielo { --c: #f6e7b8; } .ac-t.elem { --c: #7fb2f0; } .ac-t.dis { --c: #ee9a86; } .ac-t.tiempo { --c: #c2b3f5; } .ac-t.ven { --c: #a9b2cf; border-style: dashed; border-color: rgba(169,178,207,0.5); }
+.ac-solwrap { position: relative; top: var(--y, 0px); display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+.ac-solwrap .ac-t { top: 0; }
+/* el sol gira arriba a la derecha, lejos del texto */
+.ac-rays { position: absolute; left: 30%; top: -70%; width: 140%; height: 140%; border-radius: 50%; background: repeating-conic-gradient(rgba(246,231,184,0.2) 0deg 5deg, rgba(246,231,184,0) 5deg 18deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0 30%, transparent 62%); mask-image: radial-gradient(circle, #000 0 30%, transparent 62%); animation: acSpin 26s linear infinite; }
+.ac-sky { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding: 0 1rem; border-radius: 999px; border: 1px solid rgba(246,231,184,0.5); background: transparent; color: #f6e7b8; font: 600 0.88rem var(--font-body); cursor: pointer; transition: background .3s, color .3s, box-shadow .3s; }
+.ac-sky .arr { transition: transform .3s; }
+.ac-solwrap:hover .ac-sky, .ac-sky:focus-visible { background: #f6e7b8; color: var(--night); box-shadow: 0 0 24px rgba(246,231,184,0.4); }
+.ac-solwrap:hover .ac-sky .arr { transform: translateX(3px); }
+.ac-solwrap:hover .ac-sol { border-color: var(--c); box-shadow: 0 12px 30px rgba(0,0,0,0.35), 0 0 0 1px var(--c); }
+.ac-solwrap:hover .ac-sol .ac-tx { opacity: 1; }
+.ac-sky:focus-visible { outline: 2px solid #f6e7b8; outline-offset: 3px; }
+.ac-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem 1.4rem; }
+.ac-legend span { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: rgba(238,240,255,0.78); }
+.ac-legend i { width: 10px; height: 10px; border-radius: 3px; background: var(--c); }
+.ac-legend .cielo { --c: #f6e7b8; } .ac-legend .elem { --c: #7fb2f0; } .ac-legend .dis { --c: #ee9a86; } .ac-legend .tiempo { --c: #c2b3f5; } .ac-legend .ven { --c: #a9b2cf; }
+.ac-phase { animation: acPhase 7s ease-in-out infinite alternate; }
+.ac-rise { animation: acRise 4.5s ease-in-out infinite alternate; }
+.ac-drift { animation: acDrift 3.4s ease-in-out infinite; }
+.ac-wave { animation: acSlide 5s linear infinite; }
+.ac-wave2 { animation: acSlide 8s linear infinite; }
+.ac-aura { animation: acAura 3.8s ease-in-out infinite; }
+.ac-beat { animation: acBeat 1.6s ease-in-out infinite; }
+.ac-ring { animation: acRing 3s ease-out infinite; }
+.ac-ask { animation: acAsk 3s ease-in-out infinite; }
+.panel:not(.go) .ac-in { opacity: 0; }
+.go .ac-in { animation: acIn .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--d, 0s); }
+@keyframes acIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes acSpin { to { transform: rotate(360deg); } }
+@keyframes acPhase { from { transform: translateX(-22px); } to { transform: translateX(18px); } }
+@keyframes acRise { from { transform: translateY(30px); } to { transform: translateY(0); } }
+@keyframes acDrift { 0% { transform: translateX(-40px); opacity: 0; } 40%, 60% { opacity: 1; } 100% { transform: translateX(40px); opacity: 0; } }
+@keyframes acSlide { to { transform: translateX(-50%); } }
+@keyframes acAura { 0%, 100% { transform: scale(.8); opacity: .5; } 50% { transform: scale(1.2); opacity: 1; } }
+@keyframes acBeat { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.15); } }
+@keyframes acRing { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes acAsk { 0%, 100% { opacity: .4; } 50% { opacity: 1; } }
+@media (max-width: 640px) {
+  .ac-grid { gap: 0.8rem; justify-content: space-between; padding: 0.8rem 0 1rem; }
+  .ac-t, .ac-solwrap { top: 0; }
+  .ac-t { width: calc(50% - 0.4rem); height: 9.5rem; }
+  .ac-solwrap { width: 100%; }
+  .ac-solwrap .ac-t { width: 100%; height: 10rem; }
+  .ac-code { font-size: 46px; top: 36px; }
+}
+
 /* Colección de atardeceres */
 .car { display: flex; flex-direction: column; gap: 0.7rem; }
 .car-track { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; gap: 0.75rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 14px; }
@@ -911,15 +974,86 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 </div>
 
 <template id="t-signo">
-  <div><span class="label">Mi carta</span><h2 class="d-title" id="d-title">Acuariana</h2></div>
-  <svg class="wheel" id="wheel" viewBox="0 0 460 300" role="img" aria-label="Carta astral: Sol en Acuario, Luna en Escorpio, Ascendente en Cáncer"></svg>
-  <div class="chart fade" style="--d:3s">
-    <div><svg class="ast" viewBox="0 0 24 24" role="img" aria-label="Sol"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg><b>Acuario</b></div>
-    <div><svg class="ast" viewBox="0 0 24 24" role="img" aria-label="Luna"><path d="M15.5 4.5a8 8 0 1 0 0 15a6.5 6.5 0 1 1 0-15Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><b>Escorpio</b></div>
-    <div><svg class="ast" viewBox="0 0 24 24" role="img" aria-label="Ascendente"><path d="M3 17h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 15V5M8 9l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Cáncer</b></div>
+  <div class="ac-head">
+    <h2 class="d-title" id="d-title">03.02.2002 · 18.32</h2>
+    <p class="ac-sub" id="acSub">Tengo 24 y estoy viviendo mi año 25.</p>
   </div>
-  <div class="birth fade" style="--d:3.2s"><b>03.02.2002</b><span>Tengo 24 y estoy viviendo mi año 25.</span></div>
-  <button class="ghost fade" style="--d:3.3s" type="button" data-action="night">Ver Acuario en el cielo</button>
+  <div class="ac-grid">
+    <div class="ac-solwrap ac-in" style="--d:.05s">
+      <button class="ac-t cielo ac-sol" type="button" data-action="night" aria-label="Sol en Acuario: ver Acuario en el cielo" style="--w:210px;--h:210px">
+        <span class="ac-tx" aria-hidden="true"><span class="ac-rays"></span></span>
+        <span class="ac-no">01</span><span class="ac-sg" aria-hidden="true">♒&#xFE0E;</span>
+        <span class="ac-code">So</span><span class="ac-nm">Sol</span><span class="ac-sb">Acuario</span>
+      </button>
+      <button class="ac-sky" type="button" data-action="night" tabindex="-1" aria-hidden="true">Ver Acuario en el cielo <span class="arr">→</span></button>
+    </div>
+    <button class="ac-t cielo ac-in" type="button" aria-label="Luna en Escorpio" style="--w:150px;--h:150px;--y:26px;--d:.12s">
+      <span class="ac-tx" aria-hidden="true">
+        <span style="position:absolute;right:-56px;top:30px;width:110px;height:110px;border-radius:50%;background:rgba(233,236,247,0.22)"></span>
+        <span class="ac-phase" style="position:absolute;right:-82px;top:30px;width:110px;height:110px;border-radius:50%;background:#0a0f26"></span>
+      </span>
+      <span class="ac-no">02</span><span class="ac-sg" aria-hidden="true">♏&#xFE0E;</span>
+      <span class="ac-code">Lu</span><span class="ac-nm">Luna</span><span class="ac-sb">Escorpio</span>
+    </button>
+    <button class="ac-t cielo ac-in" type="button" aria-label="Ascendente en Cáncer" style="--w:170px;--h:150px;--y:-18px;--d:.19s">
+      <span class="ac-tx" aria-hidden="true">
+        <span class="ac-rise" style="position:absolute;right:18px;top:60px;width:56px;height:56px;border-radius:50%;background:radial-gradient(circle, rgba(242,182,107,0.75) 0%, rgba(242,182,107,0) 70%)"></span>
+        <span style="position:absolute;left:0;right:0;top:100px;bottom:0;background:#080c20;border-top:1px solid rgba(246,231,184,0.45)"></span>
+      </span>
+      <span class="ac-no">03</span><span class="ac-sg" aria-hidden="true">♋&#xFE0E;</span>
+      <span class="ac-code">As</span><span class="ac-nm">Ascendente</span><span class="ac-sb">Cáncer</span>
+    </button>
+    <button class="ac-t elem ac-in" type="button" data-card="lkCard" aria-label="Aire: ir a Profesional" style="--w:150px;--h:170px;--y:20px;--d:.26s">
+      <span class="ac-tx" aria-hidden="true">
+        <span class="ac-drift" style="position:absolute;top:40px;right:10px;width:44px;height:2px;border-radius:2px;background:rgba(168,203,245,0.7)"></span>
+        <span class="ac-drift" style="position:absolute;top:58px;right:14px;width:50px;height:2px;border-radius:2px;background:rgba(168,203,245,0.7);animation-delay:.9s"></span>
+        <span class="ac-drift" style="position:absolute;top:76px;right:8px;width:36px;height:2px;border-radius:2px;background:rgba(168,203,245,0.7);animation-delay:1.8s"></span>
+        <span class="ac-drift" style="position:absolute;top:94px;right:16px;width:42px;height:2px;border-radius:2px;background:rgba(168,203,245,0.7);animation-delay:2.6s"></span>
+      </span>
+      <span class="ac-no">04</span>
+      <span class="ac-code">Ai</span><span class="ac-nm">Aire · 1</span><span class="ac-sb">→ Profesional</span>
+    </button>
+    <button class="ac-t elem ac-in" type="button" data-card="lunCard" aria-label="Agua: ir a Lunática" style="--w:230px;--h:190px;--d:.33s">
+      <span class="ac-tx" aria-hidden="true">
+        <svg class="ac-wave2" width="460" height="80" viewBox="0 0 320 60" preserveAspectRatio="none" style="position:absolute;left:0;top:96px;opacity:.45"><path d="M0 30 C 20 12 20 12 40 30 S 60 48 80 30 S 100 12 120 30 S 140 48 160 30 S 180 12 200 30 S 220 48 240 30 S 260 12 280 30 S 300 48 320 30 L 320 60 L 0 60 Z" fill="rgba(94,143,219,0.35)"/></svg>
+        <svg class="ac-wave" width="460" height="80" viewBox="0 0 320 60" preserveAspectRatio="none" style="position:absolute;left:0;top:110px"><path d="M0 30 C 20 14 20 14 40 30 S 60 46 80 30 S 100 14 120 30 S 140 46 160 30 S 180 14 200 30 S 220 46 240 30 S 260 14 280 30 S 300 46 320 30 L 320 60 L 0 60 Z" fill="rgba(94,143,219,0.45)"/></svg>
+      </span>
+      <span class="ac-no">05</span>
+      <span class="ac-code">Ag</span><span class="ac-nm">Agua · 2</span><span class="ac-sb">→ Lunática · Jousie</span>
+    </button>
+    <button class="ac-t dis ac-in" type="button" aria-label="Proyectora, Diseño Humano" style="--w:150px;--h:160px;--y:-24px;--d:.4s">
+      <span class="ac-tx" aria-hidden="true"><span class="ac-aura" style="position:absolute;right:-30px;top:10px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle, rgba(246,231,184,0.45) 0%, rgba(246,231,184,0) 65%)"></span></span>
+      <span class="ac-no">06</span>
+      <span class="ac-code">Pr</span><span class="ac-nm">Proyectora</span><span class="ac-sb">Diseño Humano</span>
+    </button>
+    <button class="ac-t dis ac-in" type="button" aria-label="Plexo solar encendido" style="--w:190px;--h:150px;--y:14px;--d:.47s">
+      <span class="ac-tx" aria-hidden="true"><svg class="ac-wave" width="380" height="40" viewBox="0 0 216 40" preserveAspectRatio="none" style="position:absolute;left:44px;top:6px;height:28px"><path d="M0 20 C 13.5 4 13.5 4 27 20 S 40.5 36 54 20 S 67.5 4 81 20 S 94.5 36 108 20 S 121.5 4 135 20 S 148.5 36 162 20 S 175.5 4 189 20 S 202.5 36 216 20" fill="none" stroke="#f2c14e" stroke-width="2.4" vector-effect="non-scaling-stroke"/></svg></span>
+      <span class="ac-no">07</span>
+      <span class="ac-code">Ps</span><span class="ac-nm">Plexo solar</span><span class="ac-sb">Encendido</span>
+    </button>
+    <button class="ac-t dis ac-in" type="button" aria-label="Raíz encendida" style="--w:160px;--h:190px;--y:-10px;--d:.54s">
+      <span class="ac-tx" aria-hidden="true"><span class="ac-ring" style="position:absolute;right:22px;top:30px;width:40px;height:40px;box-sizing:border-box;border-radius:9px;border:2px solid #d9573f"></span><span class="ac-beat" style="position:absolute;right:22px;top:30px;width:40px;height:40px;border-radius:9px;background:#d9573f;box-shadow:0 0 24px #d9573f"></span></span>
+      <span class="ac-no">08</span>
+      <span class="ac-code">Rz</span><span class="ac-nm">Raíz</span><span class="ac-sb">Encendida</span>
+    </button>
+    <button class="ac-t tiempo ac-in" type="button" id="acYear" aria-label="Mi vuelta al Sol" style="--w:180px;--h:160px;--y:22px;--d:.61s">
+      <span class="ac-tx" aria-hidden="true">
+        <span style="position:absolute;left:76px;top:36px;width:76px;height:76px;border-radius:50%;border:1px dashed rgba(194,179,245,0.6)"></span>
+        <span style="position:absolute;left:107px;top:67px;width:14px;height:14px;border-radius:50%;background:#f6e7b8;box-shadow:0 0 14px rgba(246,231,184,0.7)"></span>
+        <span id="acEarth" style="position:absolute;left:114px;top:36px;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#7fb2f0;box-shadow:0 0 10px rgba(127,178,240,0.9);transition:left 1.2s ease, top 1.2s ease"></span>
+      </span>
+      <span class="ac-no">09</span>
+      <span class="ac-code" id="acAge" style="font-size:46px">24</span><span class="ac-nm">Viviendo</span><span class="ac-sb" id="acPct">mi año 25</span>
+    </button>
+    <button class="ac-t ven ac-in" type="button" aria-label="Eneatipo: ya vendrá" style="--w:150px;--h:150px;--y:-16px;--d:.68s">
+      <span class="ac-tx" aria-hidden="true"><span class="ac-ask" style="position:absolute;inset:0;background-image:radial-gradient(rgba(169,178,207,0.4) 1px, rgba(0,0,0,0) 1.2px);background-size:12px 12px"></span></span>
+      <span class="ac-no">10</span>
+      <span class="ac-code ac-ask">?</span><span class="ac-nm">Eneatipo</span><span class="ac-sb">Ya vendrá</span>
+    </button>
+  </div>
+  <div class="ac-legend ac-in" style="--d:.8s" aria-hidden="true">
+    <span class="cielo"><i></i>Cielo</span><span class="elem"><i></i>Elementos</span><span class="dis"><i></i>Diseño</span><span class="tiempo"><i></i>Tiempo</span><span class="ven"><i></i>Por venir</span>
+  </div>
 </template>
 
 <template id="t-atlas">
@@ -1795,8 +1929,8 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     body.appendChild(document.getElementById('t-' + kind).content.cloneNode(true));
     panel.dataset.kind = kind;
     panel.classList.remove('go', 'night');
-    if (kind === 'luna') panel.classList.add('night');
-    if (kind === 'signo') buildWheel(body.querySelector('#wheel'));
+    if (kind === 'luna' || kind === 'signo') panel.classList.add('night');
+    if (kind === 'signo') fillSigno();
     detail.hidden = false;
     document.documentElement.style.overflow = 'hidden';
     if (kind === 'ropa') sizeStitch();
@@ -2045,6 +2179,29 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   signDay.addEventListener('click', () => openDetail(signDay));
   signNight.addEventListener('click', () => openDetail(signNight));
   body.addEventListener('click', e => { if (e.target.closest('[data-action="night"]')) { closeDetail(); setMode('scrub', 23 * 60); } });
+  // Aire y Agua llevan a otra sección: cierra este modal y abre esa card
+  body.addEventListener('click', e => {
+    const b = e.target.closest('[data-card]'); if (!b) return;
+    const card = document.getElementById(b.dataset.card); if (!card) return;
+    closeDetail();
+    setTimeout(() => openDetail(card), reduce ? 0 : 480);
+  });
+  // Edad y vuelta al Sol, calculadas desde el último cumpleaños (3 de febrero)
+  function fillSigno() {
+    const now = new Date();
+    let last = new Date(now.getFullYear(), 1, 3);
+    if (now < last) last = new Date(now.getFullYear() - 1, 1, 3);
+    const next = new Date(last.getFullYear() + 1, 1, 3);
+    const age = last.getFullYear() - 2002, pct = clamp((now - last) / (next - last));
+    const sub = body.querySelector('#acSub'), ageEl = body.querySelector('#acAge'), pctEl = body.querySelector('#acPct'), earth = body.querySelector('#acEarth');
+    if (sub) sub.textContent = `Tengo ${age} y estoy viviendo mi año ${age + 1}.`;
+    if (ageEl) ageEl.textContent = age;
+    if (pctEl) pctEl.textContent = `${Math.round(pct * 100)}% de mi año ${age + 1}`;
+    if (earth) {
+      const a = pct * 2 * Math.PI - Math.PI / 2;
+      setTimeout(() => { earth.style.left = (114 + 38 * Math.cos(a)).toFixed(1) + 'px'; earth.style.top = (74 + 38 * Math.sin(a)).toFixed(1) + 'px'; }, reduce ? 0 : 900);
+    }
+  }
   function placeSign() {
     const t = clamp((nightNow - 0.45) / 0.5), e = ease(t);
     signDay.style.opacity = 1 - e;
