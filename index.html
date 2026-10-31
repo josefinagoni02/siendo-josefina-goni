@@ -557,10 +557,10 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 .fy-orbs i:nth-child(2) { width: 6.5rem; height: 6.5rem; right: 3.2rem; bottom: -2.6rem; background: #f3b1a6; transition-delay: 0.12s; }
 .fy-orbs i:nth-child(3) { width: 5.5rem; height: 5.5rem; right: -1.8rem; bottom: 0.4rem; background: #e6bfd0; transition-delay: 0.24s; }
 .fy-orbs i:nth-child(4) { width: 4rem; height: 4rem; right: 5.6rem; top: 0.6rem; background: #f6c99a; transition-delay: 0.36s; }
-.fy-card:hover .fy-orbs i, .fy-card:focus-visible .fy-orbs i { opacity: 0.85; scale: 1; animation: fyBreath 5s ease-in-out infinite, fyDrift 7s ease-in-out infinite alternate; }
-.fy-card:hover .fy-orbs i:nth-child(2) { animation-delay: -1.2s, -2s; animation-duration: 5.6s, 8s; }
-.fy-card:hover .fy-orbs i:nth-child(3) { animation-delay: -2.5s, -4s; animation-duration: 4.6s, 6s; }
-.fy-card:hover .fy-orbs i:nth-child(4) { animation-delay: -3.4s, -1s; animation-duration: 6s, 9s; }
+.fy-orbs i.on, .fy-card:focus-visible .fy-orbs i { opacity: 0.85; scale: 1; animation: fyBreath 4.6s ease-in-out infinite; }
+.fy-orbs i.on:nth-child(2) { animation-duration: 5.4s; animation-delay: -1.4s; }
+.fy-orbs i.on:nth-child(3) { animation-duration: 4.2s; animation-delay: -2.6s; }
+.fy-orbs i.on:nth-child(4) { animation-duration: 5.8s; animation-delay: -0.8s; }
 @keyframes fyBreath { 0%, 100% { scale: 0.7; opacity: 0.55; } 50% { scale: 1.55; opacity: 0.95; } }
 @keyframes fyDrift { 0% { translate: 0 0; } 50% { translate: -26px 14px; } 100% { translate: 12px -18px; } }
 @media (hover: none) { .fy-orbs i { opacity: 0.8; scale: 1; animation: fyBreath 6s ease-in-out infinite, fyDrift 9s ease-in-out infinite alternate; } .fy-orbs i:nth-child(2) { animation-delay: -2s, -3s; } .fy-orbs i:nth-child(3) { animation-delay: -4s, -5s; } }
@@ -568,14 +568,15 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 
 .fy-icon { display: grid; place-items: center; background: #fdf3ec; border-radius: 28%; box-shadow: 0 4px 12px rgba(120, 70, 50, 0.18); }
 .fy-icon svg { width: 72%; height: 72%; }
-.fy-mini { position: relative; z-index: 3; flex: none; margin-left: auto; align-self: flex-end; width: 1.75rem; height: 1.75rem; cursor: pointer; transition: transform 0.35s cubic-bezier(.3,1.6,.5,1); }
+#lkCard .words { position: relative; }
+.fy-mini { position: absolute; z-index: 3; right: 0; bottom: 0; width: 1.4rem; height: 1.4rem; cursor: pointer; transition: transform 0.35s cubic-bezier(.3,1.6,.5,1); }
 .fy-mini:hover { transform: scale(1.12) rotate(-6deg); }
 .fy-mini::after { content: "Flowry"; position: absolute; right: calc(100% + 0.4rem); top: 50%; translate: 0 -50%; font-size: 0.66rem; font-weight: 600; color: var(--ink-soft); background: var(--white); padding: 0.15rem 0.45rem; border-radius: 999px; opacity: 0; transition: opacity 0.25s ease; pointer-events: none; white-space: nowrap; }
 .fy-mini:hover::after { opacity: 1; }
 @media (max-width: 759px) {
   .small #lkCard .words { display: flex; margin: auto 0 0; }
   #lkCard .words span { display: none; }
-  .fy-mini { width: 1.55rem; height: 1.55rem; }
+  .fy-mini { position: relative; margin-left: auto; width: 1.55rem; height: 1.55rem; }
   .fy-card .txt .desc { display: none; }
   .wide .fy-card { padding-block: 0.6rem; }
 }
@@ -1987,6 +1988,41 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   });
   // ícono de Flowry en la card de Profesional
   document.querySelector('#lkCard .fy-mini').addEventListener('click', e => { e.stopPropagation(); openDetail(e.currentTarget); });
+
+  // Card de Flowry: los círculos aparecen de a uno mientras el cursor se mueve, lo siguen y laten
+  (() => {
+    const fc = document.getElementById('flowryCard'), orbs = [...fc.querySelectorAll('.fy-orbs i')];
+    if (!window.matchMedia('(hover: hover)').matches || reduce) return;
+    const K = [0.32, 0.5, 0.22, 0.62], pos = orbs.map(() => ({ x: 0, y: 0 }));
+    let inside = false, acc = 0, shown = 0, mx = 0, my = 0, raf = 0;
+    const reveal = () => { if (shown < orbs.length) orbs[shown++].classList.add('on'); };
+    function loop() {
+      let moving = false;
+      orbs.forEach((o, i) => {
+        const cx = o.offsetLeft + o.offsetWidth / 2, cy = o.offsetTop + o.offsetHeight / 2;
+        const tx = inside && o.classList.contains('on') ? (mx - cx) * K[i] : 0, ty = inside && o.classList.contains('on') ? (my - cy) * K[i] : 0;
+        const p = pos[i]; p.x += (tx - p.x) * 0.06; p.y += (ty - p.y) * 0.06;
+        if (Math.abs(tx - p.x) > 0.3 || Math.abs(ty - p.y) > 0.3) moving = true;
+        o.style.translate = `${p.x.toFixed(1)}px ${p.y.toFixed(1)}px`;
+      });
+      raf = inside || moving ? requestAnimationFrame(loop) : 0;
+    }
+    fc.addEventListener('pointerenter', e => {
+      inside = true; acc = 0;
+      const r = fc.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top;
+      reveal(); if (!raf) raf = requestAnimationFrame(loop);
+    });
+    fc.addEventListener('pointermove', e => {
+      const r = fc.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top;
+      acc += Math.hypot(e.movementX || 0, e.movementY || 0);
+      while (acc > 80 && shown < orbs.length) { acc -= 80; reveal(); }
+    });
+    fc.addEventListener('pointerleave', () => {
+      inside = false; shown = 0;
+      orbs.slice().reverse().forEach((o, i) => setTimeout(() => { if (!inside) o.classList.remove('on'); }, i * 160));
+      if (!raf) raf = requestAnimationFrame(loop);
+    });
+  })();
 
   function wireCarousel() {
     const track = body.querySelector('#carTrack'), count = body.querySelector('#carCount');
