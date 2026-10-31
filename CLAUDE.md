@@ -17,7 +17,7 @@ Cada push a `main` se publica solo.
   - Creadora de ropa: `vestido`
   - Álbum: `familia`, `amigas`, `companero`
   - Pixel de nubes: `nubes-dither` (lo que se ve) y `nubes` (la foto real debajo)
-  - Texturas (board): iris `iris-vino`, `iris-color`, `iris-color-grueso`, `iris-vino-lineas`, `iris-bn`; cala `cala-rojo`, `cala-bn`, `cala-vino-grueso`. No hay foto original de las flores todavía.
+  - Texturas (board): iris `iris-vino`, `iris-color`, `iris-color-grueso`, `iris-vino-lineas`, `iris-bn`; cala `cala-rojo`, `cala-bn`, `cala-vino-grueso`. Fotos reales debajo de la lupa: `iris`, `cala`.
 
 ## Cómo trabajar acá
 
@@ -88,7 +88,7 @@ Cada push a `main` se publica solo.
 
 **Pixel de nubes (el pixel escondido).** Cuadrado con `nubes-dither` fijo al borde derecho, asomando a la mitad (abajo en celular). Aparece recién cuando las cards terminaron de desenfocarse y se esconde al salir del cielo. Casi quieto (2 px de vaivén); en hover sale un poco, toma sombra y muestra "mis nubes".
    - Al tocarlo se agranda desde su lugar. Lupa que muestra la foto real (`nubes`) y botón "Ver foto entera".
-   - Botón "Jugando con más texturas dither →" abre el board en la misma ventana: collage editorial (sin cinta ni marcos), título "Texturas", 8 fotos numeradas 01–08 con epígrafe. Sin las nubes. Tocar fuera de la foto o del collage cierra. Al tocar una se ve de cerca con miniaturas de sus texturas; la lupa muestra otra textura (cuando haya fotos originales de las flores, van debajo como en las nubes).
+   - Botón "Jugando con más texturas dither →" abre el board en la misma ventana: collage editorial (sin cinta ni marcos), título "Texturas", 8 fotos numeradas 01–08 con epígrafe. Sin las nubes. Tocar fuera de la foto o del collage cierra. Al tocar una se ve de cerca con miniaturas de sus texturas; la lupa muestra la foto real (`iris` / `cala`) y está el botón "Ver foto entera", igual que en las nubes.
    - Mockups: https://claude.ai/artifact/FgFcYE7ztdMnUSxx7y1mZY
 
 **Cierre**, en este orden:
