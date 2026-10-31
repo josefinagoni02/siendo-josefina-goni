@@ -67,6 +67,7 @@ Cada push a `main` se publica solo.
    - Chips "Apasionada por": resolver problemas, data, growth, tecnología, AI, innovación, creatividad, equipo, agilidad. En hover se corren del cursor.
    - Modal: primero los chips (que se ordenan solos), después "Hoy en Amalgama · Hace 2 años · Consultoría y desarrollo de software" (píxeles que reaccionan al cursor y `> creating awesome products` tipeado), y el botón Ver LinkedIn.
    - Link: `https://www.linkedin.com/in/josefina-go%C3%B1i-a26767215/`.
+   - Ícono de Flowry arriba a la derecha de la card (abre el modal de Flowry). En el modal, antes de Ver LinkedIn: "Fuera del trabajo también construyo · Flowry", que cambia al modal de Flowry sin cerrar.
 4. **Jousie** (Diario · Instagram, @jou__sie).
    - Card: solo "Posts de…", que se termina de escribir con el movimiento del cursor.
    - Modal: se tipea "Posts de mi diario y registros." Después, en itálica, "Un pedacito de lo que hay en mi colección de cuadernos, en versión redes." Chips: 328 publicaciones · Desde 2020. Hoja rayada borrosa con "Mandame follow ;)" (cuenta privada: no poner posts).
@@ -76,6 +77,12 @@ Cada push a `main` se publica solo.
    - Modal: foto `vestido` borrosa que se desbloquea cosiendo encima con el cursor (puntada punteada, sin botón). Polaroid con "Esta soy yo." a mano.
    - Bloque "Comenzó con… The Night Co · 2019 – 2023" (`https://www.instagram.com/thenight.co/`).
    - "Últimas joyitas…": Vestido de gamuza · Cinturón con hebilla en bronce. Sin números, sin flechas, sin aros.
+
+6. **Flowry** (Vibecoder · Beta). "Hábitos de conciencia y gratitud." Pie: Mi app.
+   - Card: círculos de colores difuminados (durazno, rosa, lila) que se agrandan y achican al ritmo de una respiración (8 s). En celular va como fila ancha, sin la descripción.
+   - Modal (`t-flowry`): a la izquierda texto, chips (rituales de mañana y noche, compromisos, jardín de sueños, calendario de evolución), bloque "Mis dones, juntos · Creatividad y tecnologIA" y "Anotarme en la beta". A la derecha (en celular, en el medio) un teléfono que se usa: splash con la flor que se abre, ritual de mañana (respiración real de 5 ciclos, intención), app con pestañas inicio / calendario (rituales, compromisos, lunas reales) / compromisos / jardín (se riega tocando) / beta, y ritual de noche que suma la flor del día. Todo con textos genéricos, sin datos personales.
+   - Lista de espera: constante `FLOWRY_BETA_URL` en el script. Mientras esté vacía, el botón dice "La lista de espera abre muy pronto." **Falta el link real (Tally o Google Forms).**
+   - Desktop: la segunda fila tiene 4 cards (Profesional, Jousie, Creadora de ropa, Flowry) y `.cards` mide hasta 62rem.
 
 **Cierre**, en este orden:
 1. Nube que se condensa: "Siempre ideando cositas… / y materializando".
@@ -100,7 +107,7 @@ Desde ahora, **este repo es la versión oficial**. El artifact de la landing que
 
 ## Pendientes e ideas
 
-- **Flowry:** app vibecodeada de hábitos de conciencia y gratitud, para cultivar intención y dirección. Está en Exploraciones: teléfono interactivo con pantallas genéricas (Hoy, Hábitos, Gratitud, Jardín) y CTA "Anotarme en la beta". Idea: card propia "Side project · Beta" más una línea en Profesional, "Fuera del trabajo también construyo: Flowry →". Falta: screenshots de la app (usar diseño genérico, sin datos personales) y el link real del formulario de lista de espera (Tally o Google Forms).
+- **Flowry:** ya está la card, el modal con el teléfono y el nexo desde Profesional. Falta el link real de la lista de espera. Ideas sin implementar (artifact "Flowry en el portfolio", https://claude.ai/artifact/Sn6jASRrTjDYyi94GtqEqg): nexos con Recorrido (punto 11), Lunática (pestaña lunas) y Gracias (gratitud nocturna).
 - **Unir los puntos:** línea de tiempo en Exploraciones. 2018 costura · 2019 The Night Co · Minnesota · Madrid · 2020 Jousie · 2023 cierra The Night Co · 2024 Amalgama · Atlas · Lunática · 2025 joyería · 2026 vestido y Flowry → todo se une en "Hoy". Faltan los años de Minnesota, Madrid, Atlas y Lunática.
 - **Lunática:** mapa genérico "cómo leo una luna" que se completa con flechas, y calendario lunar con talleres cargados a mano.
 - **Guardado para después:** frase rotativa con todas las versiones (fotógrafa, product owner, lunática, Jousie, viajera, fanática de la playa, runner); barra vertical de km para runner (hasta 15 km, "Corro para poder viajar"); libros, música, tarot; cafecitos con ranking y recorrido; mapa de pendientes; "Located in" con Minnesota y Madrid.
