@@ -439,9 +439,18 @@ h1 .ch { display: inline-block; animation: arrive 1.3s cubic-bezier(.2,.7,.1,1) 
 .ac-solwrap:hover .ac-sol { border-color: var(--c); box-shadow: 0 12px 30px rgba(0,0,0,0.35), 0 0 0 1px var(--c); }
 .ac-solwrap:hover .ac-sol .ac-tx { opacity: 1; }
 .ac-sky:focus-visible { outline: 2px solid #f6e7b8; outline-offset: 3px; }
-.ac-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem 1.4rem; }
-.ac-legend span { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: rgba(238,240,255,0.78); }
-.ac-legend i { width: 10px; height: 10px; border-radius: 3px; background: var(--c); }
+.ac-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 0.6rem; }
+.ac-legend button { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 36px; padding: 0 0.85rem; border-radius: 999px; border: 1px solid transparent; background: transparent; font: 500 0.8rem var(--font-body); color: rgba(238,240,255,0.78); cursor: pointer; transition: border-color .3s, background .3s, color .3s, opacity .3s; }
+.ac-legend button:hover, .ac-legend button.hi { border-color: var(--c); color: #fff; background: rgba(255,255,255,0.06); }
+.ac-legend button[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--night); font-weight: 600; }
+.ac-legend button[aria-pressed="true"] i { background: var(--night); }
+.ac-legend.filtering button[aria-pressed="false"]:not(:hover):not(.hi) { opacity: 0.55; }
+.ac-legend button:focus-visible { outline: 2px solid #f6e7b8; outline-offset: 2px; }
+.ac-legend i { width: 10px; height: 10px; border-radius: 3px; background: var(--c); transition: background .3s; }
+.ac-t.lit { border-color: var(--c); box-shadow: 0 12px 30px rgba(0,0,0,0.35), 0 0 0 1px var(--c); }
+.ac-t.lit .ac-tx { opacity: 1; }
+.ac-off { display: none !important; }
+.go .ac-in.ac-pop { animation: acIn .5s cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--pd, 0s); }
 .ac-legend .cielo { --c: #f6e7b8; } .ac-legend .elem { --c: #7fb2f0; } .ac-legend .dis { --c: #ee9a86; } .ac-legend .tiempo { --c: #c2b3f5; } .ac-legend .ven { --c: #a9b2cf; }
 .ac-phase { animation: acPhase 7s ease-in-out infinite alternate; }
 .ac-rise { animation: acRise 4.5s ease-in-out infinite alternate; }
@@ -1156,8 +1165,8 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       <span class="ac-code ac-ask">?</span><span class="ac-nm">Eneatipo</span><span class="ac-sb">Descubriéndolo</span>
     </button>
   </div>
-  <div class="ac-legend ac-in" style="--d:.8s" aria-hidden="true">
-    <span class="cielo"><i></i>Astrología</span><span class="elem"><i></i>Elementos</span><span class="dis"><i></i>Diseño Humano</span><span class="tiempo"><i></i>Tiempo</span><span class="ven"><i></i>Futuras herramientas</span>
+  <div class="ac-legend ac-in" style="--d:.8s" role="group" aria-label="Filtrar por">
+    <button type="button" class="cielo" data-filter="cielo" aria-pressed="false"><i aria-hidden="true"></i>Astrología</button><button type="button" class="elem" data-filter="elem" aria-pressed="false"><i aria-hidden="true"></i>Elementos</button><button type="button" class="dis" data-filter="dis" aria-pressed="false"><i aria-hidden="true"></i>Diseño Humano</button><button type="button" class="tiempo" data-filter="tiempo" aria-pressed="false"><i aria-hidden="true"></i>Tiempo</button><button type="button" class="ven" data-filter="ven" aria-pressed="false"><i aria-hidden="true"></i>Futuras herramientas</button>
   </div>
 </template>
 
@@ -2291,8 +2300,44 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     closeDetail();
     setTimeout(() => openDetail(card), reduce ? 0 : 480);
   });
+  // Acuariana: la leyenda se ilumina con el hover y filtra con el clic
+  const AC_CATS = ['cielo', 'elem', 'dis', 'tiempo', 'ven'];
+  let acFilter = null;
+  const acCat = el => el ? AC_CATS.find(c => el.classList.contains(c)) : null;
+  function acHover(cat, fromTile) {
+    body.querySelectorAll('.ac-legend button').forEach(b => b.classList.toggle('hi', !!cat && b.dataset.filter === cat));
+    body.querySelectorAll('.ac-t').forEach(t => t.classList.toggle('lit', !fromTile && !!cat && t.classList.contains(cat)));
+  }
+  function acSetFilter(cat) {
+    const grid = body.querySelector('.ac-grid'), legend = body.querySelector('.ac-legend');
+    if (!grid) return;
+    acFilter = acFilter === cat ? null : cat;
+    acHover(null);
+    let n = 0;
+    grid.querySelectorAll('.ac-t').forEach(t => {
+      const el = t.closest('.ac-solwrap') || t;
+      const show = !acFilter || t.classList.contains(acFilter);
+      el.classList.toggle('ac-off', !show);
+      if (show && !reduce) { el.classList.remove('ac-pop'); void el.offsetWidth; el.style.setProperty('--pd', (n++ * 0.06) + 's'); el.classList.add('ac-pop'); }
+    });
+    legend.classList.toggle('filtering', !!acFilter);
+    legend.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filter === acFilter)));
+  }
+  body.addEventListener('pointerover', e => {
+    if (panel.dataset.kind !== 'signo') return;
+    const tile = e.target.closest('.ac-t'), chip = e.target.closest('[data-filter]');
+    if (tile) acHover(acCat(tile), true); else if (chip) acHover(chip.dataset.filter, false); else acHover(null);
+  });
+  body.addEventListener('focusin', e => {
+    if (panel.dataset.kind !== 'signo') return;
+    const tile = e.target.closest('.ac-t'); acHover(tile ? acCat(tile) : null, true);
+  });
+  body.addEventListener('pointerleave', () => { if (panel.dataset.kind === 'signo') acHover(null); });
+  body.addEventListener('click', e => { const chip = e.target.closest('[data-filter]'); if (chip) acSetFilter(chip.dataset.filter); });
+
   // Edad y vuelta al Sol, calculadas desde el último cumpleaños (3 de febrero)
   function fillSigno() {
+    acFilter = null;
     const now = new Date();
     let last = new Date(now.getFullYear(), 1, 3);
     if (now < last) last = new Date(now.getFullYear() - 1, 1, 3);
