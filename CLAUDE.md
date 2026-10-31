@@ -41,7 +41,7 @@ Cada push a `main` se publica solo.
 
 **Hero:** "Hola, soy / Josefina Goñi / Siendo, un poquito de todo. Integrando todas mis versiones aquí." Debajo va el chip "Acuariana", que de noche se mueve al centro de la constelación.
 
-**Acuariana (modal, de noche):** tabla dispersa de 10 casillas con textura en movimiento. Título "03.02.2002 · 18.32" y debajo "Tengo 24 y estoy viviendo mi año 25." (la edad y el % de la vuelta al Sol se calculan solos desde el 3 de febrero). Casillas: So (Acuario ♒), Lu (Escorpio ♏), As (Cáncer ♋), Ai (Aire · 1 → abre Profesional), Ag (Agua · 2 → abre Lunática), Pr (Proyectora), Ps (Plexo solar encendido), Rz (Raíz encendida), 24 (año 25 con órbita), ? (Eneatipo, ya vendrá). El Sol y el CTA "Ver Acuario en el cielo" (se iluminan juntos) pasan el cielo a la noche. Mockups en https://claude.ai/artifact/UP8TqzKk9K9zgoxBXaP2uB (opción F).
+**Acuariana (modal, de noche):** tabla dispersa de 10 casillas con textura en movimiento. Título "03.02.2002 · 18.32" y debajo "Tengo 24 y estoy viviendo mi año 25." (la edad y el % de la vuelta al Sol se calculan solos desde el 3 de febrero). Casillas: So (Acuario ♒), Lu (Escorpio ♏), As (Cáncer ♋), Ai (Aire · 1), Ag (Agua · 2), Pr (Proyectora), Ps (Plexo solar encendido), Rz (Raíz encendida), 24 (año 25 con órbita), ? (Eneatipo, descubriéndolo). El Sol y el CTA "Ver Acuario en el cielo" (se iluminan juntos) pasan el cielo a la noche. Leyenda: Astrología · Elementos · Diseño Humano · Tiempo · Futuras herramientas. Mockups en https://claude.ai/artifact/UP8TqzKk9K9zgoxBXaP2uB (opción F).
 
 **Cards.** Cada una tiene una interacción en hover y abre un modal con zoom.
 
