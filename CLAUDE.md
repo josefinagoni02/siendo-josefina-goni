@@ -67,7 +67,7 @@ Cada push a `main` se publica solo.
    - Chips "Apasionada por": resolver problemas, data, growth, tecnología, AI, innovación, creatividad, equipo, agilidad. En hover se corren del cursor.
    - Modal: primero los chips (que se ordenan solos), después "Hoy en Amalgama · Hace 2 años · Consultoría y desarrollo de software" (píxeles que reaccionan al cursor y `> creating awesome products` tipeado), y el botón Ver LinkedIn.
    - Link: `https://www.linkedin.com/in/josefina-go%C3%B1i-a26767215/`.
-   - Ícono de Flowry arriba a la derecha de la card (abre el modal de Flowry). En el modal, antes de Ver LinkedIn: "Fuera del trabajo también construyo · Flowry", que cambia al modal de Flowry sin cerrar.
+   - Ícono de Flowry abajo a la derecha, después del último chip (en celular, donde irían los chips). Abre el modal de Flowry. En el modal, antes de Ver LinkedIn, aparece recién después de los chips y del tipeo de "Hoy en" (3,2 s): "Fuera del trabajo también construyo · Flowry", que cambia al modal de Flowry sin cerrar.
 4. **Jousie** (Diario · Instagram, @jou__sie).
    - Card: solo "Posts de…", que se termina de escribir con el movimiento del cursor.
    - Modal: se tipea "Posts de mi diario y registros." Después, en itálica, "Un pedacito de lo que hay en mi colección de cuadernos, en versión redes." Chips: 328 publicaciones · Desde 2020. Hoja rayada borrosa con "Mandame follow ;)" (cuenta privada: no poner posts).
@@ -78,9 +78,9 @@ Cada push a `main` se publica solo.
    - Bloque "Comenzó con… The Night Co · 2019 – 2023" (`https://www.instagram.com/thenight.co/`).
    - "Últimas joyitas…": Vestido de gamuza · Cinturón con hebilla en bronce. Sin números, sin flechas, sin aros.
 
-6. **Flowry** (Vibecoder · Beta). "Hábitos de conciencia y gratitud." Pie: Mi app.
-   - Card: círculos de colores difuminados (durazno, rosa, lila) que se agrandan y achican al ritmo de una respiración (8 s). En celular va como fila ancha, sin la descripción.
-   - Modal (`t-flowry`): a la izquierda texto, chips (rituales de mañana y noche, compromisos, jardín de sueños, calendario de evolución), bloque "Mis dones, juntos · Creatividad y tecnologIA" y "Anotarme en la beta". A la derecha (en celular, en el medio) un teléfono que se usa: splash con la flor que se abre, ritual de mañana (respiración real de 5 ciclos, intención), app con pestañas inicio / calendario (rituales, compromisos, lunas reales) / compromisos / jardín (se riega tocando) / beta, y ritual de noche que suma la flor del día. Todo con textos genéricos, sin datos personales.
+6. **Flowry** (Vibecoder). "Hábitos de conciencia y gratitud." Pie: Mi app.
+   - Card: en hover aparecen círculos de colores difuminados (durazno, rosa, lila) que laten, se expanden, se contraen y se mueven. En celular (sin hover) se ven siempre. En celular va como fila ancha, sin la descripción.
+   - Modal (`t-flowry`): a la izquierda texto, chips (rituales de mañana y noche, gratitud diaria, seguimiento de hábitos, compromisos, jardín de sueños y brotes, ciclo lunar · ciclo menstrual, calendario de evolución), debajo el botón "Anotarme en Waitlist Beta" solo, y el bloque "Integrándome · Creatividad y tecnologIA". A la derecha (en celular, en el medio) un teléfono que se usa: splash con la flor que se abre, ritual de mañana (respiración real de 5 ciclos, intención), app con pestañas inicio / calendario (rituales, compromisos, lunas reales) / compromisos / jardín (se riega tocando) / beta, y ritual de noche que suma la flor del día. Todo con textos genéricos, sin datos personales.
    - Lista de espera: constante `FLOWRY_BETA_URL` en el script. Mientras esté vacía, el botón dice "La lista de espera abre muy pronto." **Falta el link real (Tally o Google Forms).**
    - Desktop: la segunda fila tiene 4 cards (Profesional, Jousie, Creadora de ropa, Flowry) y `.cards` mide hasta 62rem.
 

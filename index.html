@@ -552,25 +552,30 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 }
 /* ---------- Flowry ---------- */
 .fy-card .fy-orbs { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; border-radius: inherit; }
-.fy-orbs i { position: absolute; border-radius: 50%; filter: blur(16px); opacity: 0.7; animation: fyBreath 8s ease-in-out infinite, fyDrift 23s ease-in-out infinite alternate; }
+.fy-orbs i { position: absolute; border-radius: 50%; filter: blur(14px); opacity: 0; scale: 0.4; transition: opacity 0.9s ease, scale 1.2s cubic-bezier(.3,1.4,.5,1); }
 .fy-orbs i:nth-child(1) { width: 7.5rem; height: 7.5rem; right: -1.6rem; top: -2rem; background: #f9d79a; }
-.fy-orbs i:nth-child(2) { width: 6.5rem; height: 6.5rem; right: 3.2rem; bottom: -2.6rem; background: #f3b1a6; animation-delay: -2.7s, -6s; }
-.fy-orbs i:nth-child(3) { width: 5.5rem; height: 5.5rem; right: -1.8rem; bottom: 0.4rem; background: #e6bfd0; animation-delay: -5.3s, -12s; }
-.fy-orbs i:nth-child(4) { width: 3.6rem; height: 3.6rem; right: 5.6rem; top: 0.8rem; background: #f6c99a; opacity: 0.5; animation-delay: -1.3s, -3s; }
-@keyframes fyBreath { 0%, 100% { scale: 0.82; opacity: 0.5; } 50% { scale: 1.18; opacity: 0.85; } }
-@keyframes fyDrift { to { translate: -14px 10px; } }
+.fy-orbs i:nth-child(2) { width: 6.5rem; height: 6.5rem; right: 3.2rem; bottom: -2.6rem; background: #f3b1a6; transition-delay: 0.12s; }
+.fy-orbs i:nth-child(3) { width: 5.5rem; height: 5.5rem; right: -1.8rem; bottom: 0.4rem; background: #e6bfd0; transition-delay: 0.24s; }
+.fy-orbs i:nth-child(4) { width: 4rem; height: 4rem; right: 5.6rem; top: 0.6rem; background: #f6c99a; transition-delay: 0.36s; }
+.fy-card:hover .fy-orbs i, .fy-card:focus-visible .fy-orbs i { opacity: 0.85; scale: 1; animation: fyBreath 5s ease-in-out infinite, fyDrift 7s ease-in-out infinite alternate; }
+.fy-card:hover .fy-orbs i:nth-child(2) { animation-delay: -1.2s, -2s; animation-duration: 5.6s, 8s; }
+.fy-card:hover .fy-orbs i:nth-child(3) { animation-delay: -2.5s, -4s; animation-duration: 4.6s, 6s; }
+.fy-card:hover .fy-orbs i:nth-child(4) { animation-delay: -3.4s, -1s; animation-duration: 6s, 9s; }
+@keyframes fyBreath { 0%, 100% { scale: 0.7; opacity: 0.55; } 50% { scale: 1.55; opacity: 0.95; } }
+@keyframes fyDrift { 0% { translate: 0 0; } 50% { translate: -26px 14px; } 100% { translate: 12px -18px; } }
+@media (hover: none) { .fy-orbs i { opacity: 0.8; scale: 1; animation: fyBreath 6s ease-in-out infinite, fyDrift 9s ease-in-out infinite alternate; } .fy-orbs i:nth-child(2) { animation-delay: -2s, -3s; } .fy-orbs i:nth-child(3) { animation-delay: -4s, -5s; } }
 .fy-card .txt .desc { display: block; }
-.fy-card:hover .fy-orbs i { animation-duration: 8s, 14s; }
 
 .fy-icon { display: grid; place-items: center; background: #fdf3ec; border-radius: 28%; box-shadow: 0 4px 12px rgba(120, 70, 50, 0.18); }
 .fy-icon svg { width: 72%; height: 72%; }
-.fy-mini { position: absolute; z-index: 3; top: 0.75rem; right: 0.8rem; width: 1.9rem; height: 1.9rem; cursor: pointer; transition: transform 0.35s cubic-bezier(.3,1.6,.5,1); }
+.fy-mini { position: relative; z-index: 3; flex: none; margin-left: auto; align-self: flex-end; width: 1.75rem; height: 1.75rem; cursor: pointer; transition: transform 0.35s cubic-bezier(.3,1.6,.5,1); }
 .fy-mini:hover { transform: scale(1.12) rotate(-6deg); }
 .fy-mini::after { content: "Flowry"; position: absolute; right: calc(100% + 0.4rem); top: 50%; translate: 0 -50%; font-size: 0.66rem; font-weight: 600; color: var(--ink-soft); background: var(--white); padding: 0.15rem 0.45rem; border-radius: 999px; opacity: 0; transition: opacity 0.25s ease; pointer-events: none; white-space: nowrap; }
 .fy-mini:hover::after { opacity: 1; }
-#lkCard > .kind { padding-right: 2.2rem; }
 @media (max-width: 759px) {
-  .fy-mini { width: 1.55rem; height: 1.55rem; top: 0.6rem; right: 0.6rem; }
+  .small #lkCard .words { display: flex; margin: auto 0 0; }
+  #lkCard .words span { display: none; }
+  .fy-mini { width: 1.55rem; height: 1.55rem; }
   .fy-card .txt .desc { display: none; }
   .wide .fy-card { padding-block: 0.6rem; }
 }
@@ -586,7 +591,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 
 .panel[data-kind="flowry"] { max-width: 54rem; }
 .panel[data-kind="flowry"]::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(40% 35% at 85% 10%, rgba(249, 215, 154, 0.35), transparent 70%), radial-gradient(35% 35% at 70% 90%, rgba(243, 177, 166, 0.25), transparent 70%); }
-.fy-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "head stage" "more stage"; column-gap: 2.2rem; row-gap: 1.2rem; align-items: start; }
+.fy-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "head stage" "more stage"; grid-template-rows: auto 1fr; column-gap: 2.2rem; row-gap: 1.2rem; align-items: start; }
 .fy-head { grid-area: head; display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
 .fy-more { grid-area: more; display: flex; flex-direction: column; gap: 1.1rem; min-width: 0; }
 .fy-stage { grid-area: stage; display: flex; flex-direction: column; align-items: center; gap: 0.7rem; }
@@ -772,11 +777,10 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       </div>
       <div class="slot small">
         <button class="card" id="lkCard" data-detail="product" aria-haspopup="dialog">
-          <span class="fy-mini fy-icon" data-detail="flowry" aria-hidden="true"><svg><use href="#fyFlower"/></svg></span>
           <span class="kind">Profesional</span>
           <span class="name">Product Owner / Manager</span>
           <span class="desc">Apasionada por:</span>
-          <span class="words"><span>resolver problemas</span><span>data</span><span>growth</span><span>tecnología</span><span>AI</span><span>innovación</span><span>creatividad</span><span>equipo</span><span>agilidad</span></span>
+          <span class="words"><span>resolver problemas</span><span>data</span><span>growth</span><span>tecnología</span><span>AI</span><span>innovación</span><span>creatividad</span><span>equipo</span><span>agilidad</span><i class="fy-mini fy-icon" data-detail="flowry" aria-hidden="true"><svg><use href="#fyFlower"/></svg></i></span>
           <span class="foot"><span class="domain">linkedin.com/in/josefina-goñi</span><span class="more">Ver más <span aria-hidden="true">→</span></span></span>
         </button>
       </div>
@@ -803,7 +807,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
         <button class="card fy-card" id="flowryCard" data-detail="flowry" aria-haspopup="dialog">
           <span class="fy-orbs" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span class="txt">
-            <span class="kind">Vibecoder · Beta</span>
+            <span class="kind">Vibecoder</span>
             <span class="name">Flowry</span>
             <span class="desc">Hábitos de conciencia y gratitud.</span>
           </span>
@@ -999,20 +1003,21 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     <span class="now-d">Hace 2 años · Consultoría y desarrollo de software</span>
     <code class="term" id="term" aria-label="creating awesome products"></code>
   </div>
-  <button class="fy-link fade" style="--d:1.05s" type="button" data-fy-switch>
+  <div class="fade" style="--d:3.2s"><button class="fy-link" type="button" data-fy-switch>
     <span class="fy-icon" aria-hidden="true"><svg><use href="#fyFlower"/></svg></span>
     <span><span class="now-k">Fuera del trabajo también construyo</span><b>Flowry</b><span class="now-d">Mi app de hábitos de conciencia y gratitud, en beta.</span></span>
     <span aria-hidden="true">→</span>
-  </button>
+  </button></div>
   <div class="ctas fade" style="--d:1.2s"><a class="cta" href="https://www.linkedin.com/in/josefina-go%C3%B1i-a26767215/" target="_blank" rel="noopener">Ver LinkedIn <span aria-hidden="true">↗</span></a></div>
 </template>
 
 <template id="t-flowry">
   <div class="fy-layout">
     <div class="fy-head">
-      <div><span class="label">Vibecoder · Beta</span><h2 class="d-title" id="d-title">Flowry</h2></div>
+      <div><span class="label">Vibecoder</span><h2 class="d-title" id="d-title">Flowry</h2></div>
       <p class="d-text">Mi app de hábitos de conciencia y gratitud, para cultivar intención y dirección. La diseñé y la construí yo, vibecodeando con IA.</p>
-      <div class="chips"><span class="chip">rituales de mañana y noche</span><span class="chip">compromisos</span><span class="chip">jardín de sueños</span><span class="chip">calendario de evolución</span></div>
+      <div class="chips"><span class="chip">rituales de mañana y noche</span><span class="chip">gratitud diaria</span><span class="chip">seguimiento de hábitos</span><span class="chip">compromisos</span><span class="chip">jardín de sueños y brotes</span><span class="chip">ciclo lunar · ciclo menstrual</span><span class="chip">calendario de evolución</span></div>
+      <div><a class="cta" data-fy-beta href="#" target="_blank" rel="noopener">Anotarme en Waitlist Beta <span aria-hidden="true">↗</span></a><span class="fy-bmsg" data-fy-bmsg role="status"></span></div>
     </div>
     <div class="fy-stage">
       <div class="fy-phone">
@@ -1148,15 +1153,9 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     </div>
     <div class="fy-more">
       <div class="fy-gift fade" style="--d:.5s">
-        <span class="label">Mis dones, juntos</span>
+        <span class="label">Integrándome</span>
         <p class="fy-gt">Creatividad y tecnolog<b>IA</b></p>
         <p class="d-text">Flowry nace de juntar lo que imagino con lo que sé construir.</p>
-      </div>
-      <div class="fade" style="--d:.7s">
-        <span class="label">Beta</span>
-        <p class="d-text" style="margin:.35rem 0 .8rem">Si querés probarla antes que nadie, anotate y te aviso cuando abra.</p>
-        <a class="cta" data-fy-beta href="#" target="_blank" rel="noopener">Anotarme en la beta <span aria-hidden="true">↗</span></a>
-        <span class="fy-bmsg" data-fy-bmsg role="status"></span>
       </div>
     </div>
   </div>
