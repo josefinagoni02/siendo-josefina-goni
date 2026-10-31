@@ -782,6 +782,66 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 .fy-pbeta .fy-btn { margin: 12px 0 0; }
 @media (prefers-reduced-motion: reduce) { .fy-orbs i, .fy-blobs i { animation: none; } .fy-breath .c, .fy-flower .pt, .fy-stems span { transition-duration: 0.01ms; } }
 
+
+/* ---------- pixel escondido: nubes en dither que asoman del borde ---------- */
+.peek { position: fixed; z-index: 15; right: 0; top: 56vh; top: 56svh; width: clamp(84px, 11vw, 124px); aspect-ratio: 1; max-width: 100%; border: 0; padding: 0; background: none; cursor: zoom-in;
+  transform: translateX(110%) rotate(-4deg); transition: transform .9s cubic-bezier(.2,.7,.1,1); }
+.peek.on { transform: translateX(56%) rotate(-4deg); }
+.peek.on:hover, .peek.on:focus-visible { transform: translateX(-14%) rotate(0deg); }
+.peek .sq { position: absolute; inset: 0; border-radius: 6px; overflow: hidden; border: 2px solid rgba(255,255,255,.9); box-shadow: 0 4px 12px rgba(10,30,70,.18); transition: box-shadow .6s ease, border-color .6s ease; animation: pkfloat 7s ease-in-out infinite; }
+.peek .sq img { width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; display: block; }
+.peek .cap { position: absolute; top: 100%; right: .3rem; margin-top: .45rem; font: 600 1.05rem "Caveat", cursive; color: #fff; white-space: nowrap; text-shadow: 0 1px 8px rgba(20,50,110,.5); opacity: 0; transition: opacity .5s ease; }
+.peek.on:hover .sq, .peek.on:focus-visible .sq { box-shadow: 0 18px 38px rgba(10,30,70,.42), 0 0 0 1px rgba(255,255,255,.6); border-color: #fff; }
+.peek.on:hover .cap, .peek.on:focus-visible .cap { opacity: 1; }
+.peek:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+@keyframes pkfloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -2px; } }
+@media (max-width: 640px) { .peek { top: 62svh; } }
+
+.px-lb { position: fixed; inset: 0; z-index: 40; overflow-y: auto; overscroll-behavior: contain; display: grid; place-items: center;
+  padding: max(1.4rem, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(1.4rem, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.px-back { position: fixed; inset: 0; background: rgba(8,20,48,.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; transition: opacity .55s ease; }
+.px-lb.open .px-back { opacity: 1; }
+.px-stage { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; }
+.px-pane { position: relative; grid-area: 1 / 1; display: flex; flex-direction: column; gap: .7rem; max-width: 100%; transition: opacity .5s cubic-bezier(.2,.7,.1,1), filter .5s cubic-bezier(.2,.7,.1,1), transform .5s cubic-bezier(.2,.7,.1,1); }
+.px-pane.off { opacity: 0; filter: blur(10px); transform: translateY(10px); pointer-events: none; visibility: hidden; }
+.px-view { position: relative; width: 100%; max-width: 100%; border-radius: 10px; overflow: hidden; border: 2px solid #fff; box-shadow: 0 30px 80px rgba(5,15,40,.45); cursor: none; touch-action: none; transform-origin: 0 0; transition: transform .65s cubic-bezier(.2,.7,.1,1); background: #000; }
+.px-view img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; image-rendering: pixelated; transition: opacity .35s ease; }
+.px-view .real { --x: 50%; --y: 50%; --r: 0px; image-rendering: auto;
+  -webkit-mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 97%, transparent 100%);
+  mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 97%, transparent 100%); }
+.px-ring { position: absolute; left: 0; top: 0; border: 1.5px solid rgba(255,255,255,.95); border-radius: 50%; pointer-events: none; box-shadow: 0 8px 24px rgba(5,15,40,.25); opacity: 0; transition: opacity .3s ease; }
+.px-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; justify-content: space-between; }
+.px-cap { font: 600 1.35rem "Caveat", cursive; color: #fff; }
+.px-btns { display: flex; flex-wrap: wrap; gap: .45rem; }
+.px-btn { border: 1px solid rgba(255,255,255,.5); background: rgba(255,255,255,.16); color: #fff; font: 600 .8rem var(--font-body); padding: .55rem .9rem; border-radius: 999px; cursor: pointer; transition: background .25s ease; }
+.px-btn:hover { background: rgba(255,255,255,.28); }
+.px-btn.solid { background: #fff; color: var(--ink); border-color: #fff; }
+.px-btn:focus-visible, .px-close:focus-visible, .px-tex button:focus-visible, .px-ed figure:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.px-close { position: absolute; top: -.9rem; right: -.6rem; z-index: 3; width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 0; background: #fff; color: var(--ink); font-size: 1.3rem; cursor: pointer; box-shadow: 0 6px 16px rgba(5,15,40,.3); }
+.px-tex { display: flex; gap: .4rem; flex-wrap: wrap; }
+.px-tex button { width: 2.3rem; height: 2.3rem; padding: 0; border-radius: 6px; overflow: hidden; border: 2px solid rgba(255,255,255,.35); cursor: pointer; background: #000; transition: border-color .3s ease, transform .3s ease; }
+.px-tex button img { width: 100%; height: 100%; object-fit: cover; display: block; image-rendering: pixelated; }
+.px-tex button[aria-pressed="true"] { border-color: #fff; transform: translateY(-2px); }
+
+.px-board-wrap { width: min(960px, 100%); }
+.px-sheet { background: #fbfcfe; color: #14284a; border-radius: 14px; padding: clamp(1.1rem, 3vw, 2.2rem); box-shadow: 0 30px 80px rgba(5,15,40,.45); }
+.px-ed { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: clamp(26px, 3.6vw, 44px); gap: clamp(8px, 1.2vw, 14px); }
+.px-ed > * { grid-area: var(--ga); min-width: 0; }
+.px-ed figure { margin: 0; display: flex; flex-direction: column; gap: .35rem; cursor: zoom-in; min-height: 0; }
+.px-ed figure .ph { flex: 1; min-height: 0; overflow: hidden; }
+.px-ed figure img { width: 100%; height: 100%; object-fit: cover; display: block; image-rendering: pixelated; transition: transform .8s cubic-bezier(.2,.7,.1,1); }
+.px-ed figure:hover img, .px-ed figure:focus-visible img { transform: scale(1.04); }
+.px-ed figure:focus-visible { outline: 2px solid #5d9ce8; outline-offset: 3px; }
+.px-ed figcaption { font: 600 .62rem var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: #4a6283; display: flex; gap: .6rem; white-space: nowrap; overflow: hidden; }
+.px-ed figcaption b { color: #14284a; font-weight: 700; }
+.px-ed .ttl { display: flex; flex-direction: column; justify-content: flex-end; gap: .4rem; border-bottom: 1px solid #14284a; padding-bottom: .6rem; }
+.px-ed .ttl b { font: 400 italic clamp(2.4rem, 6.5vw, 4.6rem)/.85 var(--font-display); letter-spacing: -.01em; }
+.px-ed .ttl span { font: 600 .62rem var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: #4a6283; }
+.px-ed .txtb { margin: 0; align-self: end; font: 400 1.05rem/1.4 var(--font-display); color: #14284a; border-top: 1px solid #14284a; padding-top: .6rem; }
+.px-ed .txtb i { color: #4a6283; }
+.px-board-wrap > .px-btns { margin-top: .2rem; }
+@media (max-width: 640px) { .px-ed { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 40px; } .px-ed > * { grid-area: var(--gm); } }
+@media (prefers-reduced-motion: reduce) { .peek, .px-view, .px-pane, .px-ed img { transition: none; } .peek .sq { animation: none; } }
 </style>
 </head>
 <body>
@@ -959,6 +1019,48 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     <input type="range" id="hour" min="0" max="1439" step="1" value="720" aria-label="Hora del cielo">
     <div class="ticks" aria-hidden="true"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
     <div class="tp-foot">Hora local en Buenos Aires: <b id="local">--:--</b></div>
+  </div>
+</div>
+
+<button class="peek" id="peek" type="button" aria-label="Agrandar mis nubes en dither"><span class="sq"><img src="img/nubes-dither.png" alt=""></span><span class="cap">mis nubes</span></button>
+
+<div class="px-lb" id="pxLb" hidden role="dialog" aria-modal="true" aria-label="Fotos en dither">
+  <div class="px-back" id="pxBack"></div>
+  <div class="px-stage">
+    <div class="px-pane" id="pxViewPane">
+      <button class="px-close" id="pxClose" type="button" aria-label="Cerrar">×</button>
+      <div class="px-view" id="pxView">
+        <img class="base" id="pxBase" alt="">
+        <img class="real" id="pxReal" alt="">
+        <div class="px-ring" id="pxRing"></div>
+      </div>
+      <div class="px-bar">
+        <span class="px-cap" id="pxCap">mis nubes</span>
+        <div class="px-tex" id="pxTex" aria-label="Texturas" hidden></div>
+        <div class="px-btns">
+          <button class="px-btn" id="pxBackBoard" type="button" hidden>← Volver al board</button>
+          <button class="px-btn" id="pxFull" type="button">Ver foto entera</button>
+          <button class="px-btn solid" id="pxMore" type="button">Jugando con más texturas dither →</button>
+        </div>
+      </div>
+    </div>
+    <div class="px-pane off px-board-wrap" id="pxBoardPane">
+      <div class="px-sheet">
+        <div class="px-ed" id="pxBoard">
+          <div class="ttl" style="--ga:1/9/4/13;--gm:1/1/3/7"><b>Texturas</b><span>Jugando con más texturas dither</span></div>
+          <figure tabindex="0" role="button" data-g="iris" data-t="0" style="--ga:1/1/7/6;--gm:3/1/8/7"><div class="ph"><img src="img/iris-vino.png" alt="Iris en dither bordó"></div><figcaption><b>01</b>Iris · bordó</figcaption></figure>
+          <figure tabindex="0" role="button" data-g="cala" data-t="1" style="--ga:2/6/10/9;--gm:8/1/15/4"><div class="ph"><img src="img/cala-bn.png" alt="Cala en dither blanco y negro"></div><figcaption><b>02</b>Cala · blanco y negro</figcaption></figure>
+          <figure tabindex="0" role="button" data-g="iris" data-t="3" style="--ga:4/9/8/13;--gm:8/4/11/7"><div class="ph"><img src="img/iris-color.png" alt="Iris en dither de color fino"></div><figcaption><b>03</b>Iris · color fino</figcaption></figure>
+          <figure tabindex="0" role="button" data-g="cala" data-t="0" style="--ga:7/1/14/4;--gm:15/1/21/4"><div class="ph"><img src="img/cala-rojo.png" alt="Cala en dither rojo y negro"></div><figcaption><b>04</b>Cala · rojo</figcaption></figure>
+          <figure tabindex="0" role="button" data-g="iris" data-t="2" style="--ga:8/9/12/13;--gm:11/4/15/7"><div class="ph"><img src="img/iris-vino-lineas.png" alt="Iris en dither bordó con líneas"></div><figcaption><b>05</b>Iris · líneas</figcaption></figure>
+          <figure tabindex="0" role="button" data-g="iris" data-t="4" style="--ga:10/4/15/9;--gm:15/4/18/7"><div class="ph"><img src="img/iris-bn.png" alt="Iris en dither blanco y negro con rojo"></div><figcaption><b>06</b>Iris · blanco y negro</figcaption></figure>
+          <figure tabindex="0" role="button" data-g="cala" data-t="2" style="--ga:12/9/18/13;--gm:18/4/21/7"><div class="ph"><img src="img/cala-vino-grueso.png" alt="Cala en dither bordó grueso"></div><figcaption><b>07</b>Cala · grueso</figcaption></figure>
+          <figure tabindex="0" role="button" data-g="iris" data-t="1" style="--ga:14/1/18/4;--gm:21/1/25/7"><div class="ph"><img src="img/iris-color-grueso.png" alt="Iris en dither de color grueso"></div><figcaption><b>08</b>Iris · color grueso</figcaption></figure>
+          <p class="txtb" style="--ga:15/4/18/9;--gm:25/1/27/7">Dither sobre fotos propias. <i>Tocá una para verla de cerca.</i></p>
+        </div>
+      </div>
+      <div class="px-btns"><button class="px-btn" id="pxToSky" type="button">← Volver a las nubes</button><button class="px-btn" id="pxClose2" type="button">Cerrar</button></div>
+    </div>
   </div>
 </div>
 
@@ -2282,5 +2384,97 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 })();
 </script>
 
+<script>
+/* ---------- pixel escondido: nubes en dither + board de texturas ---------- */
+(function () {
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const peek = $('peek'), lb = $('pxLb'), view = $('pxView'), base = $('pxBase'), real = $('pxReal'), ring = $('pxRing'), tex = $('pxTex');
+  const vPane = $('pxViewPane'), bPane = $('pxBoardPane');
+  const G = {
+    nubes: { name: 'mis nubes', aspect: 3 / 2, under: 'img/nubes.jpg', tex: [['img/nubes-dither.png', 'Dither']] },
+    iris: { name: 'iris', aspect: 3 / 2, under: null, tex: [['img/iris-vino.png', 'Bordó'], ['img/iris-color-grueso.png', 'Color grueso'], ['img/iris-vino-lineas.png', 'Bordó con líneas'], ['img/iris-color.png', 'Color fino'], ['img/iris-bn.png', 'Blanco y negro']] },
+    cala: { name: 'cala', aspect: 2 / 3, under: null, tex: [['img/cala-rojo.png', 'Rojo'], ['img/cala-bn.png', 'Blanco y negro'], ['img/cala-vino-grueso.png', 'Bordó grueso']] }
+  };
+  let g = G.nubes, open = false, raf = 0, r = 0, rT = 0, x = 0, y = 0, full = false, from = null;
+
+  // aparece recién cuando las cards terminaron de desenfocarse, y se esconde al salir del cielo
+  const scene = document.getElementById('scene');
+  function onScroll() {
+    const r = scene.getBoundingClientRect(), span = r.height - window.innerHeight;
+    const p = span > 0 ? -r.top / span : 1;
+    peek.classList.toggle('on', p > .58 && r.bottom > window.innerHeight * .5);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  function setR() { real.style.setProperty('--r', r + 'px'); real.style.setProperty('--x', x + 'px'); real.style.setProperty('--y', y + 'px'); ring.style.width = ring.style.height = 2 * r + 'px'; ring.style.transform = 'translate(' + (x - r) + 'px,' + (y - r) + 'px)'; ring.style.opacity = r > 4 && !full ? 1 : 0; }
+  function loop() { r += (rT - r) * (full ? .07 : .2); setR(); raf = requestAnimationFrame(loop); }
+  const lensR = () => Math.max(56, view.clientWidth * .13);
+  function pos(e) { const b = view.getBoundingClientRect(); x = e.clientX - b.left; y = e.clientY - b.top; }
+  view.addEventListener('pointermove', e => { pos(e); if (!full) rT = lensR(); });
+  view.addEventListener('pointerdown', e => { pos(e); if (full) toggleFull(); rT = lensR(); });
+  view.addEventListener('pointerleave', () => { if (!full) rT = 0; });
+  view.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse' && !full) rT = 0; });
+  function label() { $('pxFull').textContent = full ? (g.under ? 'Volver al dither' : 'Volver') : (g.under ? 'Ver foto entera' : 'Ver capa de abajo'); }
+  function toggleFull() { full = !full; if (full) { if (!x) { x = view.clientWidth / 2; y = view.clientHeight / 2; } rT = Math.hypot(view.clientWidth, view.clientHeight); } else rT = 0; label(); }
+  $('pxFull').addEventListener('click', toggleFull);
+
+  function setTex(i, animate) {
+    tex.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', k === i));
+    const apply = () => { base.src = g.tex[i][0]; real.src = g.under || g.tex[i === 0 ? 3 % g.tex.length : 0][0]; base.style.opacity = 1; };
+    if (animate) { base.style.opacity = 0; setTimeout(apply, 240); } else apply();
+  }
+  function load(key, t) {
+    g = G[key]; full = false; r = rT = 0; x = 0; label();
+    $('pxCap').textContent = g.name; tex.innerHTML = ''; tex.hidden = g.tex.length < 2;
+    g.tex.forEach((tx, k) => { const b = document.createElement('button'); b.type = 'button'; b.title = tx[1]; b.setAttribute('aria-label', 'Textura ' + tx[1]); b.innerHTML = '<img src="' + tx[0] + '" alt="">'; b.onclick = () => setTex(k, true); tex.appendChild(b); });
+    $('pxMore').hidden = key !== 'nubes'; $('pxBackBoard').hidden = key === 'nubes';
+    const w = Math.min(innerWidth * .92, 900, innerHeight * .68 * g.aspect);
+    vPane.style.width = w + 'px'; view.style.aspectRatio = g.aspect;
+    setTex(t || 0, false);
+  }
+  function pane(which) {
+    vPane.classList.toggle('off', which !== 'view'); bPane.classList.toggle('off', which !== 'board');
+    lb.scrollTop = 0; (which === 'view' ? $('pxClose') : $('pxToSky')).focus({ preventScroll: true });
+  }
+  function flip(rect, out) {
+    const to = view.getBoundingClientRect(), a = g.aspect;
+    const f = a >= 1 ? { l: rect.left - (rect.width * a - rect.width) / 2, t: rect.top, w: rect.width * a, h: rect.height } : { l: rect.left, t: rect.top - (rect.height / a - rect.height) / 2, w: rect.width, h: rect.height / a };
+    const tr = 'translate(' + (f.l - to.left) + 'px,' + (f.t - to.top) + 'px) scale(' + f.w / to.width + ',' + f.h / to.height + ')';
+    if (out) { view.style.transform = tr; return; }
+    view.style.transition = 'none'; view.style.transform = tr; view.offsetWidth; view.style.transition = ''; view.style.transform = '';
+  }
+  function show() {
+    if (open) return; open = true; from = peek.querySelector('.sq');
+    load('nubes'); vPane.classList.remove('off'); bPane.classList.add('off');
+    lb.hidden = false; document.body.style.overflow = 'hidden';
+    const rect = from.getBoundingClientRect(); peek.style.visibility = 'hidden';
+    if (!reduce) flip(rect);
+    requestAnimationFrame(() => lb.classList.add('open'));
+    cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); $('pxClose').focus({ preventScroll: true });
+  }
+  function hide() {
+    if (!open) return; open = false; full = false; rT = 0; lb.classList.remove('open');
+    const back = g === G.nubes && !vPane.classList.contains('off');
+    if (back && !reduce) { peek.style.visibility = ''; const rect = from.getBoundingClientRect(); peek.style.visibility = 'hidden'; flip(rect, true); }
+    else { vPane.classList.add('off'); bPane.classList.add('off'); }
+    setTimeout(() => { lb.hidden = true; view.style.transform = ''; peek.style.visibility = ''; document.body.style.overflow = ''; cancelAnimationFrame(raf); peek.focus({ preventScroll: true }); }, reduce ? 0 : 600);
+  }
+  peek.addEventListener('click', show);
+  $('pxBack').addEventListener('click', hide); $('pxClose').addEventListener('click', hide); $('pxClose2').addEventListener('click', hide);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && open) hide(); });
+  $('pxMore').addEventListener('click', () => pane('board'));
+  $('pxToSky').addEventListener('click', () => { load('nubes'); pane('view'); });
+  $('pxBackBoard').addEventListener('click', () => pane('board'));
+  window.addEventListener('resize', () => { if (open && !vPane.classList.contains('off')) load(g === G.nubes ? 'nubes' : g === G.iris ? 'iris' : 'cala'); });
+
+  // collage: tocar una foto para verla de cerca
+  $('pxBoard').querySelectorAll('figure').forEach(f => {
+    const openIt = () => { load(f.dataset.g, +f.dataset.t); pane('view'); };
+    f.addEventListener('click', openIt);
+    f.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openIt(); } });
+  });
+})();
+</script>
 </body>
 </html>

@@ -16,6 +16,8 @@ Cada push a `main` se publica solo.
   - Atardeceres: `arcoiris`, `expansion-naranja`, `inmersos`
   - Creadora de ropa: `vestido`
   - Álbum: `familia`, `amigas`, `companero`
+  - Pixel de nubes: `nubes-dither` (lo que se ve) y `nubes` (la foto real debajo)
+  - Texturas (board): iris `iris-vino`, `iris-color`, `iris-color-grueso`, `iris-vino-lineas`, `iris-bn`; cala `cala-rojo`, `cala-bn`, `cala-vino-grueso`. No hay foto original de las flores todavía.
 
 ## Cómo trabajar acá
 
@@ -83,6 +85,11 @@ Cada push a `main` se publica solo.
    - Modal (`t-flowry`): a la izquierda texto, chips (rituales de mañana y noche, gratitud diaria, seguimiento de hábitos, compromisos, jardín de sueños y brotes, ciclo lunar · ciclo menstrual, calendario de evolución), debajo el botón "Anotarme en Waitlist Beta" solo, y el bloque "Integrándome · Creatividad y tecnologIA". A la derecha (en celular, en el medio) un teléfono que se usa: splash con la flor que se abre, ritual de mañana (respiración real de 5 ciclos, intención), app con pestañas inicio / calendario (rituales, compromisos, lunas reales) / compromisos / jardín (se riega tocando) / beta, y ritual de noche que suma la flor del día. Todo con textos genéricos, sin datos personales.
    - Lista de espera: constante `FLOWRY_BETA_URL` en el script. Mientras esté vacía, el botón dice "La lista de espera abre muy pronto." **Falta el link real (Tally o Google Forms).**
    - Desktop: la segunda fila tiene 4 cards (Profesional, Jousie, Creadora de ropa, Flowry) y `.cards` mide hasta 62rem.
+
+**Pixel de nubes (el pixel escondido).** Cuadrado con `nubes-dither` fijo al borde derecho, asomando a la mitad (abajo en celular). Aparece recién cuando las cards terminaron de desenfocarse y se esconde al salir del cielo. Casi quieto (2 px de vaivén); en hover sale un poco, toma sombra y muestra "mis nubes".
+   - Al tocarlo se agranda desde su lugar. Lupa que muestra la foto real (`nubes`) y botón "Ver foto entera".
+   - Botón "Jugando con más texturas dither →" abre el board en la misma ventana: collage editorial (sin cinta ni marcos), título "Texturas", 8 fotos numeradas 01–08 con epígrafe. Sin las nubes. Al tocar una se ve de cerca con miniaturas de sus texturas; la lupa muestra otra textura (cuando haya fotos originales de las flores, van debajo como en las nubes).
+   - Mockups: https://claude.ai/artifact/FgFcYE7ztdMnUSxx7y1mZY
 
 **Cierre**, en este orden:
 1. Nube que se condensa: "Siempre ideando cositas… / y materializando".
