@@ -31,7 +31,7 @@
   color-scheme: light;
 }
 body { background: var(--sky); color: var(--ink); font-family: var(--font-body); font-size: 16px; -webkit-font-smoothing: antialiased; }
-#sky { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+#sky { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100lvh; z-index: 0; pointer-events: none; }
 
 /* ---------- escena ---------- */
 .scene { position: relative; z-index: 1; height: 260vh; }
@@ -143,7 +143,7 @@ h1 .ch { display: inline-block; animation: arrive 1.3s cubic-bezier(.2,.7,.1,1) 
 .xh-v, .xh-h { position: absolute; background: rgba(20, 40, 74, 0.28); opacity: 0; transition: opacity 0.3s ease; }
 .xh-v { top: 0; bottom: 0; width: 1px; left: 50%; }
 .xh-h { left: 0; right: 0; height: 1px; top: 50%; }
-.card:hover .xh-v, .card:hover .xh-h { opacity: 1; }
+.card:hover .xh-v, .card:hover .xh-h, .card.demo .xh-v, .card.demo .xh-h { opacity: 1; }
 .coords { position: absolute; z-index: 2; right: 0.9rem; top: 0.9rem; font-size: 0.66rem; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; color: var(--ink-soft); background: rgba(255,255,255,0.75); padding: 0.2rem 0.45rem; border-radius: 6px; }
 
 /* Lunática en hover: noche, luna que sigue el cursor, reflejo transparente y ondas */
@@ -155,10 +155,10 @@ h1 .ch { display: inline-block; animation: arrive 1.3s cubic-bezier(.2,.7,.1,1) 
 .moon { box-shadow: 0 0 46px 12px rgba(200, 210, 255, 0.18); }
 .moon-ref { filter: blur(3px); transform: scaleY(0.55); animation: wob 2.6s ease-in-out infinite; }
 @keyframes wob { 50% { transform: scaleY(0.55) scaleX(1.3); } }
-.lun:hover .lun-night, .lun:hover .moon { opacity: 1; }
-.lun:hover .moon-ref { opacity: 0.32; }
-.lun:hover .kind, .lun:hover .name, .lun:hover .desc, .lun:hover .foot, .lun:hover .more { color: #eef0ff; }
-.lun:hover .foot { border-color: rgba(255,255,255,0.18); }
+.lun:hover .lun-night, .lun:hover .moon, .lun.demo .lun-night, .lun.demo .moon { opacity: 1; }
+.lun:hover .moon-ref, .lun.demo .moon-ref { opacity: 0.32; }
+.lun:hover .kind, .lun:hover .name, .lun:hover .desc, .lun:hover .foot, .lun:hover .more, .lun.demo .kind, .lun.demo .name, .lun.demo .desc, .lun.demo .foot, .lun.demo .more { color: #eef0ff; }
+.lun:hover .foot, .lun.demo .foot { border-color: rgba(255,255,255,0.18); }
 .lun .kind, .lun .name, .lun .desc, .lun .foot, .lun .more { transition: color 0.5s ease; }
 .ripple { position: absolute; width: 14px; height: 5px; margin: -2.5px 0 0 -7px; border-radius: 50%; border: 1px solid rgba(220, 228, 255, 0.75); z-index: 1; pointer-events: none; animation: rp 1.5s ease-out forwards; }
 @keyframes rp { to { transform: scale(8); opacity: 0; } }
@@ -805,7 +805,29 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 .peek.on:hover .cap, .peek.on:focus-visible .cap { opacity: 1; }
 .peek:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 @keyframes pkfloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -2px; } }
-@media (max-width: 640px) { .peek { top: 62svh; } }
+@media (max-width: 640px) { .peek { top: 70svh; width: 76px; } .peek.on { transform: translateX(46%) rotate(-4deg); } .peek.hide { transform: translateX(110%) rotate(-4deg); } }
+/* ---------- teléfono ---------- */
+.grab { display: none; }
+@media (hover: none) {
+  .card { -webkit-tap-highlight-color: transparent; transition: transform 0.35s cubic-bezier(.2,.8,.2,1), background 0.3s ease, box-shadow 0.3s ease; }
+  .card.demo { background: var(--glass-strong); box-shadow: 0 16px 40px rgba(20, 50, 110, 0.2); }
+  .card.press { --s: 0.97; transition-duration: 0.12s; }
+  .chipbtn:active, .cta:active, .ghost:active, #now:active, .loc-btn:active, .car-btn:active, .px-btn:active { transform: scale(0.96); }
+  .words span { transition: transform 0.35s cubic-bezier(.2,.8,.2,1); }
+}
+@media (max-width: 640px) {
+  .detail { place-items: end stretch; padding: max(2.75rem, env(safe-area-inset-top, 0px)) 0 0; }
+  .panel, .panel[data-kind] { max-width: none; width: 100%; max-height: 100%; border-radius: 26px 26px 0 0; border-bottom: 0; box-shadow: 0 -18px 60px rgba(10, 25, 60, 0.28); }
+  .panel-body { padding: 0.6rem 1.25rem calc(1.75rem + env(safe-area-inset-bottom, 0px)); }
+  .grab { position: sticky; top: 0; z-index: 6; height: 1.6rem; margin-bottom: -1.6rem; display: flex; justify-content: center; align-items: center; pointer-events: none; }
+  .grab::before { content: ""; width: 2.6rem; height: 5px; border-radius: 999px; background: currentColor; opacity: 0.22; }
+  .close { position: sticky; top: 0.7rem; display: block; margin: 0.7rem 0.8rem -3.45rem auto; width: 2.75rem; height: 2.75rem; box-shadow: 0 4px 14px rgba(10, 25, 60, 0.14); }
+  .panel.dragging { transition: none !important; }
+  .car-nav { gap: 0.6rem; }
+  .car-cta { order: 3; width: 100%; justify-content: center; }
+  .car-btn, .close { touch-action: manipulation; }
+}
+
 
 .px-lb { position: fixed; inset: 0; z-index: 40; overflow-y: auto; overscroll-behavior: contain; display: grid; place-items: center;
   padding: max(1.4rem, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(1.4rem, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
@@ -813,7 +835,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 .px-lb.open .px-back { opacity: 1; }
 .px-stage { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; }
 .px-pane { position: relative; grid-area: 1 / 1; display: flex; flex-direction: column; gap: .7rem; max-width: 100%; transition: opacity .5s cubic-bezier(.2,.7,.1,1), filter .5s cubic-bezier(.2,.7,.1,1), transform .5s cubic-bezier(.2,.7,.1,1); }
-.px-pane.off { opacity: 0; filter: blur(10px); transform: translateY(10px); pointer-events: none; visibility: hidden; }
+.px-pane.off { opacity: 0; filter: blur(10px); transform: translateY(10px); pointer-events: none; visibility: hidden; position: absolute; top: 0; left: 0; right: 0; }
 .px-view { position: relative; width: 100%; max-width: 100%; border-radius: 10px; overflow: hidden; border: 2px solid #fff; box-shadow: 0 30px 80px rgba(5,15,40,.45); cursor: none; touch-action: none; transform-origin: 0 0; transition: transform .65s cubic-bezier(.2,.7,.1,1); background: #000; }
 .px-view img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; image-rendering: pixelated; transition: opacity .35s ease; }
 .px-view .real { --x: 50%; --y: 50%; --r: 0px; image-rendering: auto;
@@ -1083,6 +1105,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     <div class="p-ring" aria-hidden="true"></div>
     <div class="p-moon" id="pMoon" aria-hidden="true"></div>
     <svg class="p-stitch" id="pStitch" aria-hidden="true"><defs><mask id="stitchMask" maskUnits="userSpaceOnUse"><rect class="reveal" pathLength="100"/></mask></defs><rect class="dash" mask="url(#stitchMask)"/></svg>
+    <div class="grab" aria-hidden="true"></div>
     <button class="close" id="close" type="button" aria-label="Cerrar">×</button>
     <div class="panel-body" id="panelBody"></div>
   </article>
@@ -1496,6 +1519,19 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 (function () {
   const TZ = 'America/Argentina/Buenos_Aires';
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // en el teléfono las pastillas flotantes se esconden si quedarían encima de texto, cards o botones
+  const CONTENT = '.card, a, button, img, h1, h2, h3, p, figure, .postal, .pile, .quote, .lead, .eyebrow, .chipbtn';
+  window.__overContent = (el, rect) => {
+    if (window.innerWidth > 640) return false;
+    const was = el.style.visibility; el.style.visibility = 'hidden';
+    const r = rect || el.getBoundingClientRect(); let hit = false;
+    if (r.width) for (const fx of [0.08, 0.5, 0.92]) for (const fy of [0.2, 0.8]) {
+      const t = document.elementFromPoint(r.left + r.width * fx, r.top + r.height * fy);
+      if (t && !el.contains(t) && (t.closest(CONTENT) || [...t.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()))) { hit = true; break; }
+    }
+    el.style.visibility = was;
+    return hit;
+  };
   if (reduce) document.documentElement.classList.add('reduce');
 
   /* ---------- nombre letra por letra ---------- */
@@ -1601,7 +1637,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       const x = w * (0.15 + 0.7 * t) + (Math.random() - 0.5) * w * 0.12;
       const bulge = Math.sin(t * Math.PI);
       const y = h * (0.62 - 0.22 * bulge) + (Math.random() - 0.5) * h * 0.18;
-      const r = h * (0.16 + 0.22 * bulge * Math.random() + 0.06);
+      const r = Math.max(2, Math.min(h * (0.16 + 0.22 * bulge * Math.random() + 0.06), x, w - x, y, h - y));
       const grad = g.createRadialGradient(x, y - r * 0.2, 0, x, y, r);
       grad.addColorStop(0, `rgba(255,255,255,${alpha})`);
       grad.addColorStop(0.55, `rgba(250,252,255,${alpha * 0.55})`);
@@ -1613,17 +1649,29 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     g.globalCompositeOperation = 'source-atop'; g.fillStyle = shade; g.fillRect(0, 0, w, h);
     return c;
   }
+  // en el teléfono la barra del navegador cambia el alto al scrollear: solo se rehace el lienzo, las nubes se quedan
+  let cloudW = 0;
+  const phone = () => W < 760;
+  function newCloud(depth, x, y, small) {
+    const base = phone() ? 150 + depth * 230 : 220 + depth * 380;
+    const w = small ? base * 0.55 : base, h = w * (0.38 + Math.random() * 0.12);
+    return { img: makeCloud(Math.round(w), Math.round(h), (phone() ? 0.62 : 0.55) + depth * 0.3), w, h, depth, x, y, speed: 4 + depth * 10, alpha: (phone() ? 0.62 : 0.6) + depth * 0.3, vx: 0, vy: 0, oy: 0, born: 0 };
+  }
   function setup() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = window.innerWidth; H = window.innerHeight;
+    const oldW = cloudW;
+    W = window.innerWidth; H = Math.max(window.innerHeight, canvas.offsetHeight || 0);
     canvas.width = layer.width = W * dpr; canvas.height = layer.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    span = H + 500;
-    const count = Math.max(6, Math.round(W / 200));
+    span = phone() ? H + 260 : H + 500;
+    if (oldW && Math.abs(oldW - W) < 2 && clouds.length) return;
+    cloudW = W;
+    const count = phone() ? 10 : Math.max(6, Math.round(W / 200));
     clouds = [];
     for (let i = 0; i < count; i++) {
-      const depth = Math.random(), w = 220 + depth * 380, h = w * (0.38 + Math.random() * 0.12);
-      clouds.push({ img: makeCloud(Math.round(w), Math.round(h), 0.55 + depth * 0.35), w, h, depth, x: Math.random() * (W + w) - w, y: Math.random() * span, speed: 4 + depth * 10, alpha: 0.6 + depth * 0.4 });
+      const depth = Math.random(), c = newCloud(depth, 0, (i + Math.random()) / count * span);
+      c.x = Math.random() * (W + c.w) - c.w;
+      clouds.push(c);
     }
     clouds.sort((a, b) => a.depth - b.depth);
     stars = Array.from({ length: Math.round(W * H / 5000) }, () => ({ x: Math.random(), y: Math.random(), r: Math.random() * 0.9 + 0.25, tw: 0.3 + Math.random() * 1.2, ph: Math.random() * 6.28, d: Math.random() }));
@@ -1635,6 +1683,57 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     if (lastX !== null) { windX = clamp(windX + (e.clientX - lastX) * 2.2, -420, 420); windY = clamp(windY + (e.clientY - lastY) * 0.8, -160, 160); }
     lastX = e.clientX; lastY = e.clientY;
   });
+
+  /* ---------- nubes con el dedo ---------- */
+  // arrastrar el dedo (aunque esté scrolleando) sopla viento; tocar el cielo empuja las nubes y deja una nubecita nueva
+  let tLast = null, tStart = null, tMoved = false;
+  const touchSky = el => !el.closest('a, button, input, label, .card, .panel, .px-lb, .postal, .pile, .timepanel, .favs, .where');
+  window.addEventListener('touchstart', e => {
+    const t = e.touches[0]; if (!t) return;
+    tLast = tStart = { x: t.clientX, y: t.clientY, at: performance.now() }; tMoved = false;
+    mx = t.clientX / W; my = t.clientY / H;
+  }, { passive: true });
+  window.addEventListener('touchmove', e => {
+    const t = e.touches[0]; if (!t || !tLast) return;
+    const dx = t.clientX - tLast.x, dy = t.clientY - tLast.y;
+    windX = clamp(windX + dx * 3, -520, 520); windY = clamp(windY + dy * 0.9, -200, 200);
+    mx = t.clientX / W; my = t.clientY / H;
+    if (Math.hypot(t.clientX - tStart.x, t.clientY - tStart.y) > 10) tMoved = true;
+    tLast = { x: t.clientX, y: t.clientY };
+  }, { passive: true });
+  window.addEventListener('touchend', e => {
+    const t = e.changedTouches[0];
+    if (t && tStart && !tMoved && performance.now() - tStart.at < 450 && touchSky(e.target)) puff(t.clientX, t.clientY);
+    tLast = tStart = null;
+    setTimeout(() => { mx = 0.5; my = 0.5; }, 900);
+  }, { passive: true });
+  const placed = [];
+  function puff(px, py) {
+    if (reduce) return;
+    for (const c of clouds) {
+      const cx = c.drawX + c.w / 2, cy = c.drawY + c.h / 2, dx = cx - px, dy = cy - py, d = Math.hypot(dx, dy) || 1;
+      const f = Math.max(0, 1 - d / (W * 0.9));
+      c.vx += dx / d * f * 340; c.vy += dy / d * f * 160;
+    }
+    windX *= 0.3;
+    if (nightNow > 0.6) return;
+    const camNow = lastCam;
+    const c = newCloud(0.55 + Math.random() * 0.4, 0, 0, true);
+    const par = 0.4 + c.depth * 1.1;
+    c.x = px - c.w / 2;
+    c.y = ((py + (phone() ? 150 : 300) - c.h / 2 - camNow * par - driftY * (0.3 + c.depth)) % span + span) % span;
+    c.born = performance.now(); c.extra = true;
+    placed.push(c); clouds.push(c);
+    if (placed.length > 5) { const old = placed.shift(); clouds.splice(clouds.indexOf(old), 1); }
+    clouds.sort((a, b) => a.depth - b.depth);
+  }
+  // en Android la inclinación del teléfono mueve el cielo (en iPhone haría falta pedir permiso, así que no se usa)
+  if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission !== 'function' && matchMedia('(hover: none)').matches) {
+    window.addEventListener('deviceorientation', e => {
+      if (e.gamma == null || tLast) return;
+      mx = 0.5 + clamp(e.gamma / 60, -0.5, 0.5); my = 0.5 + clamp((e.beta - 45) / 90, -0.5, 0.5);
+    });
+  }
 
   const AQR = {
     eps: [20.795, -9.50, 0.8], mu: [20.877, -8.98, 0.5], beta: [21.526, -5.57, 1], alpha: [22.096, -0.32, 1], iota: [22.107, -13.87, 0.55],
@@ -1661,7 +1760,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     const xs = Object.values(pts).map(p => p.x), ys = Object.values(pts).map(p => p.y);
     aqrAnchor = { x: (Math.min(...xs) + Math.max(...xs)) / 2 + dx, y: (Math.min(...ys) + Math.max(...ys)) / 2 + dy };
   }
-  let driftY = 0;
+  let driftY = 0, lastCam = 0;
   function drawSky(dt, time, camY) {
     const s = skyAt((shown / 60) % 24);
     nightNow = s.night;
@@ -1683,14 +1782,21 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     }
     if (s.ca > 0.01) {
       lctx.clearRect(0, 0, W, H);
+      const off = phone() ? 150 : 300, k = Math.pow(0.08, dt), nowMs = performance.now();
+      lastCam = camY;
       for (const c of clouds) {
-        c.x += (c.speed + windX * (0.2 + c.depth)) * dt;
+        c.x += (c.speed + windX * (0.2 + c.depth) + c.vx) * dt;
+        c.oy += c.vy * dt; c.vx *= k; c.vy *= k; c.oy *= Math.pow(0.6, dt);
         if (c.x > W + 60) { c.x = -c.w - 40; c.y = Math.random() * span; }
         if (c.x < -c.w - 80) { c.x = W + 40; c.y = Math.random() * span; }
         const par = 0.4 + c.depth * 1.1;
-        const sy = ((c.y + camY * par + driftY * (0.3 + c.depth)) % span + span) % span - 300 - oy * 40 * c.depth;
-        lctx.globalAlpha = c.alpha;
-        lctx.drawImage(c.img, c.x - ox * 80 * (0.3 + c.depth), sy, c.w, c.h);
+        const sy = ((c.y + camY * par + driftY * (0.3 + c.depth)) % span + span) % span - off - oy * 40 * c.depth + c.oy;
+        const dxp = c.x - ox * 80 * (0.3 + c.depth);
+        c.drawX = dxp; c.drawY = sy;
+        const grow = c.born ? Math.min(1, (nowMs - c.born) / 900) : 1;
+        lctx.globalAlpha = c.alpha * grow;
+        if (grow < 1) { const s = 0.6 + 0.4 * grow; lctx.drawImage(c.img, dxp + c.w * (1 - s) / 2, sy + c.h * (1 - s) / 2, c.w * s, c.h * s); }
+        else lctx.drawImage(c.img, dxp, sy, c.w, c.h);
       }
       lctx.globalAlpha = 1;
       if (s.ta > 0.01) {
@@ -1718,7 +1824,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     headDelta = (st.top + st.height * 0.46) - (nr.top + nr.height / 2);
     startScale = Math.min(1.9, (window.innerWidth * 0.9) / nr.width);
   }
-  let pS = reduce ? 1 : 0, favVis = 0;
+  let pS = reduce ? 1 : 0, favVis = 0, favBlock = 0;
   function progress() { if (reduce) return 1; const r = scene.getBoundingClientRect(); const span = r.height - window.innerHeight; if (!(span > 0)) return 1; const v = -r.top / span; return Number.isFinite(v) ? clamp(v) : 1; }
   function choreograph(p) {
     const e = ease(clamp(p / 0.3));
@@ -1737,6 +1843,10 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       s.style.pointerEvents = t > 0.9 ? 'auto' : 'none';
     });
     favVis = clamp((p - 0.4) / 0.15);
+    if (window.innerWidth <= 640) {
+      favBlock = favBlock * 0.8 + (favVis > 0 && window.__overContent(favs) ? 0.2 : 0);
+      favVis *= 1 - clamp((favBlock - 0.1) / 0.4);
+    }
     favs.style.opacity = favVis.toFixed(3);
     favs.style.pointerEvents = favVis > 0.6 ? 'auto' : 'none';
   }
@@ -1841,6 +1951,104 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     moonEl.style.left = x + 'px'; moonEl.style.top = my + 'px';
     moonRef.style.left = x + 'px'; moonRef.style.top = (2 * hz - my) + 'px';
   });
+
+  /* ---------- cards en el teléfono ---------- */
+  // sin hover: cada card muestra su gesto sola, de a una, y además responde al dedo cuando pasa o se apoya encima
+  if (!canHover && !reduce) {
+    const detailEl = document.getElementById('detail'), cardsEl = document.getElementById('cards');
+    const HSTART = 'Posts de'.length;
+    const fx = {
+      atlasCard(cx, cy) {
+        const r = atlasCard.getBoundingClientRect();
+        const px = clamp((cx - r.left) / r.width), py = clamp((cy - r.top) / r.height);
+        xv.style.left = (px * 100) + '%'; xhz.style.top = (py * 100) + '%';
+        coordsEl.textContent = fmtCoord(lerp(B.latMax, B.latMin, py), lerp(B.lonMin, B.lonMax, px));
+      },
+      lunCard(cx, cy) {
+        const r = lun.getBoundingClientRect(), w = lun.offsetWidth, h = lun.offsetHeight;
+        const x = (cx - r.left) * w / r.width, y = (cy - r.top) * h / r.height, hz = h * 0.62, my = Math.min(y, hz - 20);
+        moonEl.style.left = x + 'px'; moonEl.style.top = my + 'px';
+        moonRef.style.left = x + 'px'; moonRef.style.top = (2 * hz - my) + 'px';
+      },
+      lkCard(cx, cy) {
+        lkChips.forEach(c => {
+          if (c._cx == null) { c.style.transform = ''; const r = c.getBoundingClientRect(); c._cx = r.left + r.width / 2; c._cy = r.top + r.height / 2; }
+          const dx = c._cx - cx, dy = c._cy - cy, d = Math.hypot(dx, dy) || 1;
+          const f = Math.max(0, 1 - d / 80), push = f * 14;
+          c.style.transform = `translate(${(dx / d * push).toFixed(1)}px, ${(dy / d * push).toFixed(1)}px) rotate(${(f * dx / d * 7).toFixed(1)}deg)`;
+        });
+      },
+      jouCard() { if (hn < HFULL.length) { hacc += 1; if (hacc >= 2) { hacc = 0; hn++; renderH(); } } },
+      ropaCard(cx, cy) {
+        const r = ropa.getBoundingClientRect();
+        if (tcv.width !== Math.round(ropa.offsetWidth * (window.devicePixelRatio || 1))) sizeThread();
+        const x = (cx - r.left) * ropa.offsetWidth / r.width, y = (cy - r.top) * ropa.offsetHeight / r.height;
+        const l = tpts[tpts.length - 1];
+        if (!l || Math.hypot(x - l.x, y - l.y) > 3) tpts.push({ x, y, t: performance.now() });
+        if (!tRun) { tRun = true; requestAnimationFrame(drawThread); }
+      }
+    };
+    const resetFx = card => {
+      if (card === lk) lkChips.forEach(c => { c.style.transform = ''; c._cx = null; });
+      if (card === atlasCard) coordsEl.textContent = fmtCoord(OBE.lat, OBE.lon);
+    };
+    // recorrido "de muestra" por dentro de cada card, t va de 0 a 1
+    const path = (card, t) => {
+      const r = card.getBoundingClientRect();
+      if (card === lun) return [r.left + r.width * (0.18 + 0.64 * t), r.top + r.height * (0.42 - 0.22 * Math.sin(t * Math.PI))];
+      if (card === ropa) return [r.left + r.width * (0.06 + 0.88 * t), r.top + r.height * (0.5 + 0.28 * Math.sin(t * Math.PI * 5))];
+      if (card === lk) { const w = card.querySelector('.words').getBoundingClientRect(); return [w.left + w.width * t, w.top + w.height * (0.5 + 0.4 * Math.sin(t * Math.PI * 3))]; }
+      return [r.left + r.width * (0.12 + 0.76 * t), r.top + r.height * (0.45 + 0.25 * Math.sin(t * Math.PI * 2))];
+    };
+    const order = [atlasCard, lun, lk, document.getElementById('jouCard'), ropa];
+    let turn = 0, demoCard = null, demoT0 = 0, pauseUntil = 0, fingerCard = null;
+    const DUR = 2600, GAP = 1100;
+    const cardsShown = () => {
+      if (!detailEl.hidden || document.hidden) return false;
+      const r = cardsEl.getBoundingClientRect();
+      return r.top < window.innerHeight * 0.9 && r.bottom > window.innerHeight * 0.15 && +(slots[0].style.opacity || 1) > 0.95 && +(slots[slots.length - 1].style.opacity || 1) > 0.95;
+    };
+    function showcase(now) {
+      requestAnimationFrame(showcase);
+      if (fingerCard || now < pauseUntil || !cardsShown()) { if (demoCard && !fingerCard) { demoCard.classList.remove('demo'); resetFx(demoCard); demoCard = null; demoT0 = now + GAP; } return; }
+      if (!demoCard) {
+        if (now < demoT0) return;
+        demoCard = order[turn++ % order.length]; demoT0 = now;
+        if (demoCard.id === 'jouCard') { hn = HSTART; renderH(); }
+        if (demoCard === lk) lkChips.forEach(c => { c.style.transform = ''; c._cx = null; });
+        demoCard.classList.add('demo');
+      }
+      const t = (now - demoT0) / DUR;
+      if (t >= 1) {
+        const c = demoCard; demoCard = null; demoT0 = now + GAP;
+        if (c.id === 'jouCard') { hn = HFULL.length; renderH(); }
+        setTimeout(() => { if (demoCard !== c && fingerCard !== c) { c.classList.remove('demo'); resetFx(c); } }, c === lun ? 500 : 250);
+        return;
+      }
+      const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      const [x, y] = path(demoCard, e);
+      fx[demoCard.id](x, y);
+    }
+    requestAnimationFrame(showcase);
+    // el dedo: apoyarlo o pasarlo por encima mientras scrolleás también activa el gesto
+    order.forEach(card => {
+      const move = e => {
+        const t = e.touches[0]; if (!t) return;
+        if (demoCard && demoCard !== card) { demoCard.classList.remove('demo'); resetFx(demoCard); demoCard = null; }
+        fingerCard = card; card.classList.add('demo', 'press');
+        fx[card.id](t.clientX, t.clientY);
+      };
+      card.addEventListener('touchstart', e => { if (card === lk) lkChips.forEach(c => { c._cx = null; }); move(e); }, { passive: true });
+      card.addEventListener('touchmove', e => { card.classList.remove('press'); move(e); }, { passive: true });
+      const end = () => {
+        card.classList.remove('press');
+        pauseUntil = performance.now() + 2500;
+        setTimeout(() => { if (fingerCard === card) { fingerCard = null; card.classList.remove('demo'); resetFx(card); } }, 700);
+      };
+      card.addEventListener('touchend', end, { passive: true });
+      card.addEventListener('touchcancel', end, { passive: true });
+    });
+  }
 
   /* ---------- animaciones dentro del modal ---------- */
   function typeInto(el, text, speed, done) {
@@ -2018,7 +2226,9 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   /* ---------- modal ---------- */
   const detail = document.getElementById('detail'), panel = document.getElementById('panel'), body = document.getElementById('panelBody'), closeBtn = document.getElementById('close');
   let openedFrom = null, goT;
+  const sheet = () => window.innerWidth <= 640;
   function flipFrom(el) {
+    if (sheet()) return `translateY(${Math.round(panel.offsetHeight + 40)}px)`;
     const from = el.getBoundingClientRect(), to = panel.getBoundingClientRect();
     return `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`;
   }
@@ -2100,6 +2310,39 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     pMoon.style.top = (e.clientY - b.top + panel.scrollTop) + 'px';
   });
   closeBtn.addEventListener('click', closeDetail);
+  // hoja inferior: se cierra deslizándola hacia abajo desde arriba de todo
+  let sy0 = null, sdy = 0, sv = 0, sLastY = 0, sLastT = 0, sDrag = false;
+  panel.addEventListener('touchstart', e => {
+    if (!sheet() || e.touches.length > 1) return;
+    if (e.target.closest('.car-track, .sew, canvas, input, [data-noswipe]')) { sy0 = null; return; }
+    sy0 = e.touches[0].clientY; sdy = 0; sv = 0; sDrag = false; sLastY = sy0; sLastT = performance.now();
+  }, { passive: true });
+  panel.addEventListener('touchmove', e => {
+    if (sy0 == null) return;
+    const y = e.touches[0].clientY, dy = y - sy0;
+    if (!sDrag) {
+      if (dy > 6 && panel.scrollTop <= 0) { sDrag = true; sy0 = y; panel.classList.add('dragging'); }
+      else if (Math.abs(dy) > 6) { sy0 = null; return; }
+      else return;
+    }
+    e.preventDefault();
+    sdy = Math.max(0, y - sy0);
+    const now = performance.now(); sv = (y - sLastY) / Math.max(1, now - sLastT); sLastY = y; sLastT = now;
+    panel.style.transition = 'none';
+    panel.style.transform = `translateY(${sdy}px)`;
+    document.getElementById('backdrop').style.opacity = String(Math.max(0.2, 1 - sdy / 500));
+  }, { passive: false });
+  const sEnd = () => {
+    if (sy0 == null) return;
+    const was = sDrag; sy0 = null; sDrag = false;
+    if (!was) return;
+    panel.classList.remove('dragging');
+    document.getElementById('backdrop').style.opacity = '';
+    if (sdy > 120 || sv > 0.6) { closeDetail(); return; }
+    panel.style.transition = 'transform 0.4s cubic-bezier(.2,.85,.2,1)';
+    panel.style.transform = 'none';
+  };
+  panel.addEventListener('touchend', sEnd); panel.addEventListener('touchcancel', sEnd);
   document.getElementById('backdrop').addEventListener('click', closeDetail);
   document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if (!detail.hidden) closeDetail(); else { pinned = false; setOpen(false); } });
   window.addEventListener('resize', () => { if (!detail.hidden && panel.dataset.kind === 'ropa') sizeStitch(); });
@@ -2355,7 +2598,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   function placeSign() {
     const t = clamp((nightNow - 0.45) / 0.5), e = ease(t);
     signDay.style.opacity = 1 - e;
-    signDay.style.pointerEvents = e > 0.5 ? 'none' : 'auto';
+    signDay.style.pointerEvents = e > 0.5 || lead.style.pointerEvents === 'none' ? 'none' : 'auto';
     signDay.tabIndex = e > 0.5 ? -1 : 0; signNight.tabIndex = e > 0.5 ? 0 : -1;
     if (!aqrAnchor || t <= 0) { signNight.style.opacity = 0; signNight.style.pointerEvents = 'none'; return; }
     const w = signNight.offsetWidth;
@@ -2408,7 +2651,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     const dt = reduce ? 0 : Math.max(0, Math.min((now - last) / 1000, 0.1));
     last = now;
     // si la ventana cambió de tamaño sin avisar (pestaña oculta, pantalla completa), rehacer el lienzo
-    if (window.innerWidth > 0 && window.innerHeight > 0 && (window.innerWidth !== W || window.innerHeight !== H)) { setup(); measure(); }
+    if (window.innerWidth > 0 && window.innerHeight > 0 && (window.innerWidth !== W || Math.max(window.innerHeight, canvas.offsetHeight || 0) !== H)) { setup(); measure(); }
     if (mode === 'day') { const q = quoteProgress(); target = 720 + (FAV - 720) * ease(q); }
     if (!Number.isFinite(shown)) shown = Number.isFinite(target) ? target : 720;
     if (!Number.isFinite(pS)) pS = 0;
@@ -2452,9 +2695,13 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   function onScroll() {
     const r = scene.getBoundingClientRect(), span = r.height - window.innerHeight;
     const p = span > 0 ? -r.top / span : 1;
-    peek.classList.toggle('on', p > .58 && r.bottom > window.innerHeight * .5);
+    // en el teléfono asoma en cualquier claro de cielo después de las cards, nunca encima de contenido
+    const on = p > .58 && (window.innerWidth <= 640 || r.bottom > window.innerHeight * .5);
+    peek.classList.toggle('on', on);
+    peek.classList.toggle('hide', on && !!window.__overContent && window.__overContent(peek, (() => { const b = peek.getBoundingClientRect(), w = peek.offsetWidth; return { left: window.innerWidth - w * 0.62, top: b.top, width: w * 0.6, height: w }; })()));
   }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  setInterval(() => { if (!open && window.innerWidth <= 640) onScroll(); }, 300);
 
   function setR() { real.style.setProperty('--r', r + 'px'); real.style.setProperty('--x', x + 'px'); real.style.setProperty('--y', y + 'px'); ring.style.width = ring.style.height = 2 * r + 'px'; ring.style.transform = 'translate(' + (x - r) + 'px,' + (y - r) + 'px)'; ring.style.opacity = r > 4 && !full ? 1 : 0; }
   function loop() { r += (rT - r) * (full ? .07 : .2); setR(); raf = requestAnimationFrame(loop); }
