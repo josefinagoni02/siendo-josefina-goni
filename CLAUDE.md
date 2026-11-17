@@ -11,6 +11,7 @@ Cada push a `main` se publica solo.
 
 - `index.html`: toda la página (HTML + CSS + JS en un solo archivo).
 - `atlas-motion.js`: el video animado del Atlas (canvas, ~6 MB, trae las fotos adentro). Se carga recién cuando hace falta (hover o apertura del modal de Atlas). Sale del artifact "Atlas en movimiento" y no se edita a mano.
+- `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`: ícono de la página (nube blanca sobre el celeste del cielo de día). Es el que se ve al agregarla a la pantalla de inicio, con el nombre "Siendo".
 - `img/`: fotos usadas en la página.
   - Atlas: `obelisco`, `el-viaje`, `tantos-angulos`, `atlas-home` (captura del mapa del Atlas, sin panel derecho)
   - Atardeceres: `arcoiris`, `expansion-naranja`, `inmersos`
