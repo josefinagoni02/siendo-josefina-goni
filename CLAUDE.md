@@ -97,7 +97,7 @@ Cada push a `main` se publica solo.
    - **Falta la fecha 2027 del Raid (no está publicada) y la distancia que va a correr Josefina.**
    - Mockups: https://claude.ai/artifact/E5pLjPh8CoHAKJBgvmhFeE
 8. **Del mundo** (Viajera; al lado de Runner). Card: "15,4% · 30 países" con la acuarela a mano de fondo (encuadre libre, no hace falta que respete el mapa). Pie: "Ver mapa".
-   - Modal (`t-mundo`): mapa con círculos acuarelados en azules, uno por lugar, en coordenadas reales (proyección plana lat/long, con margen arriba y abajo). Todos los puntos están desde el principio, suaves y sin órbita. Con el mouse o el dedo se nombra el lugar más cercano. Abajo: "15,4% del mundo · 30 de 195 países" y barras por continente.
+   - Modal (`t-mundo`): mapa con círculos acuarelados en azules, uno por lugar, en coordenadas reales (proyección plana lat/long, con margen arriba y abajo). Se ve solo la acuarela, sin puntos. Con el mouse o el dedo aparece el punto del lugar más cercano y su nombre. Abajo: "15,4% del mundo · 30 de 195 países" y barras por continente.
    - Lugares: 87 puntos en 30 países (lista de Josefina, nov 2026). Turquía: Estambul con un punto en Europa y otro en Asia.
    - Guardado para después: "Próximos destinos" (El Chaltén, Tokio) y la conexión con los videos del mar.
 

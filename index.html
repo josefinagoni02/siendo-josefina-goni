@@ -2637,12 +2637,12 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       const svg = box.querySelector('svg'), dg = svg.querySelector('.js-mu-dots'), lg = svg.querySelector('.js-mu-lbls');
       // todos los puntos ya están; con el mouse o el dedo se nombra el lugar más cercano
       const K = box.clientWidth < 600 ? 1.8 : 1;
-      const dots = MU.map(p => { const [x, y] = muXY(p); return { p, x, y, d: mk('circle', { cx: x, cy: y, r: 2.6 * K, fill: '#14284a', opacity: .3, class: 'mu-dot' }, dg) }; });
+      const dots = MU.map(p => { const [x, y] = muXY(p); return { p, x, y, d: mk('circle', { cx: x, cy: y, r: 2.6 * K, fill: '#14284a', opacity: 0, class: 'mu-dot' }, dg) }; });
       const lbl = mk('text', { class: 'mu-lbl' }, lg);
       let cur = null;
       const show = o => {
         if (cur === o) return;
-        if (cur) { cur.d.setAttribute('opacity', .3); cur.d.setAttribute('r', 2.6 * K); }
+        if (cur) { cur.d.setAttribute('opacity', 0); cur.d.setAttribute('r', 2.6 * K); }
         cur = o;
         if (!o) { lbl.classList.remove('on'); return; }
         o.d.setAttribute('opacity', .85); o.d.setAttribute('r', 3.6 * K);
