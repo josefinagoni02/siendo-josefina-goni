@@ -205,7 +205,8 @@
         <div class="lz-ws">
           <div class="lz-card" aria-live="polite"></div>
           <div class="lz-chips">
-            <button class="lz-chip solid" type="button" data-lz="talleres">Talleres <span aria-hidden="true">→</span></button>
+            <button class="lz-chip solid lz-only-m" type="button" data-lz-toggle aria-expanded="false"><span class="lz-tlabel">Último taller</span> <span class="lz-chev" aria-hidden="true">↓</span></button>
+            <button class="lz-chip solid lz-only-d" type="button" data-lz="talleres">Talleres <span aria-hidden="true">→</span></button>
             <a class="lz-chip" href="${WA}" target="_blank" rel="noopener">${waIco} Unirme a la comunidad <span aria-hidden="true">↗</span></a>
           </div>
         </div>
@@ -272,6 +273,7 @@
     if (key === shown) return;
     shown = key;
     const future = w.t > now, idx = L.indexOf(w), fotos = w.fotos || [];
+    const tl = root.querySelector('.lz-tlabel'); if (tl) tl.textContent = future ? 'Próximo taller' : 'Último taller';
     card.innerHTML = `
       <div class="lz-top"><span class="lz-state${future ? ' next' : ''}">${future ? 'Próximo taller' : 'Último taller'}</span><span class="lz-rel">${fmt(w.t)} · ${rel((w.t - now) / DAY)}</span></div>
       <p class="lz-name">${esc(w.name)}</p>
@@ -482,6 +484,8 @@
   function onClick(e) {
     const nav = e.target.closest('[data-lz]');
     if (nav) { e.preventDefault(); const to = nav.dataset.lz; go(to === 'taller' ? { name: 'taller', id: view.id } : { name: to }); return; }
+    const tg = e.target.closest('[data-lz-toggle]');
+    if (tg) { const ws = root.querySelector('.lz-ws'), open = !ws.classList.contains('open'); ws.classList.toggle('open', open); tg.setAttribute('aria-expanded', String(open)); tg.querySelector('.lz-chev').textContent = open ? '↑' : '↓'; if (open) root.querySelector('.lz-card').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' }); return; }
     const op = e.target.closest('[data-open]');
     if (op) { go({ name: 'taller', id: op.dataset.open }); return; }
     const ed = e.target.closest('[data-edit]');
@@ -508,9 +512,9 @@
   /* ---------- card de la home: misma card, texto al día ---------- */
   function updateHomeCard() {
     const el = document.querySelector('#lunCard .next-k'); if (!el) return;
-    const L = list(), now = Date.now(); if (!L.length) return;
-    const next = L.find(w => w.t > now), w = next || L[L.length - 1];
-    el.textContent = `${next ? 'Próximo' : 'Último'}: ${w.name} · ${fmt(w.t)}`;
+    const L = list(), now = Date.now();
+    const next = L.find(w => w.t > now);
+    el.textContent = next ? `Próximo: ${next.name} · ${fmt(next.t)}` : 'Próximo taller… pronto';
   }
   updateHomeCard();
 

@@ -34,7 +34,7 @@ body { background: var(--sky); color: var(--ink); font-family: var(--font-body);
 #sky { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100lvh; z-index: 0; pointer-events: none; }
 
 /* ---------- escena ---------- */
-.scene { position: relative; z-index: 1; height: 260vh; }
+.scene { position: relative; z-index: 1; height: 205vh; }
 .stage {
   position: sticky; top: 0; height: 100vh; height: 100svh;
   display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -356,6 +356,7 @@ h1 .ch { display: inline-block; animation: arrive 1.3s cubic-bezier(.2,.7,.1,1) 
 .p-moon { position: absolute; left: 70%; top: 90px; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; pointer-events: none; z-index: 0; display: none;
   background: radial-gradient(circle, #fdfcff 0 40%, rgba(230,235,255,0.5) 50%, rgba(200,210,255,0) 72%); box-shadow: 0 0 70px 18px rgba(200,210,255,0.14); transition: left 0.25s ease-out, top 0.25s ease-out; }
 .panel[data-kind="luna"] .p-moon { display: block; }
+@media (max-width: 760px) { .panel[data-kind="luna"] .p-moon { display: none; } }
 .ev-main { min-width: 0; display: flex; flex-direction: column; gap: 0.7rem; }
 .ev-about { margin: 0; font-family: var(--font-display); font-style: italic; font-size: 1.12rem; line-height: 1.4; opacity: 0.92; max-width: 34ch; }
 .ev-dl { margin: 0.35rem 0 0; display: flex; flex-direction: column; gap: 0.7rem; }
@@ -847,6 +848,18 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   .card.press { --s: 0.97; transition-duration: 0.12s; }
   .chipbtn:active, .cta:active, .ghost:active, #now:active, .loc-btn:active, .car-btn:active, .px-btn:active { transform: scale(0.96); }
   .words span { transition: transform 0.35s cubic-bezier(.2,.8,.2,1); }
+  .card.armed { background: var(--glass-strong); }
+  .card.armed::after { content: "Tocá de nuevo para abrir"; position: absolute; z-index: 7; left: 50%; bottom: 0.55rem; transform: translateX(-50%); white-space: nowrap; font: 600 0.62rem/1 var(--font-body); letter-spacing: 0.06em; color: var(--white); background: rgba(12,28,62,0.82); padding: 0.4rem 0.65rem; border-radius: 999px; animation: armIn 0.3s ease both; pointer-events: none; }
+  .lun.armed::after { background: rgba(238,240,255,0.92); color: var(--night); }
+}
+@keyframes armIn { from { opacity: 0; transform: translate(-50%, 4px); } }
+@media (hover: none) and (max-width: 759px) {
+  /* PO en el teléfono: los tags aparecen encima cuando la card muestra su gesto, sin mover el resto */
+  .lk-tags { position: absolute; z-index: 3; left: 0.6rem; right: 0.6rem; top: 0.7rem; bottom: 2.6rem; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 0.22rem; opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
+  .lk-tags span { font-size: 0.62rem; font-weight: 600; padding: 0.15rem 0.38rem; border-radius: 6px; background: var(--white); border: 1px solid var(--line); white-space: nowrap; transition: transform 0.35s cubic-bezier(.2,.8,.2,1); }
+  #lkCard.demo .lk-tags, #lkCard.armed .lk-tags { opacity: 1; }
+  #lkCard > .name, #lkCard > .kind { transition: opacity 0.35s ease; }
+  #lkCard.demo > .name, #lkCard.armed > .name, #lkCard.demo > .kind, #lkCard.armed > .kind { opacity: 0.08; }
 }
 @media (max-width: 640px) {
   .detail { place-items: end stretch; padding: max(2.75rem, env(safe-area-inset-top, 0px)) 0 0; }
@@ -1039,7 +1052,13 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 .lz-del-wrap, .lz-confirm { display: inline-flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; font-size: 0.85rem; }
 .lz-toast { position: sticky; bottom: 0.5rem; align-self: center; margin-top: -2.4rem; z-index: 5; font-size: 0.82rem; font-weight: 600; background: var(--lz-ink); color: var(--night); padding: 0.55rem 0.95rem; border-radius: 999px; opacity: 0; transform: translateY(6px); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
 .lz-toast.on { opacity: 1; transform: none; }
+@media (min-width: 761px) { .lz-only-m { display: none; } }
 @media (max-width: 760px) {
+  /* celu: debajo de la luna solo el taller (se despliega) y la comunidad; el calendario queda enseguida */
+  .lz-only-d { display: none; }
+  .lz-ws .lz-chips { order: -1; justify-content: center; }
+  .lz-ws .lz-card { display: none; }
+  .lz-ws.open .lz-card { display: flex; }
   .lz-main { grid-template-columns: 1fr; gap: 1.2rem; }
   .lz-dial { width: min(17rem, 100%); }
   .lz-tw { grid-template-columns: 1fr; }
@@ -1100,7 +1119,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
           <span class="moon-ref" aria-hidden="true"></span><span class="moon" aria-hidden="true"></span>
           <span class="kind">Fanática de la luna</span>
           <span class="name">Lunática</span>
-          <span class="desc next-k">Próximo: Luna Llena en Tauro · dom 25.10</span>
+          <span class="desc next-k">Próximo taller… pronto</span>
           <span class="foot"><span class="domain">Talleres</span><span class="more">Ver más <span aria-hidden="true">→</span></span></span>
         </button>
       </div>
@@ -2000,7 +2019,9 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     startScale = Math.min(1.9, (window.innerWidth * 0.9) / nr.width);
   }
   let pS = reduce ? 1 : 0, favVis = 0, favBlock = 0;
-  function progress() { if (reduce) return 1; const r = scene.getBoundingClientRect(); const span = r.height - window.innerHeight; if (!(span > 0)) return 1; const v = -r.top / span; return Number.isFinite(v) ? clamp(v) : 1; }
+  function progress() { if (reduce) return 1; const r = scene.getBoundingClientRect(); const span = r.height - window.innerHeight; if (!(span > 0)) return 1; const v = -r.top / span; return Number.isFinite(v) ? clamp(v) * SCROLL_K : 1; }
+  // la escena mide 205vh (antes 260vh): mismo ritmo por píxel, pero las cards quedan quietas poco después de aparecer
+  const SCROLL_K = 1.05 / 1.6;
   function choreograph(p) {
     const e = ease(clamp(p / 0.3));
     head.style.transform = `translateY(${lerp(headDelta, 0, e)}px) scale(${lerp(startScale, 1, e)})`;
@@ -2049,7 +2070,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       card.style.setProperty('--ry', ((px - 0.5) * 5).toFixed(2) + 'deg'); card.style.setProperty('--rx', ((0.5 - py) * 4).toFixed(2) + 'deg');
     });
     card.addEventListener('pointerleave', () => { card.style.setProperty('--rx', '0deg'); card.style.setProperty('--ry', '0deg'); });
-    card.addEventListener('click', () => openDetail(card));
+    card.addEventListener('click', () => { if (window.__tapArm && window.__tapArm(card)) return; openDetail(card); });
   });
 
   /* ---------- hover propio de cada card ---------- */
@@ -2131,6 +2152,13 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   // sin hover: cada card muestra su gesto sola, de a una, y además responde al dedo cuando pasa o se apoya encima
   if (!canHover && !reduce) {
     const detailEl = document.getElementById('detail'), cardsEl = document.getElementById('cards');
+    // PO en el celu: los tags no entran en la card, así que aparecen en una capa encima mientras muestra su gesto
+    if (window.matchMedia('(max-width: 759px)').matches) {
+      const layer = document.createElement('span'); layer.className = 'lk-tags'; layer.setAttribute('aria-hidden', 'true');
+      lkChips.forEach(c => { const n = document.createElement('span'); n.textContent = c.textContent; layer.appendChild(n); });
+      lk.appendChild(layer);
+      lkChips.splice(0, lkChips.length, ...layer.children);
+    }
     const HSTART = 'Posts de'.length;
     const fx = {
       atlasCard(cx, cy) {
@@ -2172,11 +2200,24 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       const r = card.getBoundingClientRect();
       if (card === lun) return [r.left + r.width * (0.18 + 0.64 * t), r.top + r.height * (0.42 - 0.22 * Math.sin(t * Math.PI))];
       if (card === ropa) return [r.left + r.width * (0.06 + 0.88 * t), r.top + r.height * (0.5 + 0.28 * Math.sin(t * Math.PI * 5))];
-      if (card === lk) { const w = card.querySelector('.words').getBoundingClientRect(); return [w.left + w.width * t, w.top + w.height * (0.5 + 0.4 * Math.sin(t * Math.PI * 3))]; }
+      if (card === lk) { const w = (card.querySelector('.lk-tags') || card.querySelector('.words')).getBoundingClientRect(); return [w.left + w.width * t, w.top + w.height * (0.5 + 0.4 * Math.sin(t * Math.PI * 3))]; }
       return [r.left + r.width * (0.12 + 0.76 * t), r.top + r.height * (0.45 + 0.25 * Math.sin(t * Math.PI * 2))];
     };
     const order = [atlasCard, lun, lk, document.getElementById('jouCard'), ropa];
-    let turn = 0, demoCard = null, demoT0 = 0, pauseUntil = 0, fingerCard = null;
+    let turn = 0, demoCard = null, demoT0 = 0, pauseUntil = 0, fingerCard = null, forced = null, armed = null, armT = 0;
+    // primer toque: la card muestra su gesto y avisa "Tocá de nuevo para abrir"; el segundo toque la abre
+    const disarm = () => { if (armed) armed.classList.remove('armed'); armed = null; };
+    window.__tapArm = card => {
+      if (armed === card) { disarm(); return false; }
+      disarm(); armed = card; card.classList.add('armed');
+      clearTimeout(armT); armT = setTimeout(disarm, 5000);
+      if (fx[card.id]) {
+        if (demoCard && demoCard !== card) { demoCard.classList.remove('demo'); resetFx(demoCard); }
+        fingerCard = null; pauseUntil = 0; forced = card; demoCard = null;
+      } else if (card.id === 'runCard') card.dispatchEvent(new PointerEvent('pointerenter'));
+      return true;
+    };
+    detailEl.addEventListener('transitionstart', () => { if (!detailEl.hidden) disarm(); });
     const DUR = 2600, GAP = 1100;
     const cardsShown = () => {
       if (!detailEl.hidden || document.hidden) return false;
@@ -2186,6 +2227,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     function showcase(now) {
       requestAnimationFrame(showcase);
       if (fingerCard || now < pauseUntil || !cardsShown()) { if (demoCard && !fingerCard) { demoCard.classList.remove('demo'); resetFx(demoCard); demoCard = null; demoT0 = now + GAP; } return; }
+      if (forced) { demoCard = forced; forced = null; demoT0 = now; if (demoCard.id === 'jouCard') { hn = HSTART; renderH(); } if (demoCard === lk) lkChips.forEach(c => { c.style.transform = ''; c._cx = null; }); demoCard.classList.add('demo'); }
       if (!demoCard) {
         if (now < demoT0) return;
         demoCard = order[turn++ % order.length]; demoT0 = now;
@@ -2923,7 +2965,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     const r = scene.getBoundingClientRect(), span = r.height - window.innerHeight;
     const p = span > 0 ? -r.top / span : 1;
     // en el teléfono asoma en cualquier claro de cielo después de las cards, nunca encima de contenido
-    const on = p > .58 && (window.innerWidth <= 640 || r.bottom > window.innerHeight * .5);
+    const on = p > .82 && (window.innerWidth <= 640 || r.bottom > window.innerHeight * .5);
     peek.classList.toggle('on', on);
     peek.classList.toggle('hide', on && !!window.__overContent && window.__overContent(peek, (() => { const b = peek.getBoundingClientRect(), w = peek.offsetWidth; return { left: window.innerWidth - w * 0.62, top: b.top, width: w * 0.6, height: w }; })()));
   }
