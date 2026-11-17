@@ -91,11 +91,15 @@ Cada push a `main` se publica solo.
    - Modal (`t-flowry`): a la izquierda texto, chips (rituales de mañana y noche, gratitud diaria, seguimiento de hábitos, compromisos, jardín de sueños y brotes, ciclo lunar · ciclo menstrual, calendario de evolución), debajo el botón "Anotarme en Waitlist Beta" solo, y el bloque "Integrándome · Creatividad y tecnologIA". A la derecha (en celular, en el medio) un teléfono que se usa: splash con la flor que se abre, ritual de mañana (respiración real de 5 ciclos, intención), app con pestañas inicio / calendario (rituales, compromisos, lunas reales) / compromisos / jardín (se riega tocando) / beta, y ritual de noche que suma la flor del día. Todo con textos genéricos, sin datos personales.
    - Lista de espera: constante `FLOWRY_BETA_URL` en el script. Mientras esté vacía, el botón dice "La lista de espera abre muy pronto." **Falta el link real (Tally o Google Forms).**
    - Desktop: la segunda fila tiene 4 cards (Profesional, Jousie, Creadora de ropa, Flowry) y `.cards` mide hasta 62rem.
-7. **Runner** (fila propia debajo de las 4 chicas, ocupa todo el ancho). Card con solo el contador: "Runner · récord" y 15,0 km en dígitos azules. Pie: "Ver recorridos".
-   - Hover: el contador vuelve a subir de 0 a 15,0.
+7. **Runner** (fila nueva debajo de las 4 chicas, media fila al lado de Del mundo; en celular también comparten fila). Card con solo el contador: "Runner · récord" y dígitos azules. Pie: "Ver recorridos".
+   - Arranca en 00,0 y cuenta hasta 15,0 cuando la card aparece. En hover vuelve a contar.
    - Modal (`t-runner`): "Mi récord, kilómetro a kilómetro". Los números suben hasta 15,0 km en azul, con barra 5 km · 10 km · récord. Al terminar aparece la caja del récord (Buenos Aires verde: Libertador, Palermo, edificios y Obelisco; 15 km · Saucony Buenos Aires · 18 oct 2026 · 5:40 /km · ≈1 h 25 min) y después la del próximo objetivo (cerros en capas y salina): Raid de los Andes · Jujuy, mayo 2027 (fecha a confirmar), Salinas Grandes a 3.400 m · Tumbaya – Purmamarca. La caja del Raid no se toca.
    - **Falta la fecha 2027 del Raid (no está publicada) y la distancia que va a correr Josefina.**
-   - Mockups y la sección Viajera (mapa como obra, todavía no implementada; la elegida es "Acuarela a mano" en azules con barras por continente): https://claude.ai/artifact/E5pLjPh8CoHAKJBgvmhFeE
+   - Mockups: https://claude.ai/artifact/E5pLjPh8CoHAKJBgvmhFeE
+8. **Del mundo** (Viajera; al lado de Runner). Card: "15,4% · 30 países" con la acuarela a mano de fondo (encuadre libre, no hace falta que respete el mapa). Pie: "Ver mapa".
+   - Modal (`t-mundo`): mapa con círculos acuarelados en azules, uno por lugar, en coordenadas reales (proyección plana lat/long, con margen arriba y abajo). Todos los puntos están desde el principio, suaves y sin órbita. Con el mouse o el dedo se nombra el lugar más cercano. Abajo: "15,4% del mundo · 30 de 195 países" y barras por continente.
+   - Lugares: 87 puntos en 30 países (lista de Josefina, nov 2026). Turquía: Estambul con un punto en Europa y otro en Asia.
+   - Guardado para después: "Próximos destinos" (El Chaltén, Tokio) y la conexión con los videos del mar.
 
 **Pixel de nubes (el pixel escondido).** Cuadrado con `nubes-dither` fijo al borde derecho, asomando a la mitad (abajo en celular). Aparece recién cuando las cards terminaron de desenfocarse y se esconde al salir del cielo. Casi quieto (2 px de vaivén); en hover sale un poco, toma sombra y muestra "mis nubes".
    - Al tocarlo se agranda desde su lugar. Lupa que muestra la foto real (`nubes`) y botón "Ver foto entera".

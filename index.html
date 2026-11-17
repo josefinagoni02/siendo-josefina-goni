@@ -138,7 +138,45 @@ h1 .ch { display: inline-block; animation: arrive 1.3s cubic-bezier(.2,.7,.1,1) 
 @media (min-width: 760px) { .wide .card { flex-direction: column; align-items: stretch; } .wide .foot { margin-top: auto; padding-top: 0.6rem; border-top: 1px solid var(--line); margin-left: 0; } }
 
 /* Runner: fila propia debajo de las 4 chicas, solo el contador */
-.slot.run-slot { grid-column: 1 / -1; }
+.slot.run-slot, .slot.via-slot { grid-column: span 2; }
+/* en celular, Runner y Del mundo comparten fila */
+@media (max-width: 759px) {
+  .slot.run-slot, .slot.via-slot { grid-column: span 1; }
+  .run-card .cnt-d { gap: 0.18rem; }
+  .run-card .cnt-d .dg { font-size: 1.9rem; border-radius: 7px; }
+  .run-card .cnt-d .cm { font-size: 1.5rem; }
+  .run-card .cnt-d .u { font-size: 0.95rem; }
+  .via-card { padding-right: 1rem; }
+  .via-card .via-art { width: 100%; opacity: 0.8; }
+  .via-card .pc { font-size: 1.3rem; }
+  .via-card .name { font-size: 1.2rem; }
+  .via-card .desc { font-size: 0.75rem; }
+  .via-card .foot { margin-right: 0; }
+}
+/* Del mundo (Viajera): card con la acuarela */
+.via-card { padding-right: 58%; }
+.via-card .via-art { position: absolute; z-index: 0; top: 0; right: 0; bottom: 0; width: 64%; pointer-events: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%); mask-image: linear-gradient(90deg, transparent, #000 22%); }
+.via-card .via-art svg { width: 100%; height: 100%; display: block; }
+.via-card .txt { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 0.2rem; }
+.via-card .pc { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; color: #2a62b8; line-height: 1; }
+.via-card .foot { margin-right: -138%; }
+/* Del mundo: modal */
+.panel[data-kind="mundo"] { max-width: 60rem; }
+.mu-map { position: relative; border-radius: 18px; overflow: hidden; background: #f7f3ea; }
+.mu-map svg { display: block; width: 100%; height: auto; touch-action: none; cursor: crosshair; }
+.mu-dot { transition: opacity 0.6s ease, r 0.4s ease; }
+.mu-lbl { font-family: var(--font-body); font-size: 15px; fill: #3d5878; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; paint-order: stroke; stroke: #f7f3ea; stroke-width: 5px; }
+.mu-lbl.on { opacity: 1; }
+.mu-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 1.4rem; align-items: start; }
+@media (max-width: 759px) { .mu-row { grid-template-columns: 1fr; } }
+.mu-big { font-family: var(--font-display); font-size: 3rem; line-height: 1; }
+.mu-sub { font-size: 0.85rem; color: var(--ink-soft); }
+.mu-bar { display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.6rem; margin-bottom: 0.6rem; font-size: 0.86rem; }
+.mu-bar .fr { color: var(--ink-soft); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.mu-bar .tr { grid-column: 1 / 3; height: 4px; border-radius: 9px; background: rgba(20,40,74,0.08); overflow: hidden; }
+.mu-bar .tr b { display: block; height: 100%; border-radius: 9px; }
+.mu-bar.zero { opacity: 0.5; }
+
 .run-card .txt { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
 .cnt-d { display: flex; align-items: flex-end; gap: 0.3rem; margin-top: 0.35rem; }
 .cnt-d .dg { font-family: var(--font-display); font-size: 3rem; line-height: 1; width: 0.8em; height: 1.1em; display: flex; align-items: center; justify-content: center; color: #2a62b8; background: rgba(93,156,232,0.12); border: 1px solid rgba(93,156,232,0.35); border-radius: 10px; }
@@ -1171,6 +1209,17 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
           <span class="foot"><span class="domain"></span><span class="more">Ver recorridos <span aria-hidden="true">→</span></span></span>
         </button>
       </div>
+      <div class="slot via-slot">
+        <button class="card via-card" id="viaCard" data-detail="mundo" aria-haspopup="dialog">
+          <span class="via-art" id="viaArt" aria-hidden="true"></span>
+          <span class="txt">
+            <span class="kind">Viajera</span>
+            <span class="name">Del mundo</span>
+            <span class="desc"><span class="pc" id="viaPc">–</span> · <span id="viaN"></span> países</span>
+          </span>
+          <span class="foot"><span class="domain"></span><span class="more">Ver mapa <span aria-hidden="true">→</span></span></span>
+        </button>
+      </div>
     </div>
 
     <button class="hint" id="hint" type="button">
@@ -1623,6 +1672,18 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       <span class="tx"><span>Próximo objetivo · Mayo 2027 (fecha a confirmar)</span><b>Raid de los Andes · Jujuy</b><span>Salinas Grandes a 3.400 m · Tumbaya – Purmamarca</span></span>
       <span class="end">Próximo</span>
     </div>
+  </div>
+</template>
+
+<template id="t-mundo">
+  <div><span class="label">Viajera</span><h2 class="d-title" id="d-title">Del mundo</h2></div>
+  <div class="mu-map js-mu-map" role="img" aria-label="Mapa en acuarela con los lugares donde estuve"></div>
+  <div class="mu-row">
+    <div>
+      <div class="mu-big js-mu-pc"></div>
+      <div class="mu-sub js-mu-n"></div>
+    </div>
+    <div class="js-mu-bars"></div>
   </div>
 </template>
 
@@ -2508,6 +2569,104 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     const tick = t => { if (!body.contains(dg)) return; const k = Math.min(1, (t - t0) / 2200); paint(REC * (1 - Math.pow(1 - k, 4))); if (k < 1) requestAnimationFrame(tick); else reveal(); };
     requestAnimationFrame(tick);
   }
+  /* ---------- Del mundo: mapa en acuarela con los lugares reales ---------- */
+  const MU = `sa|Argentina|Buenos Aires|-34.60|-58.38;sa|Argentina|Mar del Plata|-38.00|-57.56;sa|Argentina|Bariloche|-41.13|-71.31;sa|Argentina|El Bolsón|-41.96|-71.53;sa|Argentina|Córdoba|-31.42|-64.18;sa|Argentina|Mendoza|-32.89|-68.84;sa|Argentina|Yerba Buena, Tucumán|-26.82|-65.32;sa|Argentina|Tilcara, Jujuy|-23.58|-65.40;sa|Argentina|Cafayate, Salta|-26.07|-65.98;sa|Argentina|Merlo, San Luis|-32.34|-65.01;sa|Brasil|Río de Janeiro|-22.91|-43.17;sa|Brasil|Florianópolis|-27.59|-48.55;sa|Brasil|Búzios|-22.75|-41.88;sa|Brasil|Porto de Galinhas|-8.50|-35.00;sa|Chile|Santiago|-33.45|-70.67;sa|Colombia|Bogotá|4.71|-74.07;sa|Colombia|Cartagena|10.39|-75.48;sa|Colombia|Santa Marta|11.24|-74.20;sa|Colombia|Tayrona|11.31|-74.03;sa|Colombia|Barú|10.18|-75.62;sa|Perú|Lima|-12.05|-77.04;sa|Perú|Cusco|-13.53|-71.97;sa|Perú|Arequipa|-16.41|-71.54;sa|Perú|Máncora|-4.10|-81.05;sa|Uruguay|Montevideo|-34.90|-56.16;sa|Uruguay|Punta del Este|-34.96|-54.95;sa|Uruguay|Colonia|-34.47|-57.84;na|Estados Unidos|Nueva York|40.71|-74.01;na|Estados Unidos|Miami|25.76|-80.19;na|Estados Unidos|San Francisco|37.77|-122.42;na|Estados Unidos|Los Ángeles|34.05|-118.24;na|Estados Unidos|Minneapolis|44.98|-93.27;na|Estados Unidos|Chicago|41.88|-87.63;na|Estados Unidos|Gran Cañón|36.11|-112.11;na|Estados Unidos|Disney, Orlando|28.39|-81.56;na|Estados Unidos|Wisconsin|44.50|-89.50;na|México|Tulum|20.21|-87.47;na|México|Cancún|21.16|-86.85;na|México|Playa del Carmen|20.63|-87.08;na|Costa Rica|San José|9.93|-84.08;na|Costa Rica|Santa Teresa|9.65|-85.17;na|Costa Rica|Tamarindo|10.30|-85.84;na|Costa Rica|Puerto Viejo|9.66|-82.75;na|Costa Rica|La Fortuna|10.47|-84.64;na|Guatemala|Ciudad de Guatemala|14.63|-90.51;na|Guatemala|Antigua|14.56|-90.73;na|Guatemala|Lago Atitlán|14.69|-91.20;na|Guatemala|Acatenango|14.50|-90.88;na|Panamá|Ciudad de Panamá|8.98|-79.52;na|Panamá|Bocas del Toro|9.34|-82.24;na|Panamá|San Blas|9.57|-78.83;na|Panamá|Playa Venao|7.43|-80.19;na|República Dominicana|Punta Cana|18.58|-68.40;na|Bahamas|Bahamas|25.04|-77.35;eu|Albania|Ksamil|39.77|20.00;eu|Alemania|Berlín|52.52|13.40;eu|Austria|Viena|48.21|16.37;eu|Bélgica|Bruselas|50.85|4.35;eu|Bélgica|Brujas|51.21|3.22;eu|Ciudad del Vaticano|Ciudad del Vaticano|41.90|12.45;eu|Croacia|Split|43.51|16.44;eu|Croacia|Dubrovnik|42.65|18.09;eu|Croacia|Hvar|43.17|16.44;eu|Dinamarca|Copenhague|55.68|12.57;eu|España|Madrid|40.42|-3.70;eu|España|Barcelona|41.39|2.17;eu|España|Sevilla|37.39|-5.98;eu|España|Valencia|39.47|-0.38;eu|España|Mallorca|39.57|2.65;eu|España|Ibiza|38.91|1.43;eu|España|Granada|37.18|-3.60;eu|Francia|París|48.86|2.35;eu|Francia|Niza|43.70|7.27;eu|Francia|Marsella|43.30|5.37;eu|Hungría|Budapest|47.50|19.04;eu|Italia|Roma|41.90|12.50;eu|Italia|Costa Amalfitana|40.63|14.60;eu|Italia|Tropea|38.68|15.90;eu|Países Bajos|Ámsterdam|52.37|4.90;eu|Portugal|Lisboa|38.72|-9.14;eu|Portugal|Sintra|38.80|-9.38;eu|Portugal|Algarve|37.02|-7.93;eu|Reino Unido|Londres|51.51|-0.13;eu|República Checa|Praga|50.08|14.44;eu|Turquía|Estambul (lado europeo)|41.01|28.98;as|Turquía|Estambul (lado asiático)|40.99|29.03;af|Marruecos|Marrakech|31.63|-7.99`
+    .split(';').map(r => { const [k, c, n, lat, lon] = r.split('|'); return { k, c, n, lat: +lat, lon: +lon }; });
+  const MU_CONT = { sa: ['Sudamérica', 12], na: ['Norte y Centroamérica', 23], eu: ['Europa', 44], as: ['Asia', 48], af: ['África', 54], oc: ['Oceanía', 14] };
+  const MU_COL = { sa: '#2a5fae', na: '#4f8fdf', eu: '#7fb0ec', as: '#5a86c9', af: '#9fc3f0', oc: '#c4d6ea' };
+  const muCountries = k => new Set(MU.filter(p => !k || p.k === k).map(p => p.c)).size;
+  const muPct = (a, b) => (a / b * 100).toFixed(1).replace('.', ',') + '%';
+  const muSeed = (i, j = 0) => { const x = Math.sin(i * 127.1 + j * 311.7) * 43758.5453; return x - Math.floor(x); };
+  // proyección: coordenadas reales; el encuadre se ajusta a donde estuve para que se vea cerca y ocupe el ancho
+  const R = Math.PI / 180;
+  const PROJ = {
+    plana: p => [p.lon, -p.lat],
+    natural: p => { const f = p.lat * R, l = p.lon * R, f2 = f * f, f4 = f2 * f2; return [l * (0.8707 - 0.131979 * f2 + f4 * (-0.013791 + f4 * (0.003971 * f2 - 0.001529 * f4))) / R, -f * (1.007226 + f2 * (0.015085 + f4 * (-0.044475 + 0.028874 * f2 - 0.005916 * f4))) / R]; }
+  };
+  const MW = 1000, PADX = 60, PADY = 150; let MH = 600, muFit, muProj = 'plana', muRK = 1;
+  function setProj(name) {
+    muProj = name;
+    const pts = MU.map(PROJ[name]), xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+    const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+    MH = Math.round((MW - PADX) * (maxY - minY) / (maxX - minX) + PADY);
+    const s = Math.min((MW - PADX) / (maxX - minX), (MH - PADY) / (maxY - minY));
+    muFit = { s, ox: MW / 2 - (minX + maxX) / 2 * s, oy: MH / 2 - (minY + maxY) / 2 * s };
+  }
+  setProj('plana');
+  const muXY = p => { const [x, y] = PROJ[muProj](p); return [x * muFit.s + muFit.ox, y * muFit.s + muFit.oy]; };
+  function muArt(id, opt) {
+    let defs = `<filter id="${id}gr" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="9" result="t"/><feComposite in="SourceGraphic" in2="t" operator="arithmetic" k1="0" k2="1" k3="-.07" k4=".02" result="c"/><feComposite in="c" in2="SourceGraphic" operator="in"/></filter>
+      <filter id="${id}ds" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="11"/></filter>`;
+    let art = '';
+    const byK = {}; MU.forEach((p, i) => (byK[p.k] = byK[p.k] || []).push([p, i]));
+    if (opt === 'mano') {
+      for (let j = 0; j < 3; j++) defs += `<filter id="${id}hw${j}" x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur in="SourceGraphic" stdDeviation="${8 + j * 2}" result="b"/><feColorMatrix in="b" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 16 -6" result="g"/><feTurbulence type="fractalNoise" baseFrequency="${0.03 + j * 0.02}" numOctaves="4" seed="${3 + j * 11}" result="n"/><feDisplacementMap in="g" in2="n" scale="${14 + j * 5}" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation=".7" result="s"/><feColorMatrix in="s" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 ${[.3, .22, .16][j]} 0"/></filter>`;
+      Object.entries(byK).forEach(([k, g]) => {
+        for (let j = 0; j < 3; j++) art += `<g filter="url(#${id}hw${j})" style="mix-blend-mode:multiply">${g.map(([p, i]) => { const [x, y] = muXY(p); return `<circle cx="${(x + (muSeed(i, j + 5) - .5) * 10).toFixed(1)}" cy="${(y + (muSeed(i, j + 8) - .5) * 10).toFixed(1)}" r="${((20 + j * 5 + muSeed(i, j) * 6) * muRK).toFixed(1)}" fill="${MU_COL[k]}"/>`; }).join('')}</g>`;
+        art += `<g filter="url(#${id}ds)" style="mix-blend-mode:multiply">${g.map(([p]) => { const [x, y] = muXY(p); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="${MU_COL[k]}" fill-opacity=".22"/>`; }).join('')}</g>`;
+      });
+    } else {
+      // círculos acuarelados: cada lugar es una pincelada redonda, transparente y con borde irregular
+      defs += `<filter id="${id}cw" x="-30%" y="-30%" width="160%" height="160%"><feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="3" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="1.1"/></filter>`;
+      art += `<g filter="url(#${id}cw)">${MU.map((p, i) => { const [x, y] = muXY(p), r = (13 + muSeed(i) * 13) * muRK, c = MU_COL[p.k]; return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="${c}" fill-opacity=".2" style="mix-blend-mode:multiply"/><circle cx="${(x + (muSeed(i, 3) - .5) * r * .4).toFixed(1)}" cy="${(y + (muSeed(i, 4) - .5) * r * .4).toFixed(1)}" r="${(r * .55).toFixed(1)}" fill="${c}" fill-opacity=".14" style="mix-blend-mode:multiply"/>`; }).join('')}</g>`;
+    }
+    return { defs, art: `<g filter="url(#${id}gr)">${art}</g>` };
+  }
+  function muSvg(id, opt, withDots) {
+    const { defs, art } = muArt(id, opt);
+    // la card no necesita respetar el mapa entero: se encuadra apretada sobre las manchas
+    let vb = `0 0 ${MW} ${MH}`;
+    if (!withDots) { const pts = MU.map(muXY), xs = pts.map(p => p[0]), ys = pts.map(p => p[1]); const x0 = Math.min(...xs) - 30, y0 = Math.min(...ys) - 30; vb = `${x0} ${y0} ${Math.max(...xs) + 30 - x0} ${Math.max(...ys) + 30 - y0}`; }
+    return `<svg viewBox="${vb}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>${defs}</defs>${withDots ? `<rect width="${MW}" height="${MH}" fill="#f7f3ea"/>` : ''}${art}${withDots ? '<g class="js-mu-dots"></g><g class="js-mu-lbls"></g>' : ''}</svg>`;
+  }
+  muRK = 1.6; document.getElementById('viaArt').innerHTML = muSvg('mc', 'mano', false); muRK = 1;
+  document.getElementById('viaPc').textContent = muPct(muCountries(), 195);
+  document.getElementById('viaN').textContent = muCountries();
+  let muStop = null;
+  function startMundo() {
+    const box = body.querySelector('.js-mu-map');
+    body.querySelector('.js-mu-pc').textContent = muPct(muCountries(), 195) + ' del mundo';
+    body.querySelector('.js-mu-n').textContent = `${muCountries()} de 195 países`;
+    body.querySelector('.js-mu-bars').innerHTML = Object.entries(MU_CONT).map(([k, [n, t]]) => { const c = muCountries(k); return `<div class="mu-bar${c ? '' : ' zero'}"><span>${n}</span><span class="fr">${c}/${t}</span><span class="tr"><b style="width:${Math.max(c ? 3 : 0, c / t * 100)}%;background:${MU_COL[k]}"></b></span></div>`; }).join('');
+    const NS = 'http://www.w3.org/2000/svg';
+    const mk = (tag, a, p) => { const n = document.createElementNS(NS, tag); for (const k in a) n.setAttribute(k, a[k]); p.appendChild(n); return n; };
+    function render() {
+      muRK = box.clientWidth && box.clientWidth < 600 ? 1.7 : 1;
+      box.innerHTML = muSvg('mm', 'circ', true);
+      muRK = 1;
+      const svg = box.querySelector('svg'), dg = svg.querySelector('.js-mu-dots'), lg = svg.querySelector('.js-mu-lbls');
+      // todos los puntos ya están; con el mouse o el dedo se nombra el lugar más cercano
+      const K = box.clientWidth < 600 ? 1.8 : 1;
+      const dots = MU.map(p => { const [x, y] = muXY(p); return { p, x, y, d: mk('circle', { cx: x, cy: y, r: 2.6 * K, fill: '#14284a', opacity: .3, class: 'mu-dot' }, dg) }; });
+      const lbl = mk('text', { class: 'mu-lbl' }, lg);
+      let cur = null;
+      const show = o => {
+        if (cur === o) return;
+        if (cur) { cur.d.setAttribute('opacity', .3); cur.d.setAttribute('r', 2.6 * K); }
+        cur = o;
+        if (!o) { lbl.classList.remove('on'); return; }
+        o.d.setAttribute('opacity', .85); o.d.setAttribute('r', 3.6 * K);
+        lbl.style.fontSize = (15 * K) + 'px';
+        const right = o.x > MW - 260;
+        lbl.setAttribute('x', right ? o.x - 12 : o.x + 12); lbl.setAttribute('y', o.y - 10); lbl.setAttribute('text-anchor', right ? 'end' : 'start');
+        lbl.textContent = o.p.n === o.p.c ? o.p.n : `${o.p.n} · ${o.p.c}`;
+        lbl.classList.add('on');
+      };
+      const near = e => {
+        const r = svg.getBoundingClientRect(), k = MW / r.width;
+        const x = (e.clientX - r.left) * k, y = (e.clientY - r.top) * k;
+        let best = null, bd = (40 * K) ** 2;
+        dots.forEach(o => { const d = (o.x - x) ** 2 + (o.y - y) ** 2; if (d < bd) { bd = d; best = o; } });
+        show(best);
+      };
+      svg.addEventListener('pointermove', near);
+      svg.addEventListener('pointerdown', near);
+      svg.addEventListener('pointerleave', () => show(null));
+    }
+    render();
+    return () => {};
+  }
+
   function startEffects(kind) {
     panel.classList.add('go');
     if (kind === 'atlas') startMotion();
@@ -2522,6 +2681,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     if (kind === 'ropa') startSew();
     if (kind === 'flowry') fyStop = initFlowry(body);
     if (kind === 'runner') startRunner();
+    if (kind === 'mundo') muStop = startMundo();
   }
   function openDetail(el) {
     openedFrom = el;
@@ -2558,6 +2718,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     const from = openedFrom;
     const tEl = body.querySelector('.js-type'); if (tEl) tEl._tok = null;
     if (stopMotion) { stopMotion(); stopMotion = null; }
+    if (muStop) { muStop(); muStop = null; }
     if (fyStop) { fyStop(); fyStop = null; }
     if (window.Lunatica) window.Lunatica.unmount();
     const done = () => {
