@@ -23,6 +23,7 @@ Cada push a `main` se publica solo.
 
 - Editar `index.html` directo. Después de cada cambio: revisar que el script no tenga errores, probar en compu (~1300 px) y celular (390 px), y verificar que no haya scroll horizontal.
 - No armar zips ni mandar archivos salvo que Josefina lo pida.
+- No armar vistas previas como artifacts: los cambios se hacen en este repo y se ven en Vercel.
 - Hacer commit y push solo cuando ella lo pida.
 - No inventar datos. Lo que falta va como `[placeholder]` y se avisa.
 - No reproducir logos de marcas (Instagram, WhatsApp): usar íconos genéricos.
@@ -85,6 +86,11 @@ Cada push a `main` se publica solo.
    - Modal (`t-flowry`): a la izquierda texto, chips (rituales de mañana y noche, gratitud diaria, seguimiento de hábitos, compromisos, jardín de sueños y brotes, ciclo lunar · ciclo menstrual, calendario de evolución), debajo el botón "Anotarme en Waitlist Beta" solo, y el bloque "Integrándome · Creatividad y tecnologIA". A la derecha (en celular, en el medio) un teléfono que se usa: splash con la flor que se abre, ritual de mañana (respiración real de 5 ciclos, intención), app con pestañas inicio / calendario (rituales, compromisos, lunas reales) / compromisos / jardín (se riega tocando) / beta, y ritual de noche que suma la flor del día. Todo con textos genéricos, sin datos personales.
    - Lista de espera: constante `FLOWRY_BETA_URL` en el script. Mientras esté vacía, el botón dice "La lista de espera abre muy pronto." **Falta el link real (Tally o Google Forms).**
    - Desktop: la segunda fila tiene 4 cards (Profesional, Jousie, Creadora de ropa, Flowry) y `.cards` mide hasta 62rem.
+7. **Runner** (fila propia debajo de las 4 chicas, ocupa todo el ancho). Card con solo el contador: "Runner · récord" y 15,0 km en dígitos azules. Pie: "Ver recorridos".
+   - Hover: el contador vuelve a subir de 0 a 15,0.
+   - Modal (`t-runner`): "Mi récord, kilómetro a kilómetro". Los números suben hasta 15,0 km en azul, con barra 5 km · 10 km · récord. Al terminar aparece la caja del récord (Buenos Aires verde: Libertador, Palermo, edificios y Obelisco; 15 km · Saucony Buenos Aires · 18 oct 2026 · 5:40 /km · ≈1 h 25 min) y después la del próximo objetivo (cerros en capas y salina): Raid de los Andes · Jujuy, mayo 2027 (fecha a confirmar), Salinas Grandes a 3.400 m · Tumbaya – Purmamarca. La caja del Raid no se toca.
+   - **Falta la fecha 2027 del Raid (no está publicada) y la distancia que va a correr Josefina.**
+   - Mockups y la sección Viajera (mapa como obra, todavía no implementada; la elegida es "Acuarela a mano" en azules con barras por continente): https://claude.ai/artifact/E5pLjPh8CoHAKJBgvmhFeE
 
 **Pixel de nubes (el pixel escondido).** Cuadrado con `nubes-dither` fijo al borde derecho, asomando a la mitad (abajo en celular). Aparece recién cuando las cards terminaron de desenfocarse y se esconde al salir del cielo. Casi quieto (2 px de vaivén); en hover sale un poco, toma sombra y muestra "mis nubes".
    - Al tocarlo se agranda desde su lugar. Lupa que muestra la foto real (`nubes`) y botón "Ver foto entera".
@@ -117,6 +123,6 @@ Desde ahora, **este repo es la versión oficial**. El artifact de la landing que
 - **Flowry:** ya está la card, el modal con el teléfono y el nexo desde Profesional. Falta el link real de la lista de espera. Ideas sin implementar (artifact "Flowry en el portfolio", https://claude.ai/artifact/Sn6jASRrTjDYyi94GtqEqg): nexos con Recorrido (punto 11), Lunática (pestaña lunas) y Gracias (gratitud nocturna).
 - **Unir los puntos:** línea de tiempo en Exploraciones. 2018 costura · 2019 The Night Co · Minnesota · Madrid · 2020 Jousie · 2023 cierra The Night Co · 2024 Amalgama · Atlas · Lunática · 2025 joyería · 2026 vestido y Flowry → todo se une en "Hoy". Faltan los años de Minnesota, Madrid, Atlas y Lunática.
 - **Lunática:** mapa genérico "cómo leo una luna" que se completa con flechas, y calendario lunar con talleres cargados a mano.
-- **Guardado para después:** frase rotativa con todas las versiones (fotógrafa, product owner, lunática, Jousie, viajera, fanática de la playa, runner); barra vertical de km para runner (hasta 15 km, "Corro para poder viajar"); libros, música, tarot; cafecitos con ranking y recorrido; mapa de pendientes; "Located in" con Minnesota y Madrid.
+- **Guardado para después:** frase rotativa con todas las versiones (fotógrafa, product owner, lunática, Jousie, viajera, fanática de la playa, runner); libros, música, tarot; cafecitos con ranking y recorrido; mapa de pendientes; "Located in" con Minnesota y Madrid.
 - **Dominio propio** (por ejemplo `josefinagoni.com` o `.com.ar`).
 - **Probador del Atlas:** ver si acepta un dato en el link para abrir directo con una foto elegida.

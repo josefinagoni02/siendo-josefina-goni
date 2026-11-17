@@ -137,6 +137,39 @@ h1 .ch { display: inline-block; animation: arrive 1.3s cubic-bezier(.2,.7,.1,1) 
 .wide .foot { margin-top: 0; padding-top: 0; border-top: 0; margin-left: auto; }
 @media (min-width: 760px) { .wide .card { flex-direction: column; align-items: stretch; } .wide .foot { margin-top: auto; padding-top: 0.6rem; border-top: 1px solid var(--line); margin-left: 0; } }
 
+/* Runner: fila propia debajo de las 4 chicas, solo el contador */
+.slot.run-slot { grid-column: 1 / -1; }
+.run-card .txt { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+.cnt-d { display: flex; align-items: flex-end; gap: 0.3rem; margin-top: 0.35rem; }
+.cnt-d .dg { font-family: var(--font-display); font-size: 3rem; line-height: 1; width: 0.8em; height: 1.1em; display: flex; align-items: center; justify-content: center; color: #2a62b8; background: rgba(93,156,232,0.12); border: 1px solid rgba(93,156,232,0.35); border-radius: 10px; }
+.cnt-d .cm { font-family: var(--font-display); font-size: 2.4rem; color: #2a62b8; line-height: 1; }
+.cnt-d .u { font-family: var(--font-display); font-style: italic; font-size: 1.3rem; color: var(--ink-soft); margin: 0 0 0.3em 0.25rem; }
+/* Runner: modal */
+.ro { display: flex; flex-direction: column; gap: 1rem; }
+.ro-top { display: flex; justify-content: space-between; align-items: center; }
+.ro-digits { display: flex; align-items: flex-end; gap: 0.35rem; }
+.ro-dg { font-family: var(--font-display); font-size: clamp(4rem, 14vw, 6.4rem); line-height: 1; width: 0.78em; height: 1.08em; display: flex; align-items: center; justify-content: center; color: #2a62b8; background: rgba(93,156,232,0.12); border: 1px solid rgba(93,156,232,0.35); border-radius: 14px; }
+.ro-comma { font-family: var(--font-display); font-size: clamp(3rem, 10vw, 4.6rem); color: #2a62b8; line-height: 1; }
+.ro-unit { font-family: var(--font-display); font-style: italic; font-size: clamp(1.4rem, 4vw, 1.9rem); color: var(--ink-soft); margin: 0 0 0.35em 0.3rem; }
+.ro-track { position: relative; height: 2.2rem; }
+.ro-track .b { position: absolute; left: 0; right: 0; top: 6px; height: 3px; background: rgba(20,40,74,0.1); border-radius: 9px; }
+.ro-track .f { position: absolute; left: 0; top: 6px; height: 3px; width: 0; background: #3b7fd6; border-radius: 9px; }
+.ro-track .mk { position: absolute; top: 17px; transform: translateX(-50%); font-size: 0.72rem; color: var(--ink-soft); font-weight: 600; }
+.ro-track .mk:last-child { transform: translateX(-100%); }
+.ro-track .mk.on { color: var(--ink); }
+.ro-box { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 112px; border-radius: 16px; overflow: hidden; padding: 0.9rem 1rem 1.7rem; border: 1px solid var(--line); opacity: 0; transform: translateY(8px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.ro-box.on { opacity: 1; transform: none; }
+.ro-box .bg { position: absolute; inset: 0; z-index: 0; }
+.ro-box .bg svg { width: 100%; height: 100%; display: block; }
+.ro-box .tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 0.15rem; background: rgba(255,255,255,0.86); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 12px; padding: 0.55rem 0.85rem; }
+.ro-box .tx b { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; line-height: 1; }
+.ro-box .tx span { font-size: 0.8rem; color: var(--ink-soft); }
+.ro-box .end { position: relative; z-index: 1; font-size: 0.75rem; font-weight: 600; padding: 0.35rem 0.7rem; border-radius: 999px; background: #fff; }
+.ro-rec { background: #e9f2e3; }
+.ro-rec .end { color: #2f6b3f; }
+.ro-next { background: #f6ead9; }
+.ro-next .end { color: #7a4a2a; }
+
 /* Atlas: mapa con cursor en hover */
 .map { position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background: repeating-linear-gradient(0deg, transparent 0 27px, rgba(20,40,74,0.07) 27px 28px), repeating-linear-gradient(90deg, transparent 0 27px, rgba(20,40,74,0.07) 27px 28px); }
@@ -973,6 +1006,15 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
           <span class="foot"><span class="domain">Mi app</span><span class="more">Ver más <span aria-hidden="true">→</span></span></span>
         </button>
       </div>
+      <div class="slot run-slot">
+        <button class="card run-card" id="runCard" data-detail="runner" aria-haspopup="dialog" aria-label="Runner: 15 kilómetros, mi récord. Ver recorridos">
+          <span class="txt">
+            <span class="kind">Runner · récord</span>
+            <span class="cnt-d" id="cntD" aria-hidden="true"><span class="dg">1</span><span class="dg">5</span><span class="cm">,</span><span class="dg">0</span><span class="u">km</span></span>
+          </span>
+          <span class="foot"><span class="domain"></span><span class="more">Ver recorridos <span aria-hidden="true">→</span></span></span>
+        </button>
+      </div>
     </div>
 
     <button class="hint" id="hint" type="button">
@@ -1429,6 +1471,24 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
         <p class="fy-gt">Creatividad y tecnolog<b>IA</b></p>
         <p class="d-text">Disfruto mucho de materializar mis pasiones y talentos, y de potenciarlos en conjunto.</p>
       </div>
+    </div>
+  </div>
+</template>
+
+<template id="t-runner">
+  <div><span class="label">Runner</span><h2 class="d-title" id="d-title">Mi récord, kilómetro a kilómetro</h2></div>
+  <div class="ro">
+    <div class="ro-digits js-ro-digits" aria-label="15 kilómetros"></div>
+    <div class="ro-track" aria-hidden="true"><div class="b"></div><div class="f js-ro-fill"></div><div class="js-ro-marks"></div></div>
+    <div class="ro-box ro-rec js-ro-rec">
+      <span class="bg js-ro-city" aria-hidden="true"></span>
+      <span class="tx"><span>Récord · mi última carrera</span><b>15 km · Saucony Buenos Aires</b><span>18 oct 2026 · 5:40 /km · ≈1 h 25 min</span></span>
+      <span class="end">Récord</span>
+    </div>
+    <div class="ro-box ro-next js-ro-next">
+      <span class="bg js-ro-mont" aria-hidden="true"></span>
+      <span class="tx"><span>Próximo objetivo · Mayo 2027 (fecha a confirmar)</span><b>Raid de los Andes · Jujuy</b><span>Salinas Grandes a 3.400 m · Tumbaya – Purmamarca</span></span>
+      <span class="end">Próximo</span>
     </div>
   </div>
 </template>
@@ -2232,6 +2292,55 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     const from = el.getBoundingClientRect(), to = panel.getBoundingClientRect();
     return `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`;
   }
+  /* ---------- Runner: arte (Buenos Aires verde y cerros en capas) y contador ---------- */
+  function runCity(id, W = 900, H = 130) {
+    const road = H * 0.78, rnd = i => { const x = Math.sin(i * 57.3 + 11) * 9999; return x - Math.floor(x); };
+    let b = '', t = '', lanes = '', i = 0;
+    for (let x = 0; x < W; i++) { const w = 18 + rnd(i) * 26, h = H * (0.28 + rnd(i + 50) * 0.38); b += `<rect x="${x.toFixed(1)}" y="${(road - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${['#b8d2b0', '#a6c79f', '#c6dcbf'][i % 3]}"/>`; x += w + 2; }
+    const ox = W * 0.62;
+    b += `<polygon points="${ox - 7},${road} ${ox - 4},${H * 0.14} ${ox},${H * 0.06} ${ox + 4},${H * 0.14} ${ox + 7},${road}" fill="#8fb88a"/>`;
+    i = 0; for (let x = 6; x < W; x += 22 + rnd(i) * 14, i++) { const r = 9 + rnd(i + 9) * 9, cy = road - r * 0.9; t += `<line x1="${x}" y1="${cy}" x2="${x}" y2="${road}" stroke="#4d6b52" stroke-width="2"/><circle cx="${x}" cy="${cy}" r="${r.toFixed(1)}" fill="${['#3f7a4b', '#5a9a62', '#77b27a', '#2f6b3f'][i % 4]}"/>`; }
+    for (let x = 0; x < W; x += 26) lanes += `<rect x="${x}" y="${road + (H - road) / 2 - 1}" width="13" height="2" fill="#fff" opacity=".8"/>`;
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><rect width="${W}" height="${H}" fill="#e9f2e3"/>${b}${t}<rect y="${road}" width="${W}" height="${H - road}" fill="#5d7f66"/>${lanes}<rect x="${W * 0.9}" y="${road}" width="4" height="${H - road}" fill="#fff"/></svg>`;
+  }
+  function runCerros(id, W = 900, H = 130) {
+    const salt = H * 0.8, rnd = i => { const x = Math.sin(i * 91.7 + W * 0.37) * 9999; return x - Math.floor(x); };
+    const P = a => a.map(p => p.map(n => n.toFixed(1)).join(',')).join(' ');
+    let art = '';
+    ['#ead2b8', '#e2b48e', '#d9915f', '#b5838d', '#8e6c9e'].forEach((c, L) => {
+      const top = H * (0.12 + L * 0.13), low = top + H * 0.22, step = W / (5 + L * 2);
+      const pts = [[0, salt]]; let x = -step * rnd(L * 7), i = L * 30;
+      while (x < W + step) { pts.push([x, low - (low - top) * (0.35 + rnd(i++) * 0.65)]); x += step * 0.5; pts.push([x, low + (salt - low) * 0.15 * rnd(i++)]); x += step * 0.5; }
+      pts.push([W, salt], [0, salt]);
+      art += `<polygon points="${P(pts)}" fill="${c}"/>`;
+    });
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><pattern id="${id}h" width="28" height="16" patternUnits="userSpaceOnUse"><path d="M0 8 L7 0 H21 L28 8 L21 16 H7 Z" fill="none" stroke="#ddd5c6" stroke-width="1"/></pattern></defs><rect width="${W}" height="${H}" fill="#f6ead9"/>${art}<rect y="${salt}" width="${W}" height="${H - salt}" fill="#fbf9f4"/><rect y="${salt}" width="${W}" height="${H - salt}" fill="url(#${id}h)"/><line x1="0" y1="${salt}" x2="${W}" y2="${salt}" stroke="#e6dfd1"/></svg>`;
+  }
+  const runCardEl = document.getElementById('runCard');
+  // card: en hover el contador vuelve a subir hasta 15,0
+  (() => { const d = document.getElementById('cntD'); if (!d) return; let raf;
+    const paint = v => { const t = v.toFixed(1).replace('.', ',').padStart(4, '0'); d.innerHTML = t.split('').map(c => c === ',' ? '<span class="cm">,</span>' : `<span class="dg">${c}</span>`).join('') + '<span class="u">km</span>'; };
+    runCardEl.addEventListener('pointerenter', () => { if (reduce) return; cancelAnimationFrame(raf); const t0 = performance.now(); const tick = t => { const k = Math.min(1, (t - t0) / 1200); paint(15 * (1 - Math.pow(1 - k, 4))); if (k < 1) raf = requestAnimationFrame(tick); }; raf = requestAnimationFrame(tick); });
+  })();
+  function startRunner() {
+    const REC = 15, MK = [5, 10, 15];
+    const dg = body.querySelector('.js-ro-digits'), fill = body.querySelector('.js-ro-fill'), marks = body.querySelector('.js-ro-marks');
+    const rec = body.querySelector('.js-ro-rec'), next = body.querySelector('.js-ro-next');
+    body.querySelector('.js-ro-city').innerHTML = runCity('rcm', 900, 130);
+    body.querySelector('.js-ro-mont').innerHTML = runCerros('rmm', 900, 130);
+    marks.innerHTML = MK.map(k => `<span class="mk" data-k="${k}" style="left:${k / REC * 100}%">${k === REC ? 'récord' : k + ' km'}</span>`).join('');
+    const paint = v => {
+      dg.innerHTML = v.toFixed(1).replace('.', ',').padStart(4, '0').split('').map(c => c === ',' ? '<span class="ro-comma">,</span>' : `<span class="ro-dg">${c}</span>`).join('') + '<span class="ro-unit">km</span>';
+      fill.style.width = Math.min(100, v / REC * 100) + '%';
+      marks.querySelectorAll('.mk').forEach(m => m.classList.toggle('on', v >= +m.dataset.k - 0.01));
+    };
+    const reveal = () => { rec.classList.add('on'); setTimeout(() => next.classList.add('on'), 700); };
+    if (reduce) { paint(REC); reveal(); return; }
+    paint(0);
+    const t0 = performance.now();
+    const tick = t => { if (!body.contains(dg)) return; const k = Math.min(1, (t - t0) / 2200); paint(REC * (1 - Math.pow(1 - k, 4))); if (k < 1) requestAnimationFrame(tick); else reveal(); };
+    requestAnimationFrame(tick);
+  }
   function startEffects(kind) {
     panel.classList.add('go');
     if (kind === 'atlas') startMotion();
@@ -2245,6 +2354,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     if (kind === 'product') startPixels();
     if (kind === 'ropa') startSew();
     if (kind === 'flowry') fyStop = initFlowry(body);
+    if (kind === 'runner') startRunner();
   }
   function openDetail(el) {
     openedFrom = el;
