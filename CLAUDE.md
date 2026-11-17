@@ -61,7 +61,7 @@ Cada push a `main` se publica solo.
    - Todo vive en `lunatica.js`. Detalle: luna real en vivo (Buenos Aires, vista desde el hemisferio sur) con dial para girarla (una vuelta = un ciclo) y "Volver a hoy"; al lado el taller más cercano a la fecha mirada, con el lema grande, ← Anterior / Siguiente →; chips "Talleres →" y comunidad de WhatsApp; abajo calendario de lunas nuevas y llenas con filtro "Solo con taller". Sin slider.
    - Sección Talleres (se abre desde el chip): archivo de talleres y, al entrar a uno, lema, descripción, datos, mapa y fotos con visor.
    - Datos: `talleres.json` (y copia en el bloque `#talleres-data` de `index.html`). Fotos de talleres: `img/talleres/<id>/…` y se listan en `fotos` como `{ "url": "img/talleres/…" }`. En Vercel no hay editor en la página: los talleres y fotos se cargan en el repo.
-   - `img/luna.jpg`: mapa de la superficie lunar (proyección equirectangular, derivado del mapa de la Luna de los ejemplos de three.js) con el contraste de mares ajustado.
+   - `img/luna.jpg`: la cara visible de la Luna, proyectada como disco desde el mapa LROC 8K de la NASA (Scientific Visualization Studio, CGI Moon Kit, dominio público) y girada 180° como se ve desde el hemisferio sur. La fase y la luz se calculan encima.
    - Mockups: https://claude.ai/artifact/8c4G81fwi5bkvt79vJW5BZ (detalle) y https://claude.ai/artifact/ELukeJ3sGHhMQmyeBdjFxy (opciones de luna).
    - Hover: la card se hace de noche, una luna sigue al cursor y tiene reflejo transparente (sin ondas).
    - Modal: se abre directo de noche y la luna sigue al cursor. Texto: "El ciclo lunar y la astrología como herramienta de autoconocimiento. Una invitación a reconocer nuestra naturaleza cíclica y la energía disponible de cada uno."

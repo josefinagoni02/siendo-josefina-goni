@@ -58,38 +58,21 @@
 
   /* ---------- luna realista: mapa de albedo + iluminación por píxel ---------- */
   let albedoCache = {}, tex = null;
-  // mapa real de la superficie lunar (img/luna.jpg, proyección equirectangular); mientras carga se usa el dibujado
+  // foto real de la cara visible (img/luna.jpg: mapa LROC de la NASA ya proyectado como disco y girado 180° para el hemisferio sur)
   (function loadTex() {
     const im = new Image();
-    im.onload = () => {
-      try {
-        const c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight;
-        const x = c.getContext('2d'); x.drawImage(im, 0, 0);
-        tex = { w: c.width, h: c.height, d: x.getImageData(0, 0, c.width, c.height).data };
-        albedoCache = {}; refresh();
-      } catch (e) {}
-    };
+    im.onload = () => { tex = im; albedoCache = {}; refresh(); };
     im.src = 'img/luna.jpg';
   })();
   function albedoReal(N) {
-    const out = new Uint8ClampedArray(N * N * 4), r = N / 2, { w, h, d } = tex;
-    for (let py = 0; py < N; py++) {
-      for (let px = 0; px < N; px++) {
-        // hemisferio sur: la cara se ve girada 180°
-        const nx = -(px + 0.5 - r) / r, ny = -(r - py - 0.5) / r, r2 = nx * nx + ny * ny, o = (py * N + px) * 4;
-        if (r2 > 1) continue;
-        const nz = Math.sqrt(1 - r2), lat = Math.asin(ny), lon = Math.atan2(nx, nz);
-        const u = Math.min(w - 1, Math.floor(((lon / (2 * Math.PI) + 0.5) % 1) * w)), v = Math.min(h - 1, Math.floor((0.5 - lat / Math.PI) * h));
-        const g = d[(v * w + u) * 4] / 255;
-        const a = g * 246; // el mapa ya trae el contraste de mares y tierras altas
-        out[o] = a * 1.0; out[o + 1] = a * 0.99; out[o + 2] = a * 0.96;
-      }
-    }
-    return out;
+    const c = document.createElement('canvas'); c.width = c.height = N;
+    const x = c.getContext('2d'); x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high';
+    x.drawImage(tex, 0, 0, N, N);
+    return x.getImageData(0, 0, N, N).data;
   }
   function albedo(N) {
     if (albedoCache[N]) return albedoCache[N];
-    if (tex) return (albedoCache[N] = albedoReal(N));
+    if (tex) { try { return (albedoCache[N] = albedoReal(N)); } catch (e) { tex = null; } }
     const c = document.createElement('canvas'); c.width = c.height = N; const x = c.getContext('2d');
     const u = v => (v + 1) / 2 * N, rr = v => v / 2 * N;
     x.fillStyle = 'rgb(206,204,198)'; x.fillRect(0, 0, N, N);
@@ -121,24 +104,24 @@
       g.addColorStop(0, `rgba(214,222,255,${0.05 + 0.3 * a.k})`); g.addColorStop(0.35, `rgba(201,210,255,${0.02 + 0.12 * a.k})`); g.addColorStop(1, 'rgba(201,210,255,0)');
       x.fillStyle = g; x.fillRect(0, 0, S, S);
     }
-    const img = x.createImageData(D, D), d = img.data, dark = opts.dark != null ? opts.dark : 0.55;
+    const img = x.createImageData(D, D), d = img.data, dark = opts.dark != null ? opts.dark : 0.22;
     for (let py = 0; py < D; py++) {
       const ny = (rD - py - 0.5) / rD;
       for (let px = 0; px < D; px++) {
         const nx = (px + 0.5 - rD) / rD, rr2 = nx * nx + ny * ny, o = (py * D + px) * 4;
         if (rr2 > 1) { d[o + 3] = 0; continue; }
         const nz = Math.sqrt(1 - rr2), mu0 = nx * Lx + nz * Lz;
-        const t = Math.min(1, Math.max(0, (mu0 + 0.02) / 0.065)), soft = t * t * (3 - 2 * t);
+        const t = Math.min(1, Math.max(0, (mu0 + 0.012) / 0.045)), soft = t * t * (3 - 2 * t);
         const ls = mu0 > 0 ? (2 * mu0 / (mu0 + nz + 0.0001)) : 0;
-        let b = Math.min(1.08, ls * 0.62 + 0.38 * soft) * soft;
-        b += 0.045 * (1 - soft) * (1 - a.k); // luz cenicienta
+        let b = Math.min(1.12, ls * 0.6 + 0.45 * soft) * soft;
+        b += 0.03 * (1 - soft) * (1 - a.k); // luz cenicienta, apenas
         const edge = Math.min(1, (1 - Math.sqrt(rr2)) * rD * 0.9);
-        d[o] = Math.min(255, A[o] * b * 1.04); d[o + 1] = Math.min(255, A[o + 1] * b * 1.03); d[o + 2] = Math.min(255, A[o + 2] * b * 1.08);
+        const g = A[o] * b * 1.06; d[o] = Math.min(255, g); d[o + 1] = Math.min(255, g); d[o + 2] = Math.min(255, g * 1.02);
         d[o + 3] = 255 * Math.max(0, edge) * Math.max(soft, dark);
       }
     }
     const tmp = tmpCv(D); tmp.getContext('2d').putImageData(img, 0, 0);
-    x.fillStyle = 'rgba(16,22,52,0.95)'; x.beginPath(); x.arc(S / 2, S / 2, rD - 0.5, 0, Math.PI * 2); x.fill();
+    x.fillStyle = 'rgba(7,9,20,0.32)'; x.beginPath(); x.arc(S / 2, S / 2, rD - 0.5, 0, Math.PI * 2); x.fill();
     x.drawImage(tmp, padPx, padPx);
     return a;
   }
@@ -315,7 +298,7 @@
       const a = astro(p.t), w = p.ws && p.ws[0];
       const b = document.createElement('button'); b.type = 'button'; b.className = 'lz-ph' + (p.t < now ? ' was' : '') + (w ? ' has' : '');
       const row = document.createElement('span'); row.className = 'lz-row';
-      const cv = document.createElement('canvas'); cv.width = cv.height = 72; drawMoon(cv, p.t, { pad: 0.08, glow: false, dark: 0.85 });
+      const cv = document.createElement('canvas'); cv.width = cv.height = 112; drawMoon(cv, p.t, { pad: 0.06, glow: false, dark: 0.85 });
       row.appendChild(cv);
       const cp = w && cover(w);
       if (cp) row.insertAdjacentHTML('beforeend', `<img class="lz-ph-img" src="${esc(photoUrl(cp))}" alt="" loading="lazy">`);
@@ -328,7 +311,8 @@
     if (nowEl) requestAnimationFrame(() => { cal.scrollLeft = nowEl.offsetLeft - cal.clientWidth / 2; });
   }
   function wireLuna() {
-    const dial = $('.lz-dial');
+    const dial = $('.lz-dial'), hd = Math.min(2, window.devicePixelRatio || 1);
+    const mc = $('.lz-moon'); mc.width = mc.height = Math.round(440 * hd);
     const angleAt = e => { const b = dial.getBoundingClientRect(); return Math.atan2(e.clientY - b.top - b.height / 2, e.clientX - b.left - b.width / 2); };
     dial.addEventListener('pointerdown', e => { dragA = angleAt(e); dial.setPointerCapture(e.pointerId); dial.classList.add('dragging'); dial.classList.remove('first'); });
     dial.addEventListener('pointermove', e => {
@@ -387,7 +371,7 @@
         <span class="label">${fmtLong(w.t)}</span><h2 class="d-title" id="d-title">${esc(w.name)}</h2>
       </div>
       <div class="lz-tw">
-        <div class="lz-tw-moon"><canvas width="240" height="240" data-moon-big="${tp}"></canvas><span class="lz-rel">${a.k > 0.5 ? 'Luna llena' : 'Luna nueva'} en ${signOf(a.lon)} · ${fmt(tp)}</span></div>
+        <div class="lz-tw-moon"><canvas width="${Math.round(240 * Math.min(2, window.devicePixelRatio || 1))}" height="${Math.round(240 * Math.min(2, window.devicePixelRatio || 1))}" data-moon-big="${tp}"></canvas><span class="lz-rel">${a.k > 0.5 ? 'Luna llena' : 'Luna nueva'} en ${signOf(a.lon)} · ${fmt(tp)}</span></div>
         <div class="lz-tw-txt">
           ${w.lema ? `<p class="lz-lema big">${esc(w.lema)}</p>` : ''}
           ${w.desc ? `<p class="d-text">${esc(w.desc)}</p>` : ''}
