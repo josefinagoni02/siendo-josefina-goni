@@ -910,6 +910,143 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
 .px-board-wrap > .px-btns { margin-top: .2rem; }
 @media (max-width: 640px) { .px-ed { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 40px; } .px-ed > * { grid-area: var(--gm); } }
 @media (prefers-reduced-motion: reduce) { .peek, .px-view, .px-pane, .px-ed img { transition: none; } .peek .sq { animation: none; } }
+
+/* ---------- Lunática: luna en vivo, taller y sección Talleres ---------- */
+.panel[data-kind="luna"] { max-width: 60rem; }
+.panel[data-kind="talleres"] { max-width: 54rem; }
+.panel[data-kind="luna"], .panel[data-kind="talleres"] { --lz-ink: #eef0ff; --lz-soft: rgba(238,240,255,0.72); --lz-faint: rgba(238,240,255,0.42); --lz-line: rgba(238,240,255,0.15); --lz-glass: rgba(255,255,255,0.055); --lz-halo: #c9d2ff; }
+.panel[data-kind="talleres"] { background: var(--night); color: var(--night-ink); }
+.panel[data-kind="talleres"] .d-text, .panel[data-kind="talleres"] .label { color: rgba(238,240,255,0.82); }
+.panel[data-kind="talleres"] .cta { background: var(--night-ink); color: var(--night); }
+.panel[data-kind="talleres"] .cta.alt { color: var(--night-ink); border-color: rgba(238,240,255,0.35); background: transparent; }
+.lz-luna-head { display: flex; flex-direction: column; gap: 0.35rem; }
+.lz-view { display: flex; flex-direction: column; gap: 1.5rem; min-width: 0; }
+.lz-main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 1.6rem; align-items: center; }
+.lz-moon-col { display: flex; flex-direction: column; align-items: center; gap: 0.65rem; min-width: 0; }
+.lz-dial { position: relative; width: min(20rem, 100%); aspect-ratio: 1; max-width: 100%; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; border-radius: 50%; }
+.lz-dial.dragging { cursor: grabbing; }
+.lz-dial canvas { position: absolute; display: block; }
+.lz-ring { inset: 0; width: 100%; height: 100%; }
+.lz-moon { inset: 15%; width: 70%; height: 70%; }
+.lz-hint { position: absolute; left: 50%; bottom: 3%; transform: translate(-50%, 6px); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; color: var(--lz-ink); background: rgba(11,18,48,0.72); border: 1px solid var(--lz-line); padding: 0.3rem 0.65rem; border-radius: 999px; white-space: nowrap; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
+.lz-dial:hover .lz-hint, .lz-dial:focus-visible .lz-hint, .lz-dial.first .lz-hint { opacity: 1; transform: translate(-50%, 0); }
+.lz-dial.dragging .lz-hint { opacity: 0; }
+.lz-dial:focus-visible { outline: 2px solid var(--lz-halo); outline-offset: 4px; }
+.lz-read { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.15rem; }
+.lz-pct { font: 400 2.5rem/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.lz-pct small { font-size: 1.1rem; color: var(--lz-soft); margin-left: 0.1rem; }
+.lz-phase { font: italic 400 1.12rem/1.2 var(--font-display); }
+.lz-when { font-size: 0.78rem; color: var(--lz-soft); font-variant-numeric: tabular-nums; }
+.lz-today { font: 600 0.7rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--lz-halo); background: none; border: 1px solid rgba(201,210,255,0.4); border-radius: 999px; padding: 0.38rem 0.75rem; cursor: pointer; }
+.lz-ws { display: flex; flex-direction: column; gap: 0.9rem; min-width: 0; }
+.lz-card { border: 1px solid var(--lz-line); border-radius: 18px; padding: 1.35rem 1.35rem 1.15rem; background: var(--lz-glass); display: flex; flex-direction: column; gap: 0.75rem; transition: border-color 0.4s ease, box-shadow 0.4s ease; }
+.lz-card.lit { border-color: rgba(201,210,255,0.55); box-shadow: 0 0 0 1px rgba(201,210,255,0.12), 0 0 50px rgba(201,210,255,0.08); }
+.lz-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.lz-state { font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 0.22rem 0.55rem; border-radius: 999px; border: 1px solid var(--lz-line); color: var(--lz-soft); }
+.lz-state.next { background: var(--lz-ink); color: var(--night); border-color: var(--lz-ink); }
+.lz-rel { font-size: 0.78rem; color: var(--lz-soft); }
+.lz-name { margin: 0; font-weight: 600; font-size: 1.02rem; }
+.lz-lema { margin: 0; font: italic 400 clamp(1.55rem, 3.2vw, 2rem)/1.12 var(--font-display); text-wrap: balance; }
+.lz-lema.big { font-size: clamp(1.8rem, 4vw, 2.5rem); }
+.lz-lema::before { content: "“"; color: var(--lz-halo); }
+.lz-lema::after { content: "”"; color: var(--lz-halo); }
+.lz-dl { margin: 0; display: flex; flex-direction: column; gap: 0.42rem; font-size: 0.88rem; }
+.lz-dl div { display: flex; gap: 0.9rem; }
+.lz-dl dt { width: 4.2rem; flex: none; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--lz-soft); padding-top: 0.2rem; }
+.lz-dl dd { margin: 0; min-width: 0; }
+.lz-map { color: var(--lz-soft); font-size: 0.8rem; }
+.lz-act { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.lz-act .cta { padding: 0.68rem 1.05rem; font-size: 0.88rem; }
+.lz-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 0; border: 0; background: none; cursor: pointer; }
+.lz-thumbs img { width: 100%; aspect-ratio: 1; max-width: 100%; object-fit: cover; border-radius: 7px; display: block; }
+.lz-nav { display: flex; justify-content: space-between; gap: 0.6rem; }
+.lz-nav button { font: 500 0.8rem var(--font-body); color: var(--lz-soft); background: none; border: 0; padding: 0.2rem 0; cursor: pointer; }
+.lz-nav button:hover { color: var(--lz-ink); }
+.lz-nav button:disabled { opacity: 0.3; cursor: default; }
+.lz-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.lz-chip { display: inline-flex; align-items: center; gap: 0.45rem; border: 1px solid rgba(238,240,255,0.32); background: rgba(255,255,255,0.06); color: var(--lz-ink); border-radius: 999px; padding: 0.55rem 0.95rem; font: 600 0.72rem/1 var(--font-body); letter-spacing: 0.11em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background 0.25s ease; }
+.lz-chip:hover { background: rgba(255,255,255,0.14); }
+.lz-chip.solid { background: var(--lz-ink); color: var(--night); border-color: var(--lz-ink); }
+.lz-chip.solid:hover { background: #fff; }
+.lz-chip.danger { background: #e0607e; color: #fff; border-color: #e0607e; }
+.lz-chip .ico { width: 15px; height: 15px; }
+.lz-chip:focus-visible, .lz-back:focus-visible, .lz-tc:focus-visible, .lz-ph:focus-visible, .lz-nav button:focus-visible, .lz-today:focus-visible, .lz-thumbs:focus-visible, .lz-photos button:focus-visible, .lz-seg button:focus-visible { outline: 2px solid var(--lz-halo); outline-offset: 3px; }
+.lz-calwrap { display: flex; flex-direction: column; gap: 0.5rem; }
+.lz-cal-head { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.lz-seg { display: inline-flex; border: 1px solid var(--lz-line); border-radius: 999px; padding: 3px; background: var(--lz-glass); }
+.lz-seg button { font: 600 0.74rem var(--font-body); color: var(--lz-soft); background: none; border: 0; border-radius: 999px; padding: 0.38rem 0.75rem; cursor: pointer; }
+.lz-seg button[aria-pressed="true"] { background: var(--lz-ink); color: var(--night); }
+.lz-cal { display: flex; gap: 0.45rem; overflow-x: auto; padding: 0.3rem 0.1rem 0.7rem; scroll-snap-type: x proximity; scrollbar-width: thin; }
+.lz-cal.only .lz-ph:not(.has), .lz-cal.only .lz-nowmark { display: none; }
+.lz-ph { scroll-snap-align: center; flex: none; width: 6.6rem; display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-start; text-align: left; padding: 0.65rem 0.7rem 0.6rem; border-radius: 14px; border: 1px solid var(--lz-line); background: none; color: var(--lz-ink); font: 500 0.76rem var(--font-body); cursor: pointer; transition: background 0.25s ease, border-color 0.25s ease; }
+.lz-ph:hover { background: rgba(255,255,255,0.05); }
+.lz-ph .lz-row { display: flex; gap: 0.55rem; align-items: center; width: 100%; }
+.lz-ph canvas { width: 2rem; height: 2rem; margin-bottom: 0.15rem; }
+.lz-ph-img { width: 2.6rem; height: 2.6rem; border-radius: 8px; object-fit: cover; margin-left: auto; }
+.lz-ph .lz-d { font-variant-numeric: tabular-nums; color: var(--lz-soft); }
+.lz-ph b { font-weight: 600; font-size: 0.84rem; }
+.lz-ph .lz-lm { font: italic 400 0.95rem/1.2 var(--font-display); }
+.lz-ph .lz-tg { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: var(--lz-halo); }
+.lz-ph.was { opacity: 0.55; }
+.lz-ph.has { width: 11.5rem; opacity: 1; border-color: rgba(201,210,255,0.4); background: rgba(201,210,255,0.06); }
+.lz-ph.sel { background: rgba(201,210,255,0.14); border-color: var(--lz-halo); opacity: 1; }
+.lz-nowmark { flex: none; align-self: stretch; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; padding: 0 0.15rem; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--lz-halo); }
+.lz-nowmark::before, .lz-nowmark::after { content: ""; width: 1px; flex: 1; background: var(--lz-halo); opacity: 0.5; }
+.lz-vhead { display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-start; }
+.lz-back { font: 600 0.8rem var(--font-body); color: var(--lz-soft); background: none; border: 0; padding: 0.2rem 0; margin-bottom: 0.4rem; cursor: pointer; }
+.lz-back:hover { color: var(--lz-ink); }
+.lz-admin { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.lz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(14.5rem, 1fr)); gap: 0.9rem; }
+.lz-tc { display: flex; flex-direction: column; text-align: left; padding: 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--lz-line); background: var(--lz-glass); color: var(--lz-ink); font: inherit; cursor: pointer; transition: border-color 0.3s ease, transform 0.3s ease; }
+.lz-tc:hover { border-color: rgba(201,210,255,0.5); transform: translateY(-2px); }
+.lz-tc-img { position: relative; aspect-ratio: 4 / 3; max-width: 100%; background: radial-gradient(circle at 50% 45%, #1d2760, #0b1230 70%); display: grid; place-items: center; overflow: hidden; }
+.lz-tc-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lz-tc-moon canvas { width: 7.5rem; height: 7.5rem; display: block; }
+.lz-badge { position: absolute; left: 0.6rem; top: 0.6rem; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 0.22rem 0.5rem; border-radius: 999px; background: var(--lz-ink); color: var(--night); }
+.lz-badge.soft { background: rgba(11,18,48,0.6); color: var(--lz-ink); }
+.lz-ph-ed .lz-badge { position: static; }
+.lz-tc-in { display: flex; flex-direction: column; gap: 0.3rem; padding: 0.85rem 0.95rem 1rem; }
+.lz-k { font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--lz-soft); }
+.lz-tc-t { font: 400 1.3rem/1.1 var(--font-display); }
+.lz-tc-l { font: italic 400 1rem/1.3 var(--font-display); color: var(--lz-soft); }
+.lz-tw { display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: 1.6rem; align-items: start; }
+.lz-tw-moon { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; text-align: center; }
+.lz-tw-moon canvas { width: 12rem; height: 12rem; max-width: 100%; }
+.lz-tw-txt { display: flex; flex-direction: column; gap: 0.9rem; min-width: 0; }
+.lz-photos-wrap { display: flex; flex-direction: column; gap: 0.7rem; }
+.lz-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 6px; }
+.lz-ph-f { margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.lz-ph-f > button { padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 10px; overflow: hidden; }
+.lz-ph-f img { width: 100%; aspect-ratio: 1; max-width: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(.2,.7,.1,1); }
+.lz-ph-f > button:hover img { transform: scale(1.04); }
+.lz-ph-ed { display: flex; gap: 0.6rem; align-items: center; }
+.lz-ph-ed button { font: 600 0.72rem var(--font-body); color: var(--lz-soft); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+.lz-up { position: relative; overflow: hidden; }
+.lz-up input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.lz-up:focus-within { outline: 2px solid var(--lz-halo); outline-offset: 3px; }
+.lz-lb { position: fixed; inset: 0; z-index: 50; background: rgba(5,9,26,0.94); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.6rem; padding: max(1rem, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(1rem, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.lz-lb img { max-width: 100%; max-height: 82vh; justify-self: center; border-radius: 8px; object-fit: contain; }
+.lz-lb-n, .lz-lb-x { width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.1); color: #fff; font-size: 1.1rem; cursor: pointer; }
+.lz-lb-x { position: absolute; top: max(1rem, env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); }
+.lz-lb-c { position: absolute; left: 50%; bottom: max(1rem, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); color: rgba(255,255,255,0.8); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.lz-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem 1rem; }
+.lz-f { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.lz-f.wide, .lz-form .wide, .lz-err { grid-column: 1 / -1; }
+.lz-f span { font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--lz-soft); }
+.lz-f input, .lz-f textarea { font: 400 0.95rem var(--font-body); color: var(--lz-ink); background: rgba(255,255,255,0.06); border: 1px solid var(--lz-line); border-radius: 10px; padding: 0.6rem 0.7rem; color-scheme: dark; min-width: 0; }
+.lz-f input:focus, .lz-f textarea:focus { outline: 2px solid var(--lz-halo); outline-offset: 1px; }
+.lz-err { margin: 0; color: #ffb3c1; font-size: 0.86rem; }
+.lz-del-wrap, .lz-confirm { display: inline-flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; font-size: 0.85rem; }
+.lz-toast { position: sticky; bottom: 0.5rem; align-self: center; margin-top: -2.4rem; z-index: 5; font-size: 0.82rem; font-weight: 600; background: var(--lz-ink); color: var(--night); padding: 0.55rem 0.95rem; border-radius: 999px; opacity: 0; transform: translateY(6px); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
+.lz-toast.on { opacity: 1; transform: none; }
+@media (max-width: 760px) {
+  .lz-main { grid-template-columns: 1fr; gap: 1.2rem; }
+  .lz-dial { width: min(17rem, 100%); }
+  .lz-tw { grid-template-columns: 1fr; }
+  .lz-tw-moon canvas { width: 9rem; height: 9rem; }
+  .lz-form { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .lz-card, .lz-hint, .lz-tc, .lz-ph-f img, .lz-toast { transition: none; } }
 </style>
 </head>
 <body>
@@ -1263,35 +1400,12 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   </div>
 </template>
 
+<script type="application/json" id="talleres-data">{"updated": 1793665000000, "talleres": [{"id": "acuario-2026", "name": "Luna Llena en Acuario", "date": "2026-08-04", "hora": "18.30 a 20.30 h", "lugar": "Beccar, San Isidro", "con": "Dos Mitades", "lema": "Desapegarse, para pertene-SER.", "desc": "Un espacio para soltar lo que ya no sos, y brillar desde tu versión de hoy.", "link": "https://dosmitades.produtik.com/events?event=taller-luna-llena-en-acuario-29-7", "fotos": [], "portada": 0}, {"id": "tauro-2026", "name": "Luna Llena en Tauro", "date": "2026-10-25", "hora": "17 a 18 h", "lugar": "Café Convite, San Isidro", "dir": "Av. Juan Segundo Fernández 59, Lomas de San Isidro", "con": "Dos Mitades · Pop Up", "lema": "Transformar la in-comodidad en seguridad.", "desc": "Reflexionar sobre qué sostengo por comodidad y costumbre, para actualizarnos y vivir en más coherencia con quien somos hoy.", "link": "https://app.produtik.com/evento/V5KmkXcUjDllpNNj56jUnA", "nota": "El taller es gratuito.", "fotos": [], "portada": 0}]}</script>
+
 <template id="t-luna">
-  <div><span class="label">Fanática de la luna</span><h2 class="d-title" id="d-title">Lunática</h2></div>
-  <p class="d-text">El ciclo lunar y la astrología como herramienta de autoconocimiento. Una invitación a reconocer nuestra naturaleza cíclica y la energía disponible de cada uno.</p>
-  <div class="event">
-    <div class="ev-main">
-      <span class="label">Próximo taller</span>
-      <h3 class="h3">Luna Llena en Tauro</h3>
-      <p class="ev-about">Reflexionar sobre qué sostengo por comodidad y costumbre, para actualizarnos y vivir en más coherencia con quien somos hoy.</p>
-      <dl class="ev-dl">
-        <div><dt>Cuándo</dt><dd>Domingo 25.10 · 17 a 18 h</dd></div>
-        <div><dt>Dónde</dt><dd>Café Convite, San Isidro</dd></div>
-        <div><dt>Con</dt><dd>Dos Mitades · Pop Up</dd></div>
-      </dl>
-      <div class="ev-buy">
-        <a class="cta" href="https://app.produtik.com/evento/V5KmkXcUjDllpNNj56jUnA" target="_blank" rel="noopener">Sacá tu entrada <span aria-hidden="true">↗</span></a>
-        <span class="ev-sub">Acceso al evento. El taller es gratuito.</span>
-      </div>
-    </div>
-    <a class="ev-map" href="https://www.google.com/maps/search/?api=1&amp;query=Av.%20Juan%20Segundo%20Fern%C3%A1ndez%2059%2C%20Lomas%20de%20San%20Isidro" target="_blank" rel="noopener" aria-label="Abrir la dirección en Google Maps: Av. Juan Segundo Fernández 59, Lomas de San Isidro">
-      <span class="ev-grid" aria-hidden="true"><i class="st1"></i><i class="st2"></i><i class="st3"></i><span class="ev-pin"></span></span>
-      <span class="ev-addr">Av. Juan Segundo Fernández 59<br>Lomas de San Isidro<span class="ev-go">Cómo llegar ↗</span></span>
-    </a>
-  </div>
-  <div class="ctas">
-    <a class="cta alt" href="https://chat.whatsapp.com/E16ZKquB4Uj5HLRH1IPvfQ?mode=gi_t" target="_blank" rel="noopener">
-      <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5a7.5 7.5 0 0 0-6.5 11.2L2.5 17.5l3.9-1A7.5 7.5 0 1 0 10 2.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.2 7.6c.2 1.9 2.4 4.4 4.9 5 .5.1 1.1-.4 1.3-.9l-1.4-.8-.7.6c-.9-.4-1.7-1.2-2.1-2.1l.6-.7-.8-1.4c-.5.2-1 .8-.9 1.3Z" fill="currentColor"/></svg>
-      Unirme a la comunidad <span aria-hidden="true">↗</span></a>
-    <a class="cta alt" href="https://app.notion.com/p/Talleres-Presenciales-3a57e0424373817b9af5dd4986c2c283" target="_blank" rel="noopener">Ver todos los talleres <span aria-hidden="true">↗</span></a>
-  </div>
+  <div class="lz-luna-head"><span class="label">Fanática de la luna</span><h2 class="d-title" id="d-title">Lunática</h2>
+    <p class="d-text">El ciclo lunar y la astrología como herramienta de autoconocimiento. Una invitación a reconocer nuestra naturaleza cíclica y la energía disponible de cada uno.</p></div>
+  <div class="lz-view"></div>
 </template>
 
 <template id="t-product">
@@ -1575,6 +1689,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   </div>
 </template>
 
+<script src="lunatica.js"></script>
 <script>
 (function () {
   const TZ = 'America/Argentina/Buenos_Aires';
@@ -2365,6 +2480,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     panel.classList.remove('go', 'night');
     if (kind === 'luna' || kind === 'signo') panel.classList.add('night');
     if (kind === 'signo') fillSigno();
+    if (kind === 'luna' && window.Lunatica) window.Lunatica.mount(body);
     detail.hidden = false;
     document.documentElement.style.overflow = 'hidden';
     if (kind === 'ropa') sizeStitch();
@@ -2391,6 +2507,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     const tEl = body.querySelector('.js-type'); if (tEl) tEl._tok = null;
     if (stopMotion) { stopMotion(); stopMotion = null; }
     if (fyStop) { fyStop(); fyStop = null; }
+    if (window.Lunatica) window.Lunatica.unmount();
     const done = () => {
       detail.hidden = true; detail.classList.remove('open');
       panel.classList.remove('go', 'night'); panel.dataset.kind = '';
@@ -2424,7 +2541,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   let sy0 = null, sdy = 0, sv = 0, sLastY = 0, sLastT = 0, sDrag = false;
   panel.addEventListener('touchstart', e => {
     if (!sheet() || e.touches.length > 1) return;
-    if (e.target.closest('.car-track, .sew, canvas, input, [data-noswipe]')) { sy0 = null; return; }
+    if (e.target.closest('.car-track, .sew, canvas, input, textarea, [data-noswipe]')) { sy0 = null; return; }
     sy0 = e.touches[0].clientY; sdy = 0; sv = 0; sDrag = false; sLastY = sy0; sLastT = performance.now();
   }, { passive: true });
   panel.addEventListener('touchmove', e => {
@@ -2454,7 +2571,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   };
   panel.addEventListener('touchend', sEnd); panel.addEventListener('touchcancel', sEnd);
   document.getElementById('backdrop').addEventListener('click', closeDetail);
-  document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if (!detail.hidden) closeDetail(); else { pinned = false; setOpen(false); } });
+  document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; const lzlb = document.querySelector('.lz-lb:not([hidden])'); if (lzlb) { lzlb.hidden = true; return; } if (!detail.hidden) closeDetail(); else { pinned = false; setOpen(false); } });
   window.addEventListener('resize', () => { if (!detail.hidden && panel.dataset.kind === 'ropa') sizeStitch(); });
 
   /* ---------- Flowry: teléfono del modal ---------- */

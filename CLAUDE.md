@@ -23,7 +23,8 @@ Cada push a `main` se publica solo.
 
 - Editar `index.html` directo. Después de cada cambio: revisar que el script no tenga errores, probar en compu (~1300 px) y celular (390 px), y verificar que no haya scroll horizontal.
 - No armar zips ni mandar archivos salvo que Josefina lo pida.
-- No armar vistas previas como artifacts: los cambios se hacen en este repo y se ven en Vercel.
+- **Producción es este repo (Vercel).** Las opciones y mockups para elegir pueden ir en artifacts, pero una vez que Josefina define una, se implementa acá, en el repo. Nunca dejar un cambio elegido solo en el artifact de la landing: ese artifact no es producción.
+- No armar vistas previas de la landing como artifacts: los cambios se hacen en este repo y se ven en Vercel.
 - Hacer commit y push solo cuando ella lo pida.
 - No inventar datos. Lo que falta va como `[placeholder]` y se avisa.
 - No reproducir logos de marcas (Instagram, WhatsApp): usar íconos genéricos.
@@ -56,7 +57,12 @@ Cada push a `main` se publica solo.
      - Tantos ángulos · San Francisco, Estados Unidos
    - CTAs: Probar en mi pared, Ver impresiones.
    - Links: `https://atlas-josefina-goni.vercel.app/#catalogo`, `#impresion`, `#probador`.
-2. **Lunática** (Fanática de la luna). Línea "Próximo: Luna Llena en Tauro · dom 25.10". Pie: "Talleres".
+2. **Lunática** (Fanática de la luna). La línea de abajo se arma sola desde los talleres: "Próximo: …" o "Último: …". Pie: "Talleres".
+   - Todo vive en `lunatica.js`. Detalle: luna real en vivo (Buenos Aires, vista desde el hemisferio sur) con dial para girarla (una vuelta = un ciclo) y "Volver a hoy"; al lado el taller más cercano a la fecha mirada, con el lema grande, ← Anterior / Siguiente →; chips "Talleres →" y comunidad de WhatsApp; abajo calendario de lunas nuevas y llenas con filtro "Solo con taller". Sin slider.
+   - Sección Talleres (se abre desde el chip): archivo de talleres y, al entrar a uno, lema, descripción, datos, mapa y fotos con visor.
+   - Datos: `talleres.json` (y copia en el bloque `#talleres-data` de `index.html`). Fotos de talleres: `img/talleres/<id>/…` y se listan en `fotos` como `{ "url": "img/talleres/…" }`. En Vercel no hay editor en la página: los talleres y fotos se cargan en el repo.
+   - `img/luna.jpg`: mapa de la superficie lunar (proyección equirectangular, derivado del mapa de la Luna de los ejemplos de three.js) con el contraste de mares ajustado.
+   - Mockups: https://claude.ai/artifact/8c4G81fwi5bkvt79vJW5BZ (detalle) y https://claude.ai/artifact/ELukeJ3sGHhMQmyeBdjFxy (opciones de luna).
    - Hover: la card se hace de noche, una luna sigue al cursor y tiene reflejo transparente (sin ondas).
    - Modal: se abre directo de noche y la luna sigue al cursor. Texto: "El ciclo lunar y la astrología como herramienta de autoconocimiento. Una invitación a reconocer nuestra naturaleza cíclica y la energía disponible de cada uno."
    - Caja de vidrio "Próximo taller":
@@ -122,7 +128,7 @@ Desde ahora, **este repo es la versión oficial**. El artifact de la landing que
 
 - **Flowry:** ya está la card, el modal con el teléfono y el nexo desde Profesional. Falta el link real de la lista de espera. Ideas sin implementar (artifact "Flowry en el portfolio", https://claude.ai/artifact/Sn6jASRrTjDYyi94GtqEqg): nexos con Recorrido (punto 11), Lunática (pestaña lunas) y Gracias (gratitud nocturna).
 - **Unir los puntos:** línea de tiempo en Exploraciones. 2018 costura · 2019 The Night Co · Minnesota · Madrid · 2020 Jousie · 2023 cierra The Night Co · 2024 Amalgama · Atlas · Lunática · 2025 joyería · 2026 vestido y Flowry → todo se une en "Hoy". Faltan los años de Minnesota, Madrid, Atlas y Lunática.
-- **Lunática:** mapa genérico "cómo leo una luna" que se completa con flechas, y calendario lunar con talleres cargados a mano.
+- **Lunática:** mapa genérico "cómo leo una luna" que se completa con flechas. Revisar la fecha del taller de Acuario: figura 04.08 pero la luna llena fue el 29.07 (como dice su link).
 - **Guardado para después:** frase rotativa con todas las versiones (fotógrafa, product owner, lunática, Jousie, viajera, fanática de la playa, runner); libros, música, tarot; cafecitos con ranking y recorrido; mapa de pendientes; "Located in" con Minnesota y Madrid.
 - **Dominio propio** (por ejemplo `josefinagoni.com` o `.com.ar`).
 - **Probador del Atlas:** ver si acepta un dato en el link para abrir directo con una foto elegida.
