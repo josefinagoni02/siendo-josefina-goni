@@ -1166,7 +1166,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
         <button class="card run-card" id="runCard" data-detail="runner" aria-haspopup="dialog" aria-label="Runner: 15 kilómetros, mi récord. Ver recorridos">
           <span class="txt">
             <span class="kind">Runner · récord</span>
-            <span class="cnt-d" id="cntD" aria-hidden="true"><span class="dg">1</span><span class="dg">5</span><span class="cm">,</span><span class="dg">0</span><span class="u">km</span></span>
+            <span class="cnt-d" id="cntD" aria-hidden="true"><span class="dg">0</span><span class="dg">0</span><span class="cm">,</span><span class="dg">0</span><span class="u">km</span></span>
           </span>
           <span class="foot"><span class="domain"></span><span class="more">Ver recorridos <span aria-hidden="true">→</span></span></span>
         </button>
@@ -2474,10 +2474,20 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><pattern id="${id}h" width="28" height="16" patternUnits="userSpaceOnUse"><path d="M0 8 L7 0 H21 L28 8 L21 16 H7 Z" fill="none" stroke="#ddd5c6" stroke-width="1"/></pattern></defs><rect width="${W}" height="${H}" fill="#f6ead9"/>${art}<rect y="${salt}" width="${W}" height="${H - salt}" fill="#fbf9f4"/><rect y="${salt}" width="${W}" height="${H - salt}" fill="url(#${id}h)"/><line x1="0" y1="${salt}" x2="${W}" y2="${salt}" stroke="#e6dfd1"/></svg>`;
   }
   const runCardEl = document.getElementById('runCard');
-  // card: en hover el contador vuelve a subir hasta 15,0
+  // card: arranca en 00,0 y cuenta hasta 15,0 cuando aparece; en hover vuelve a contar
   (() => { const d = document.getElementById('cntD'); if (!d) return; let raf;
     const paint = v => { const t = v.toFixed(1).replace('.', ',').padStart(4, '0'); d.innerHTML = t.split('').map(c => c === ',' ? '<span class="cm">,</span>' : `<span class="dg">${c}</span>`).join('') + '<span class="u">km</span>'; };
-    runCardEl.addEventListener('pointerenter', () => { if (reduce) return; cancelAnimationFrame(raf); const t0 = performance.now(); const tick = t => { const k = Math.min(1, (t - t0) / 1200); paint(15 * (1 - Math.pow(1 - k, 4))); if (k < 1) raf = requestAnimationFrame(tick); }; raf = requestAnimationFrame(tick); });
+    const count = (dur = 1400) => { cancelAnimationFrame(raf); if (reduce) { paint(15); return; } const t0 = performance.now(); const tick = t => { const k = Math.min(1, (t - t0) / dur); paint(15 * (1 - Math.pow(1 - k, 4))); if (k < 1) raf = requestAnimationFrame(tick); }; raf = requestAnimationFrame(tick); };
+    let seen = false;
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting || seen) return;
+      // espera a que la card termine de pasar de niebla a vidrio
+      const go = () => { if (seen) return; seen = true; io.disconnect(); setTimeout(() => count(2000), 350); };
+      const slot = runCardEl.closest('.slot');
+      if (!slot || getComputedStyle(slot).opacity > 0.9) go(); else setTimeout(go, 900);
+    }), { threshold: 0.6 });
+    io.observe(runCardEl);
+    runCardEl.addEventListener('pointerenter', () => count(1200));
   })();
   function startRunner() {
     const REC = 15, MK = [5, 10, 15];

@@ -23,8 +23,7 @@ Cada push a `main` se publica solo.
 
 - Editar `index.html` directo. Después de cada cambio: revisar que el script no tenga errores, probar en compu (~1300 px) y celular (390 px), y verificar que no haya scroll horizontal.
 - No armar zips ni mandar archivos salvo que Josefina lo pida.
-- **Producción es este repo (Vercel).** Las opciones y mockups para elegir pueden ir en artifacts, pero una vez que Josefina define una, se implementa acá, en el repo. Nunca dejar un cambio elegido solo en el artifact de la landing: ese artifact no es producción.
-- No armar vistas previas de la landing como artifacts: los cambios se hacen en este repo y se ven en Vercel.
+- **Producción es este repo (Vercel).** Las opciones y mockups para elegir van siempre en el artifact de prueba (https://claude.ai/artifact/E5pLjPh8CoHAKJBgvmhFeE para Runner y Del mundo). Una vez que Josefina define una, se implementa acá, en el repo. Nunca dejar un cambio elegido solo en el artifact de la landing: ese artifact no es producción.
 - Hacer commit y push solo cuando ella lo pida.
 - No inventar datos. Lo que falta va como `[placeholder]` y se avisa.
 - No reproducir logos de marcas (Instagram, WhatsApp): usar íconos genéricos.
