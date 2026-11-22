@@ -4,7 +4,35 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Josefina Goñi. Siendo, un poquito de todo: Atlas, Lunática, producto y más.">
-<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]{display:none!important}
+/* ---------- cielo navegable: las cards flotan sueltas, como nubes ---------- */
+.stage { touch-action: pan-y; box-sizing: border-box; }
+.stage.grab, .stage.grab .card { cursor: grabbing; }
+#head { position: relative; z-index: 3; pointer-events: none; }
+.cards, .cards[id] { position: absolute; inset: 0; width: auto; max-width: none; display: block; pointer-events: none; z-index: 2; }
+.slot, .sky-sign { position: absolute; left: 0; top: 0; opacity: 0; pointer-events: none; transform-origin: 50% 50%; will-change: transform, filter, opacity; }
+.slot .card { height: auto; }
+.sky-sign .sign { margin: 0; }
+.wide .card, .slot.wide .card { flex-direction: column; align-items: stretch; }
+.wide .foot { margin-top: auto; padding-top: 0.6rem; border-top: 1px solid var(--line); margin-left: 0; }
+.sky-dots { position: absolute; left: 50%; bottom: calc(1.3rem + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 4; display: flex; gap: 0; padding: 3px 8px; border-radius: 999px; background: rgba(12, 28, 62, 0.16); border: 1px solid rgba(255, 255, 255, 0.28); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; pointer-events: none; }
+.sky-dots button { position: relative; width: 28px; height: 32px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.sky-dots i { display: block; width: 7px; height: 7px; border-radius: 4px; background: rgba(255, 255, 255, 0.55); transition: width 0.4s ease, background 0.4s ease; }
+.sky-dots button.on i { width: 20px; background: var(--white); }
+.sky-dots button:hover i { background: var(--white); }
+.sky-dots .tip { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translate(-50%, 4px); padding: 0.4rem 0.7rem; border-radius: 999px; background: rgba(255, 255, 255, 0.94); color: var(--ink); font: 600 0.72rem/1 var(--font-body); white-space: nowrap; opacity: 0; filter: blur(4px); pointer-events: none; box-shadow: 0 6px 18px rgba(10, 25, 60, 0.18); transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease; }
+.sky-dots button:hover .tip, .sky-dots button:focus-visible .tip { opacity: 1; filter: none; transform: translate(-50%, 0); }
+.sky-dots button:focus-visible { outline: 2px solid var(--white); outline-offset: -2px; border-radius: 8px; }
+@media (hover: none) { .sky-dots button:hover .tip { opacity: 0; } }
+@media (max-width: 640px) {
+  .sky-dots { bottom: calc(4.3rem + env(safe-area-inset-bottom, 0px)); padding: 2px 6px; }
+  .sky-dots button { width: 26px; height: 36px; }
+  .favs { left: auto; right: max(16px, env(safe-area-inset-right, 0px)); justify-content: flex-end; }
+}
+.safe-probe { position: fixed; top: 0; left: 0; width: 0; height: 0; padding-top: env(safe-area-inset-top, 0px); visibility: hidden; pointer-events: none; }
+.reduce .scene { height: 100vh; height: 100svh; }
+.reduce .stage { position: sticky; height: 100vh; height: 100svh; }
+</style>
 <title>Josefina Goñi</title>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
@@ -1138,14 +1166,16 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       <h1 id="name" aria-label="Josefina Goñi">Josefina Goñi</h1>
       <div class="lead-wrap" id="lead">
         <p class="lead">Siendo, un poquito de todo.<br>Integrando todas mis versiones aquí.</p>
+      </div>
+    </header>
+
+    <div class="cards" id="cards">
+      <div class="sky-sign" id="signWrap">
         <button class="chipbtn sign" id="sign" type="button" data-detail="signo" aria-haspopup="dialog">
           <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 5.5 l2-2 2 2 2-2 2 2 2-2 2 2 M1 10 l2-2 2 2 2-2 2 2 2-2 2 2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></svg>
           Acuariana
         </button>
       </div>
-    </header>
-
-    <div class="cards" id="cards">
       <div class="slot main">
         <button class="card" id="atlasCard" data-detail="atlas" aria-haspopup="dialog">
           <span class="map" aria-hidden="true"><span class="xh-v"></span><span class="xh-h"></span></span>
@@ -1231,6 +1261,16 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       Bajá
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 7 L9 12 L14 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
+    <nav class="sky-dots" id="skyDots" aria-label="Proyectos">
+      <button type="button" aria-label="Ir a Atlas"><i aria-hidden="true"></i><span class="tip" aria-hidden="true">Atlas</span></button>
+      <button type="button" aria-label="Ir a Lunática"><i aria-hidden="true"></i><span class="tip" aria-hidden="true">Lunática</span></button>
+      <button type="button" aria-label="Ir a Profesional"><i aria-hidden="true"></i><span class="tip" aria-hidden="true">Profesional</span></button>
+      <button type="button" aria-label="Ir a Jousie"><i aria-hidden="true"></i><span class="tip" aria-hidden="true">Jousie</span></button>
+      <button type="button" aria-label="Ir a Creadora de ropa"><i aria-hidden="true"></i><span class="tip" aria-hidden="true">Creadora de ropa</span></button>
+      <button type="button" aria-label="Ir a Flowry"><i aria-hidden="true"></i><span class="tip" aria-hidden="true">Flowry</span></button>
+      <button type="button" aria-label="Ir a Runner"><i aria-hidden="true"></i><span class="tip" aria-hidden="true">Runner</span></button>
+      <button type="button" aria-label="Ir a Del mundo"><i aria-hidden="true"></i><span class="tip" aria-hidden="true">Del mundo</span></button>
+    </nav>
   </div>
 </div>
 
@@ -2051,7 +2091,9 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
         if (c.x < -c.w - 80) { c.x = W + 40; c.y = Math.random() * span; }
         const par = 0.4 + c.depth * 1.1;
         const sy = ((c.y + camY * par + driftY * (0.3 + c.depth)) % span + span) % span - off - oy * 40 * c.depth + c.oy;
-        const dxp = c.x - ox * 80 * (0.3 + c.depth);
+        // las nubes también se corren cuando se recorre el cielo de costado (las lejanas, más lento)
+        let dxp = c.x - ox * 80 * (0.3 + c.depth) - (window.__skyCamX || 0) * (0.12 + c.depth * 0.3);
+        const lw = W + c.w + 120; dxp = ((dxp + c.w + 80) % lw + lw) % lw - c.w - 80;
         c.drawX = dxp; c.drawY = sy;
         const grow = c.born ? Math.min(1, (nowMs - c.born) / 900) : 1;
         lctx.globalAlpha = c.alpha * grow;
@@ -2072,39 +2114,224 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     } else { for (const c of clouds) c.x += c.speed * dt; }
   }
 
-  /* ---------- coreografía con scroll ---------- */
+  /* ---------- intro con scroll y cielo navegable ---------- */
+  // 1) el nombre entra grande, aparece la frase; 2) el nombre se va chiquito a la esquina y las cards salen de la niebla;
+  // 3) las cards flotan sueltas en el cielo: el scroll las recorre de costado, también se arrastran, y si nadie toca el cielo avanza solo y se para un ratito en cada una.
   const scene = document.getElementById('scene'), stage = document.getElementById('stage'), head = document.getElementById('head');
   const lead = document.getElementById('lead'), hint = document.getElementById('hint'), favs = document.getElementById('favs');
+  const eyebrowEl = head.querySelector('.eyebrow'), skyCv = document.getElementById('sky');
   const slots = [...document.querySelectorAll('.slot')];
-  let startScale = 1.8, headDelta = 0;
+  const signWrap = document.getElementById('signWrap'), detailBox = document.getElementById('detail');
+  const dotsNav = document.getElementById('skyDots'), dots = [...dotsNav.querySelectorAll('button')];
+  const safeProbe = document.createElement('div'); safeProbe.className = 'safe-probe'; document.body.appendChild(safeProbe);
+  const LAY = {
+    d: { w: { main: 390, small: 300, wide: 300, run: 310, via: 310 }, gap: 90, top: 92, bottom: 128, focusR: 0.5, drift: 40, edge: 0.1,
+         yf: [0.4, 0.06, 0.74, 0.2, 0.62, 0.1, 0.78, 0.32], z: [1, 0.95, 1.05, 0.97, 1.03, 0.95, 1.04, 0.98] },
+    m: { w: { main: 270, small: 244, wide: 244, run: 244, via: 244 }, gap: 34, top: 80, bottom: 150, focusR: 0.62, drift: 26, edge: 0,
+         yf: [0.42, 0.2, 0.6, 0.3, 0.52, 0.24, 0.58, 0.36], z: [1, 0.96, 1.04, 0.97, 1.03, 0.96, 1.04, 0.98] }
+  };
+  const SK = { L: null, mob: false, vw: 1, vh: 1, items: [], sign: null, minX: 0, maxX: 1, introPx: 1, skyPx: 1, holdPx: 0,
+    cam: { x: 0, y: 0 }, off: 0, offY: 0, drag: null, moved: 0, idle: 0, dir: 1, hold: 0, held: -1, hover: -1, active: -1, lastSY: 0, last: performance.now() };
+  const NM = { sF: 0.4, dx: 0, dy: 0 };
+  let startScale = 1.8;
+  const kindOf = s => s.classList.contains('main') ? 'main' : s.classList.contains('run-slot') ? 'run' : s.classList.contains('via-slot') ? 'via' : s.classList.contains('wide') ? 'wide' : 'small';
+  const camFor = it => (it.x + it.w / 2 - SK.vw / 2) / it.z;
   function measure() {
+    const mob = window.innerWidth < 760, L = mob ? LAY.m : LAY.d;
+    SK.L = L; SK.mob = mob; SK.vw = stage.clientWidth || window.innerWidth; SK.vh = stage.clientHeight || window.innerHeight;
+    SK.items = slots.map((s, i) => { const k = kindOf(s); s.style.width = L.w[k] + 'px'; return { el: s, i, k, w: L.w[k], h: 0, x: 0, y: 0, z: L.z[i % L.z.length], yf: L.yf[i % L.yf.length], ph: i * 1.7, b: -1 }; });
+    let x = 0; const avail = SK.vh - L.top - L.bottom;
+    SK.items.forEach(it => { it.h = it.el.offsetHeight; it.x = x; x += it.w + L.gap; it.y = L.top + it.yf * Math.max(0, avail - it.h); });
+    // Acuariana flota debajo de Lunática
+    const c1 = SK.items[1], sw = signWrap.offsetWidth, sh = signWrap.offsetHeight;
+    SK.sign = { el: signWrap, z: c1.z, w: sw, h: sh, ph: 4.2, x: c1.x + c1.w / 2 - sw / 2, y: Math.min(c1.y + c1.h + 30, SK.vh - L.bottom + 6) };
+    SK.stops = SK.items.map(camFor);
+    SK.minX = SK.stops[0]; SK.maxX = SK.stops[SK.stops.length - 1];
+    // la escena mide: la pantalla fija + la intro + el recorrido del cielo + un respiro antes del cierre
+    SK.introPx = SK.vh * 0.85; SK.skyPx = (SK.items.length - 1) * SK.vh * (mob ? 0.6 : 0.5); SK.holdPx = SK.vh * 0.2;
+    scene.style.height = reduce ? '' : Math.round(SK.vh + SK.introPx + SK.skyPx + SK.holdPx) + 'px';
+    // nombre: grande al centro → chiquito arriba a la izquierda
     head.style.transform = '';
     const st = stage.getBoundingClientRect(), nr = nameEl.getBoundingClientRect(), hr = head.getBoundingClientRect();
-    head.style.transformOrigin = `50% ${nr.top + nr.height / 2 - hr.top}px`;
-    headDelta = (st.top + st.height * 0.46) - (nr.top + nr.height / 2);
+    head.style.transformOrigin = `${nr.left + nr.width / 2 - hr.left}px ${nr.top + nr.height / 2 - hr.top}px`;
     startScale = Math.min(1.9, (window.innerWidth * 0.9) / nr.width);
+    const fs = parseFloat(getComputedStyle(nameEl).fontSize) || 56;
+    NM.sF = (mob ? 21 : 24) / fs;
+    const safeT = parseFloat(getComputedStyle(safeProbe).paddingTop) || 0;
+    NM.dx = (mob ? 18 : 28) + nr.width * NM.sF / 2 - (nr.left - st.left + nr.width / 2);
+    NM.dy = (mob ? 30 : 34) + safeT - (nr.top - st.top + nr.height / 2);
   }
-  let pS = reduce ? 1 : 0, favVis = 0, favBlock = 0;
-  function progress() { if (reduce) return 1; const r = scene.getBoundingClientRect(); const span = r.height - window.innerHeight; if (!(span > 0)) return 1; const v = -r.top / span; return Number.isFinite(v) ? clamp(v) * SCROLL_K : 1; }
-  // la escena mide 205vh (antes 260vh): mismo ritmo por píxel, pero las cards quedan quietas poco después de aparecer
-  const SCROLL_K = 1.05 / 1.6;
-  function choreograph(p) {
-    const e = ease(clamp(p / 0.3));
-    head.style.transform = `translateY(${lerp(headDelta, 0, e)}px) scale(${lerp(startScale, 1, e)})`;
-    const lo = clamp((p - 0.1) / 0.18);
-    lead.style.opacity = lo; lead.style.transform = `translateY(${(1 - lo) * 14}px)`;
-    lead.style.pointerEvents = lo > 0.8 ? 'auto' : 'none';
-    hint.style.opacity = 1 - clamp(p / 0.06); hint.style.pointerEvents = p > 0.05 ? 'none' : 'auto';
-    slots.forEach((s, i) => {
-      const t = ease(clamp((p - 0.16 - i * 0.03) / 0.16));
-      s.style.opacity = clamp(t * 2.2).toFixed(3);
-      const b = (1 - t) * 10;
-      s.style.filter = b > 0.1 ? `blur(${b.toFixed(2)}px)` : '';
-      s.style.transform = t >= 1 ? '' : `scale(${(1.03 - 0.03 * t).toFixed(4)})`;
-      s.firstElementChild.style.setProperty('--fog', ((1 - t) * 0.85).toFixed(3));
-      s.style.pointerEvents = t > 0.9 ? 'auto' : 'none';
-    });
-    favVis = clamp((p - 0.4) / 0.15);
+  const sceneY = () => -scene.getBoundingClientRect().top;
+  function progress() { if (reduce) return 1; return clamp(sceneY() / SK.introPx); }
+  // el scroll recorre las cards de a una: en cada card hay un tramo en el que el cielo se queda quieto
+  const PL = 0.22;
+  function baseX(sy) {
+    const st = SK.stops, n = st.length, f = clamp((sy - SK.introPx) / SK.skyPx) * (n - 1);
+    const i = Math.min(n - 2, Math.floor(f)), t = clamp((f - i - PL) / (1 - 2 * PL));
+    return st[i] + (st[i + 1] - st[i]) * t;
+  }
+  function kFor(x) {
+    const st = SK.stops, n = st.length; x = clamp(x, st[0], st[n - 1]);
+    let i = 0; while (i < n - 2 && st[i + 1] < x) i++;
+    const tp = st[i + 1] > st[i] ? (x - st[i]) / (st[i + 1] - st[i]) : 0;
+    const f = tp <= 0.001 ? i : tp >= 0.999 ? i + 1 : i + PL + (1 - 2 * PL) * tp;
+    return f / (n - 1);
+  }
+  const skyOn = () => !reduce ? (pS > 0.9) : true;
+  // lo que se corrió arrastrando o lo que avanzó solo pasa al scroll de la página, así el scroll siempre sabe dónde está el cielo
+  function flush(want) {
+    const sy = sceneY();
+    if (want == null) { if (Math.abs(SK.off) < 0.5) { SK.off = 0; return; } want = baseX(sy) + SK.off; }
+    want = clamp(want, SK.minX, SK.maxX); SK.off = 0;
+    if (reduce) { SK.off = want - SK.minX; return; }
+    const k = kFor(want);
+    const target = SK.introPx + k * SK.skyPx;
+    SK.lastSY = target;
+    window.scrollTo({ top: Math.round(window.scrollY + target - sy), behavior: 'instant' });
+  }
+  const touchIdle = (ms = 4500) => { SK.idle = performance.now() + ms; SK.held = -1; };
+  function goToCard(i) { const it = SK.items[i]; if (!it) return; touchIdle(6000); SK.held = i; flush(camFor(it)); }
+  dots.forEach((d, i) => d.addEventListener('click', () => goToCard(i)));
+  slots.forEach((s, i) => { s.addEventListener('pointerenter', () => { SK.hover = i; }); s.addEventListener('pointerleave', () => { if (SK.hover === i) SK.hover = -1; }); });
+  stage.addEventListener('pointerdown', e => {
+    SK.moved = 0;
+    if (!skyOn() || e.button !== 0 || e.target.closest('.sky-dots, .hint, .chipbtn')) return;
+    SK.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, off0: SK.off, offY0: SK.offY, lx: e.clientX, lt: performance.now(), v: 0, cap: false, touch: e.pointerType !== 'mouse' };
+    SK.moved = 0; touchIdle();
+  });
+  stage.addEventListener('pointermove', e => {
+    const d = SK.drag; if (!d || e.pointerId !== d.id) return;
+    const dx = e.clientX - d.x, dy = e.clientY - d.y;
+    SK.moved = Math.max(SK.moved, Math.hypot(dx, dy));
+    if (!d.cap && SK.moved > 6) { d.cap = true; stage.classList.add('grab'); if (!d.touch) try { stage.setPointerCapture(d.id); } catch (er) {} }
+    if (!d.cap) return;
+    SK.off = d.off0 - dx;
+    if (!d.touch) SK.offY = clamp(d.offY0 - dy * 0.4, -60, 60);
+    const now = performance.now(), dt = Math.max(8, now - d.lt);
+    d.v = d.v * 0.6 + (-(e.clientX - d.lx) / dt) * 0.4; d.lx = e.clientX; d.lt = now;
+    touchIdle();
+  });
+  const endDrag = cancel => {
+    const d = SK.drag; if (!d) return; SK.drag = null; stage.classList.remove('grab');
+    if (d.cap && !cancel) {
+      let want = baseX(sceneY()) + SK.off + d.v * 260;
+      if (SK.mob) { let best = 0, bd = 1e9; SK.items.forEach((it, i) => { const dd = Math.abs(camFor(it) - want); if (dd < bd) { bd = dd; best = i; } }); want = camFor(SK.items[best]); SK.held = best; }
+      flush(want);
+    } else flush();
+    touchIdle();
+  };
+  stage.addEventListener('pointerup', () => endDrag(false));
+  stage.addEventListener('pointercancel', () => endDrag(true));
+  // si fue un arrastre, no abrir la card
+  stage.addEventListener('click', e => { if (SK.moved > 6) { e.stopPropagation(); e.preventDefault(); SK.moved = 0; } }, true);
+  window.addEventListener('wheel', e => {
+    if (!skyOn() || !detailBox.hidden) return;
+    const sy = sceneY(); if (sy < SK.introPx * 0.9 || sy > SK.introPx + SK.skyPx + SK.holdPx) return;
+    touchIdle();
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) { e.preventDefault(); SK.off += e.deltaX * (e.deltaMode === 1 ? 16 : 1); clearTimeout(SK.ft); SK.ft = setTimeout(() => flush(), 160); }
+    else flush();
+  }, { passive: false });
+  window.addEventListener('touchstart', () => { if (SK.off) flush(); touchIdle(); }, { passive: true });
+  window.addEventListener('keydown', () => { if (SK.off) flush(); touchIdle(); });
+  hint.addEventListener('click', () => { window.scrollTo({ top: window.scrollY + SK.introPx - sceneY() + 2, behavior: 'smooth' }); });
+
+  let favVis = 0, favBlock = 0, pS = reduce ? 1 : 0;
+  function choreograph(I) {
+    const now = performance.now(), dt = Math.min(48, now - SK.last); SK.last = now;
+    const L = SK.L; if (!L) return;
+    // nombre y frase
+    const a = ease(clamp(I / 0.32)), b = ease(clamp((I - 0.42) / 0.2)), away = clamp((I - 0.4) / 0.14);
+    const sc = lerp(startScale, 1, a) * lerp(1, NM.sF, b);
+    head.style.transform = `translate(${(NM.dx * b).toFixed(1)}px, ${(NM.dy * b).toFixed(1)}px) scale(${sc.toFixed(4)})`;
+    const li = clamp((I - 0.08) / 0.2);
+    lead.style.opacity = (li * (1 - away)).toFixed(3);
+    lead.style.transform = `translateY(${((1 - li) * 14).toFixed(1)}px)`;
+    const bl = away > 0.02 ? `blur(${(away * 8).toFixed(1)}px)` : '';
+    lead.style.filter = bl; eyebrowEl.style.filter = bl; eyebrowEl.style.opacity = (0.92 * (1 - away)).toFixed(3);
+    lead.style.pointerEvents = 'none';
+    hint.style.opacity = 1 - clamp(I / 0.06); hint.style.pointerEvents = I > 0.05 ? 'none' : 'auto';
+    // el cielo arranca empañado y se aclara cuando el nombre se va a la esquina
+    const fogSky = 1 - clamp((I - 0.25) / 0.4);
+    skyCv.style.filter = fogSky > 0.01 ? `blur(${(fogSky * 5).toFixed(2)}px)` : '';
+    skyCv.style.transform = fogSky > 0.01 ? `scale(${(1 + fogSky * 0.04).toFixed(4)})` : '';
+    // cámara
+    const sy = sceneY(), detailOpen = !detailBox.hidden;
+    if (Math.abs(sy - SK.lastSY) > 1) { if (Math.abs(sy - SK.lastSY) > 2) touchIdle(); SK.lastSY = sy; }
+    const base = reduce ? SK.minX : baseX(sy);
+    const pinned = sy > SK.introPx * 0.9 && sy < SK.introPx + SK.skyPx + SK.holdPx;
+    if (!reduce && I > 0.95 && pinned && !SK.drag && !detailOpen && !document.hidden && now > SK.idle) {
+      // avanza solo y se para un ratito sobre cada card
+      if (now < SK.hold) { /* quieto */ }
+      else {
+        const cx = base + SK.off;
+        let next = null, nd = 1e9;
+        SK.items.forEach((it, i) => { const d = (camFor(it) - cx) * SK.dir; if (d > 1 && d < nd && i !== SK.held) { nd = d; next = i; } });
+        if (next == null) { SK.dir *= -1; SK.held = -1; }
+        else {
+          const v = L.drift * clamp(nd / 140, 0.18, 1);
+          const step = Math.min(nd, v * dt / 1000) * SK.dir;
+          SK.off += step;
+          if (nd - Math.abs(step) < 0.6) { SK.held = next; SK.hold = now + 1800; }
+        }
+      }
+    }
+    if (!SK.drag) {
+      SK.off = clamp(base + SK.off, SK.minX, SK.maxX) - base;
+      SK.offY *= Math.pow(0.9, dt / 16.7);
+    }
+    let tx = base + SK.off;
+    if (SK.drag) { if (tx < SK.minX) tx = SK.minX - (SK.minX - tx) * 0.3; if (tx > SK.maxX) tx = SK.maxX + (tx - SK.maxX) * 0.3; }
+    // un poquito de vertical: la cámara sigue la altura de las cards
+    let ty = 0; {
+      const its = SK.items; let k = 0; while (k < its.length - 1 && camFor(its[k + 1]) < tx) k++;
+      const A = its[k], B = its[Math.min(its.length - 1, k + 1)], ax = camFor(A), bx = camFor(B);
+      let t = bx > ax ? clamp((tx - ax) / (bx - ax)) : 0; t = t * t * (3 - 2 * t);
+      const ay = A.y + A.h / 2 - SK.vh / 2, by = B.y + B.h / 2 - SK.vh / 2;
+      ty = (ay + (by - ay) * t) * 0.35 + SK.offY;
+    }
+    const kk = 1 - Math.pow(1 - (SK.drag ? 0.35 : 0.075), dt / 16.7);
+    const px = SK.cam.x;
+    if (!SK.camSet) { SK.cam.x = tx; SK.cam.y = ty; SK.camSet = true; }
+    SK.cam.x += (tx - SK.cam.x) * kk; SK.cam.y += (ty - SK.cam.y) * kk;
+    const speed = Math.abs(SK.cam.x - px) / Math.max(1, dt);
+    window.__skyCamX = SK.cam.x - SK.minX;
+    window.__introDone = I > 0.85;
+    // cards
+    let nearest = 0, nd2 = 1e9;
+    const place = (it, isCard) => {
+      const bob = reduce ? 0 : Math.sin(now * 0.00055 + it.ph) * 6;
+      const sx = it.x - SK.cam.x * it.z, syy = it.y - SK.cam.y * it.z + bob;
+      const cx = sx + it.w / 2, cy = syy + it.h / 2;
+      let blur = 0, op = 1, s = 1, fog = 0;
+      if (isCard) {
+        const d = Math.hypot(cx - SK.vw / 2, (cy - SK.vh / 2) * 1.5) / (SK.vw * L.focusR), dd = Math.max(0, d - 0.14);
+        blur = Math.min(14, dd * dd * 11 + Math.min(4, speed * 1.2));
+        op = 1 - Math.min(0.45, dd * 0.38); s = 1 - Math.min(0.12, dd * 0.09);
+        if (it.i === SK.hover) { blur *= 0.2; op = 1; }
+        const dist = Math.abs(cx - SK.vw / 2); if (dist < nd2) { nd2 = dist; nearest = it.i; }
+      }
+      // aparición: de niebla a vidrio, de a una
+      const ti = ease(clamp((I - 0.5 - (isCard ? it.i : 1.5) * 0.03) / 0.25));
+      blur += (1 - ti) * 10; fog = (1 - ti) * 0.85; op *= clamp(ti * 2.2); s *= 1.03 - 0.03 * ti;
+      const vis = sx + it.w > -200 && sx < SK.vw + 200;
+      const el = it.el;
+      el.style.transform = `translate3d(${sx.toFixed(1)}px, ${syy.toFixed(1)}px, 0) scale(${s.toFixed(4)})`;
+      el.style.opacity = vis ? op.toFixed(3) : '0';
+      if (isCard) {
+        const bq = Math.round(blur * 10) / 10;
+        if (bq !== it.b) { it.b = bq; el.style.filter = bq > 0.2 ? `blur(${bq}px)` : ''; }
+        el.firstElementChild.style.setProperty('--fog', fog.toFixed(3));
+        el.style.pointerEvents = ti > 0.9 && vis ? 'auto' : 'none';
+      } else el.style.pointerEvents = ti > 0.9 ? 'auto' : 'none';
+    };
+    SK.items.forEach(it => place(it, true));
+    if (SK.sign) place(SK.sign, false);
+    window.__skyCenterCard = SK.items[nearest] ? SK.items[nearest].el.firstElementChild : null;
+    if (nearest !== SK.active) { SK.active = nearest; dots.forEach((d, i) => { d.classList.toggle('on', i === nearest); d.setAttribute('aria-current', i === nearest ? 'true' : 'false'); }); }
+    const dv = clamp((I - 0.8) / 0.2);
+    dotsNav.style.opacity = dv.toFixed(3); dotsNav.style.pointerEvents = dv > 0.6 ? 'auto' : 'none';
+    // hora favorita
+    favVis = clamp((I - 0.8) / 0.2);
     if (window.innerWidth <= 640) {
       favBlock = favBlock * 0.8 + (favVis > 0 && window.__overContent(favs) ? 0.2 : 0);
       favVis *= 1 - clamp((favBlock - 0.1) / 0.4);
@@ -2112,7 +2339,6 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     favs.style.opacity = favVis.toFixed(3);
     favs.style.pointerEvents = favVis > 0.6 ? 'auto' : 'none';
   }
-  hint.addEventListener('click', () => { const r = scene.getBoundingClientRect(); window.scrollTo({ top: window.scrollY + r.bottom - window.innerHeight, behavior: 'smooth' }); });
 
   /* ---------- Atlas: cursor sobre el mapa de la card ---------- */
   const B = { lonMin: -58.53, lonMax: -58.23, latMin: -34.70, latMax: -34.50 };
@@ -2288,7 +2514,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     const cardsShown = () => {
       if (!detailEl.hidden || document.hidden) return false;
       const r = cardsEl.getBoundingClientRect();
-      return r.top < window.innerHeight * 0.9 && r.bottom > window.innerHeight * 0.15 && +(slots[0].style.opacity || 1) > 0.95 && +(slots[slots.length - 1].style.opacity || 1) > 0.95;
+      return r.top < window.innerHeight * 0.9 && r.bottom > window.innerHeight * 0.15 && !!window.__introDone;
     };
     function showcase(now) {
       requestAnimationFrame(showcase);
@@ -2296,7 +2522,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       if (forced) { demoCard = forced; forced = null; demoT0 = now; if (demoCard.id === 'jouCard') { hn = HSTART; renderH(); } if (demoCard === lk) lkChips.forEach(c => { c.style.transform = ''; c._cx = null; }); demoCard.classList.add('demo'); }
       if (!demoCard) {
         if (now < demoT0) return;
-        demoCard = order[turn++ % order.length]; demoT0 = now;
+        demoCard = (window.__skyCenterCard && order.includes(window.__skyCenterCard)) ? window.__skyCenterCard : order[turn++ % order.length]; demoT0 = now;
         if (demoCard.id === 'jouCard') { hn = HSTART; renderH(); }
         if (demoCard === lk) lkChips.forEach(c => { c.style.transform = ''; c._cx = null; });
         demoCard.classList.add('demo');
@@ -3043,7 +3269,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   function placeSign() {
     const t = clamp((nightNow - 0.45) / 0.5), e = ease(t);
     signDay.style.opacity = 1 - e;
-    signDay.style.pointerEvents = e > 0.5 || lead.style.pointerEvents === 'none' ? 'none' : 'auto';
+    signDay.style.pointerEvents = e > 0.5 || !window.__introDone ? 'none' : 'auto';
     signDay.tabIndex = e > 0.5 ? -1 : 0; signNight.tabIndex = e > 0.5 ? 0 : -1;
     if (!aqrAnchor || t <= 0) { signNight.style.opacity = 0; signNight.style.pointerEvents = 'none'; return; }
     const w = signNight.offsetWidth;
@@ -3106,7 +3332,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     pS += (progress() - pS) * (reduce ? 1 : 0.12);
     try {
       choreograph(pS);
-      drawSky(dt, now / 1000, pS * H * 1.3);
+      drawSky(dt, now / 1000, pS * H * 0.9);
       placeSign(); placeFav(now / 1000);
     } catch (err) { console.error(err); }
     requestAnimationFrame(loop);
@@ -3141,7 +3367,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     const r = scene.getBoundingClientRect(), span = r.height - window.innerHeight;
     const p = span > 0 ? -r.top / span : 1;
     // en el teléfono asoma en cualquier claro de cielo después de las cards, nunca encima de contenido
-    const on = p > .82 && (window.innerWidth <= 640 || r.bottom > window.innerHeight * .5);
+    const on = !!window.__introDone && p < 1.02 && (window.innerWidth <= 640 || r.bottom > window.innerHeight * .5);
     peek.classList.toggle('on', on);
     peek.classList.toggle('hide', on && !!window.__overContent && window.__overContent(peek, (() => { const b = peek.getBoundingClientRect(), w = peek.offsetWidth; return { left: window.innerWidth - w * 0.62, top: b.top, width: w * 0.6, height: w }; })()));
   }
