@@ -31,7 +31,7 @@ Cada push a `main` se publica solo.
 
 ## Diseño
 
-- **Fondo:** cielo en canvas con nubes suaves que se mueven. El cursor da paralaje y "viento". De día por defecto.
+- **Fondo:** cielo en canvas con muchas nubes (bordes definidos, no borrosas) que se mueven. El cursor da paralaje y "viento". De día por defecto.
 - **Hora:** el cielo sigue la hora de Buenos Aires solo si se elige "Ver hora local".
   - Momentos: noche (sin nubes, solo estrellas y la constelación de Acuario), amanecer, día, atardecer (violeta, rosa y naranja; nubes con luz cálida abajo).
   - Abajo a la derecha: chip "Located in Buenos Aires, AR". Con hover/clic abre la línea de tiempo del cielo. Al lado, botón "Ver hora local".
@@ -40,7 +40,7 @@ Cada push a `main` se publica solo.
 - **Tipografía:** Instrument Serif (display e itálicas), Figtree (texto), Caveat (manuscrita: polaroids, notas).
 - **Colores:** tinta `#14284a`, vidrio blanco translúcido para las cards, pin rosa `#e0607e`, noche `#121a40`.
 - **Intro:** el nombre entra letra por letra, grande, con el cielo empañado. Con scroll se achica y aparece la frase; después la frase se desvanece con blur, el nombre se va chiquito a la esquina de arriba a la izquierda (sin barra ni botón de inicio), el cielo se aclara y las cards se condensan de niebla a vidrio.
-- **Cielo navegable (nov 2026):** las cards ya no están en grilla: flotan sueltas en el cielo, a distintas alturas, con un leve vaivén. La escena queda fija y el scroll vertical las recorre de costado, parando un tramo en cada una; también se arrastran (mouse o dedo de costado) y con el trackpad horizontal. La card del centro se ve nítida y las demás se desenfocan según la distancia. Si nadie toca nada, el cielo avanza solo y se para un ratito en cada card. Abajo al centro hay puntitos (uno por card): el activo se alarga, en hover muestran el nombre y al tocarlos llevan a esa card. Las nubes del canvas también se corren de costado. "Acuariana" flota en el cielo debajo de Lunática. En celular "Mi hora favorita" va arriba a la derecha. Todo esto vive en el bloque "intro con scroll y cielo navegable" del script (tamaños y alturas de cada card en `LAY`). Mockups: https://claude.ai/artifact/NVrrhmqkxnsZSwpmi4exEs (opción E).
+- **Cielo navegable (nov 2026):** las cards ya no están en grilla: flotan sueltas en el cielo, a distintas alturas, con un leve vaivén. La escena queda fija y el scroll vertical las recorre de costado, parando un tramo en cada una; también se arrastran (mouse o dedo de costado) y con el trackpad horizontal. La card del centro se ve nítida y las demás se desenfocan según la distancia. Apenas el nombre llega a la esquina, el cielo ya arranca a moverse solo (se para un ratito en cada card) y el arrastre de costado y los puntitos quedan habilitados; el primer tramo de scroll ya mueve el cielo, sin esperar. Abajo al centro hay puntitos (uno por card): el activo se alarga, en hover muestran el nombre y al tocarlos llevan a esa card. Las nubes del canvas también se corren de costado. "Acuariana" flota en el cielo debajo de Lunática. En celular "Mi hora favorita" va arriba a la derecha. Todo esto vive en el bloque "intro con scroll y cielo navegable" del script (tamaños y alturas de cada card en `LAY`). Mockups: https://claude.ai/artifact/NVrrhmqkxnsZSwpmi4exEs (opción E).
 
 ## Contenido
 

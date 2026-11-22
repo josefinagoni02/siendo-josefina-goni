@@ -1931,7 +1931,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   function makeCloud(w, h, alpha) {
     const c = document.createElement('canvas'); c.width = w; c.height = h;
     const g = c.getContext('2d');
-    const puffs = 26 + Math.floor(Math.random() * 18);
+    const puffs = 34 + Math.floor(Math.random() * 20);
     for (let i = 0; i < puffs; i++) {
       const t = Math.random();
       const x = w * (0.15 + 0.7 * t) + (Math.random() - 0.5) * w * 0.12;
@@ -1940,7 +1940,8 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
       const r = Math.max(2, Math.min(h * (0.16 + 0.22 * bulge * Math.random() + 0.06), x, w - x, y, h - y));
       const grad = g.createRadialGradient(x, y - r * 0.2, 0, x, y, r);
       grad.addColorStop(0, `rgba(255,255,255,${alpha})`);
-      grad.addColorStop(0.55, `rgba(250,252,255,${alpha * 0.55})`);
+      grad.addColorStop(0.62, `rgba(252,253,255,${alpha * 0.88})`);
+      grad.addColorStop(0.86, `rgba(250,252,255,${alpha * 0.4})`);
       grad.addColorStop(1, 'rgba(255,255,255,0)');
       g.fillStyle = grad; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
     }
@@ -1966,7 +1967,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     span = phone() ? H + 260 : H + 500;
     if (oldW && Math.abs(oldW - W) < 2 && clouds.length) return;
     cloudW = W;
-    const count = phone() ? 10 : Math.max(6, Math.round(W / 200));
+    const count = phone() ? 17 : Math.max(10, Math.round(W / 115));
     clouds = [];
     for (let i = 0; i < count; i++) {
       const depth = Math.random(), c = newCloud(depth, 0, (i + Math.random()) / count * span);
@@ -2148,7 +2149,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     SK.stops = SK.items.map(camFor);
     SK.minX = SK.stops[0]; SK.maxX = SK.stops[SK.stops.length - 1];
     // la escena mide: la pantalla fija + la intro + el recorrido del cielo + un respiro antes del cierre
-    SK.introPx = SK.vh * 0.85; SK.skyPx = (SK.items.length - 1) * SK.vh * (mob ? 0.6 : 0.5); SK.holdPx = SK.vh * 0.2;
+    SK.introPx = SK.vh * 0.7; SK.skyPx = (SK.items.length - 1) * SK.vh * (mob ? 0.6 : 0.5); SK.holdPx = SK.vh * 0.2;
     scene.style.height = reduce ? '' : Math.round(SK.vh + SK.introPx + SK.skyPx + SK.holdPx) + 'px';
     // nombre: grande al centro → chiquito arriba a la izquierda
     head.style.transform = '';
@@ -2167,17 +2168,17 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   const PL = 0.22;
   function baseX(sy) {
     const st = SK.stops, n = st.length, f = clamp((sy - SK.introPx) / SK.skyPx) * (n - 1);
-    const i = Math.min(n - 2, Math.floor(f)), t = clamp((f - i - PL) / (1 - 2 * PL));
+    const i = Math.min(n - 2, Math.floor(f)), t = i === 0 ? clamp(f / (1 - PL)) : clamp((f - i - PL) / (1 - 2 * PL));
     return st[i] + (st[i + 1] - st[i]) * t;
   }
   function kFor(x) {
     const st = SK.stops, n = st.length; x = clamp(x, st[0], st[n - 1]);
     let i = 0; while (i < n - 2 && st[i + 1] < x) i++;
     const tp = st[i + 1] > st[i] ? (x - st[i]) / (st[i + 1] - st[i]) : 0;
-    const f = tp <= 0.001 ? i : tp >= 0.999 ? i + 1 : i + PL + (1 - 2 * PL) * tp;
+    const f = tp <= 0.001 ? i : tp >= 0.999 ? i + 1 : i === 0 ? tp * (1 - PL) : i + PL + (1 - 2 * PL) * tp;
     return f / (n - 1);
   }
-  const skyOn = () => !reduce ? (pS > 0.9) : true;
+  const skyOn = () => !reduce ? (pS > 0.8) : true;
   // lo que se corrió arrastrando o lo que avanzó solo pasa al scroll de la página, así el scroll siempre sabe dónde está el cielo
   function flush(want) {
     const sy = sceneY();
@@ -2226,7 +2227,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
   stage.addEventListener('click', e => { if (SK.moved > 6) { e.stopPropagation(); e.preventDefault(); SK.moved = 0; } }, true);
   window.addEventListener('wheel', e => {
     if (!skyOn() || !detailBox.hidden) return;
-    const sy = sceneY(); if (sy < SK.introPx * 0.9 || sy > SK.introPx + SK.skyPx + SK.holdPx) return;
+    const sy = sceneY(); if (sy < SK.introPx * 0.8 || sy > SK.introPx + SK.skyPx + SK.holdPx) return;
     touchIdle();
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) { e.preventDefault(); SK.off += e.deltaX * (e.deltaMode === 1 ? 16 : 1); clearTimeout(SK.ft); SK.ft = setTimeout(() => flush(), 160); }
     else flush();
@@ -2252,14 +2253,16 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     hint.style.opacity = 1 - clamp(I / 0.06); hint.style.pointerEvents = I > 0.05 ? 'none' : 'auto';
     // el cielo arranca empañado y se aclara cuando el nombre se va a la esquina
     const fogSky = 1 - clamp((I - 0.25) / 0.4);
-    skyCv.style.filter = fogSky > 0.01 ? `blur(${(fogSky * 5).toFixed(2)}px)` : '';
+    skyCv.style.filter = fogSky > 0.01 ? `blur(${(fogSky * 3).toFixed(2)}px)` : '';
     skyCv.style.transform = fogSky > 0.01 ? `scale(${(1 + fogSky * 0.04).toFixed(4)})` : '';
     // cámara
     const sy = sceneY(), detailOpen = !detailBox.hidden;
-    if (Math.abs(sy - SK.lastSY) > 1) { if (Math.abs(sy - SK.lastSY) > 2) touchIdle(); SK.lastSY = sy; }
+    if (Math.abs(sy - SK.lastSY) > 1) { if (Math.abs(sy - SK.lastSY) > 2 && sy > SK.introPx) touchIdle(900); SK.lastSY = sy; }
+    // apenas el nombre llega a la esquina, el cielo arranca a moverse solo
+    if (I > 0.8 && !SK.started) { SK.started = true; SK.idle = Math.min(SK.idle, now + 300); } else if (I < 0.5) SK.started = false;
     const base = reduce ? SK.minX : baseX(sy);
-    const pinned = sy > SK.introPx * 0.9 && sy < SK.introPx + SK.skyPx + SK.holdPx;
-    if (!reduce && I > 0.95 && pinned && !SK.drag && !detailOpen && !document.hidden && now > SK.idle) {
+    const pinned = sy > SK.introPx * 0.75 && sy < SK.introPx + SK.skyPx + SK.holdPx;
+    if (!reduce && I > 0.8 && pinned && !SK.drag && !detailOpen && !document.hidden && now > SK.idle) {
       // avanza solo y se para un ratito sobre cada card
       if (now < SK.hold) { /* quieto */ }
       else {
@@ -2295,7 +2298,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     SK.cam.x += (tx - SK.cam.x) * kk; SK.cam.y += (ty - SK.cam.y) * kk;
     const speed = Math.abs(SK.cam.x - px) / Math.max(1, dt);
     window.__skyCamX = SK.cam.x - SK.minX;
-    window.__introDone = I > 0.85;
+    window.__introDone = I > 0.8;
     // cards
     let nearest = 0, nd2 = 1e9;
     const place = (it, isCard) => {
@@ -2311,7 +2314,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
         const dist = Math.abs(cx - SK.vw / 2); if (dist < nd2) { nd2 = dist; nearest = it.i; }
       }
       // aparición: de niebla a vidrio, de a una
-      const ti = ease(clamp((I - 0.5 - (isCard ? it.i : 1.5) * 0.03) / 0.25));
+      const ti = ease(clamp((I - 0.45 - (isCard ? it.i : 1.5) * 0.02) / 0.25));
       blur += (1 - ti) * 10; fog = (1 - ti) * 0.85; op *= clamp(ti * 2.2); s *= 1.03 - 0.03 * ti;
       const vis = sx + it.w > -200 && sx < SK.vw + 200;
       const el = it.el;
@@ -2328,7 +2331,7 @@ footer { position: relative; z-index: 1; text-align: center; padding-block: 2rem
     if (SK.sign) place(SK.sign, false);
     window.__skyCenterCard = SK.items[nearest] ? SK.items[nearest].el.firstElementChild : null;
     if (nearest !== SK.active) { SK.active = nearest; dots.forEach((d, i) => { d.classList.toggle('on', i === nearest); d.setAttribute('aria-current', i === nearest ? 'true' : 'false'); }); }
-    const dv = clamp((I - 0.8) / 0.2);
+    const dv = clamp((I - 0.62) / 0.18);
     dotsNav.style.opacity = dv.toFixed(3); dotsNav.style.pointerEvents = dv > 0.6 ? 'auto' : 'none';
     // hora favorita
     favVis = clamp((I - 0.8) / 0.2);
